@@ -1,4 +1,5 @@
 /*jshint esversion: 6 */
+
 (function () {
 
     class Cierre {
@@ -134,10 +135,18 @@
                 } else {
                     let longitud = dependencia.variablesImplicante.length;
                     let variablesTemporales = dependencia.variablesImplicante.slice();
-                    while(longitud >= 0) {
 
+                    for (let variable of dependencia.variablesImplicante) {
+                        if (!cierre[variable]) {
+                            cierre[variable] = this.calcularCierre(variable, this.l1);
+                            console.log('Cierre de', variable, ':');
+                            console.log(cierre[variable]);
+                        }
                     }
 
+                    while(longitud >= 0) {
+                        longitud--;
+                    }
                 }
 
             }
@@ -171,56 +180,64 @@
                 }
             }
 
-            console.log(cierre);
             return cierre;
         }
     }
 
-    const json = {
-        t: ['a', 'b', 'c', 'd', 'e', 'f'],
-        l: ['a.b -> c', 'd -> e.f', 'c -> a', 'b.e -> c', 'b.c -> d' , 'c.f -> b.d', 'a.c.d -> b', 'c.e -> a.f']
-    };
 
-     const json2 = {
-        t: ['a', 'b', 'c', 'd', 'e', 'f'],
-        l: [{
-            implicante: ['a', 'b'],
-            implicado: ['c']
-        }, {
-            implicante: ['d'],
-            implicado: ['e', 'f']
-        }, {
-            implicante: ['c'],
-            implicado: ['a']
-        }, {
-            implicante: ['b', 'e'],
-            implicado: ['c']
-        }, {
-            implicante: ['b', 'c'],
-            implicado: ['d']
-        }, {
-            implicante: ['c', 'f'],
-            implicado: ['b', 'd']
-        }, {
-            implicante: ['a', 'c', 'd'],
-            implicado: ['b']
-        }, {
-            implicante: ['c', 'e'],
-            implicado: ['a', 'f']
-        }]
-    };
+    function main() {
+        const json = {
+            t: ['a', 'b', 'c', 'd', 'e', 'f'],
+            l: ['a.b -> c', 'd -> e.f', 'c -> a', 'b.e -> c', 'b.c -> d' , 'c.f -> b.d', 'a.c.d -> b', 'c.e -> a.f']
+        };
 
-    const helper = new Conversor();
-    const rt = helper.transformarART(json);
+        const json2 = {
+            t: ['a', 'b', 'c', 'd', 'e', 'f'],
+            l: [{
+                implicante: ['a', 'b'],
+                implicado: ['c']
+            }, {
+                implicante: ['d'],
+                implicado: ['e', 'f']
+            }, {
+                implicante: ['c'],
+                implicado: ['a']
+            }, {
+                implicante: ['b', 'e'],
+                implicado: ['c']
+            }, {
+                implicante: ['b', 'c'],
+                implicado: ['d']
+            }, {
+                implicante: ['c', 'f'],
+                implicado: ['b', 'd']
+            }, {
+                implicante: ['a', 'c', 'd'],
+                implicado: ['b']
+            }, {
+                implicante: ['c', 'e'],
+                implicado: ['a', 'f']
+            }]
+        };
 
-    const rt2 = helper.transformarART2(json2);
+        console.log('JSON Inicial:');
+        console.log(json);
 
-    const l1 = rt.dependenciasElementales();
-    const textoL1 = helper.transformarATexto(l1);
-    console.log(textoL1);
+        const helper = new Conversor();
+        const rt = helper.transformarART(json);
 
-    const l2 = rt.atributosExtranos();
-    // const textoL2 = helper.transformarATexto(l2);
-    // console.log(textoL2);
+        const rt2 = helper.transformarART2(json2);
+
+        const l1 = rt.dependenciasElementales();
+        const textoL1 = helper.transformarATexto(l1);
+        console.log('L1:');
+        console.log(textoL1);
+
+        const l2 = rt.atributosExtranos();
+        // const textoL2 = helper.transformarATexto(l2);
+        // console.log(textoL2);
+    }
+
+    main();
 
 }());
