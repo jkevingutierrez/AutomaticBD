@@ -3,14 +3,36 @@
 (function () {
 
     class Cierre {
-        constructor(variables, dependencias) {
-            this.variables = variables;
-            this.dependencias = dependencias;
-            this.elementos = [];
+        constructor() {
         }
 
-        calcularCierre(dependencias, variable) {
+        calcularCierre(variables, dependencias) {
+            let cierre = [];
+            let longitud = 0;
 
+            if (variables instanceof Array && variables.length > 0) {
+                for (let variable of variables) {
+                    cierre.push(variable);
+                }
+            } else if (typeof variables === 'string') {
+                cierre.push(variables);
+            }
+
+            while(longitud < cierre.length) {
+                longitud = cierre.length;
+                const cierreInicial = cierre.slice();
+
+                for (let dependencia of dependencias) {
+                    const contieneVariables = dependencia.variablesImplicante.every(elem => cierre.indexOf(elem) > -1);
+                    const variableImplicado = dependencia.variablesImplicado[0];
+
+                    if (dependencia.variablesImplicante.length <= cierreInicial.length && contieneVariables && cierre.indexOf(variableImplicado) === -1) {
+                        cierre.push(dependencia.variablesImplicado[0]);
+                    }
+                }
+            }
+
+            return cierre.sort();
         }
 
     }
@@ -81,7 +103,7 @@
 
     class RT {
         constructor(t, l) {
-            this.t = t;
+            this.t = t.sort();
             this.l = l;
             this.l1 = [];
             this.l2 = [];
@@ -138,9 +160,8 @@
 
                     for (let variable of dependencia.variablesImplicante) {
                         if (!cierre[variable]) {
-                            cierre[variable] = this.calcularCierre(variable, this.l1);
-                            console.log('Cierre de', variable, ':');
-                            console.log(cierre[variable]);
+                            const cierre = new Cierre();
+                            cierre[variable] = cierre.calcularCierre(variable, this.l1);
                         }
                     }
 
@@ -152,35 +173,6 @@
             }
 
             return this.l2;
-        }
-
-        calcularCierre(variables, dependencias) {
-            let cierre = [];
-            let longitud = 0;
-
-            if (variables instanceof Array && variables.length > 0) {
-                for (let variable of variables) {
-                    cierre.push(variable);
-                }
-            } else if (typeof variables === 'string') {
-                cierre.push(variables);
-            }
-
-            while(longitud < cierre.length) {
-                longitud = cierre.length;
-                const cierreInicial = cierre.slice();
-
-                for (let dependencia of dependencias) {
-                    const contieneVariables = dependencia.variablesImplicante.every(elem => cierre.indexOf(elem) > -1);
-                    const variableImplicado = dependencia.variablesImplicado[0];
-
-                    if (dependencia.variablesImplicante.length <= cierreInicial.length && contieneVariables && cierre.indexOf(variableImplicado) === -1) {
-                        cierre.push(dependencia.variablesImplicado[0]);
-                    }
-                }
-            }
-
-            return cierre;
         }
     }
 
@@ -232,6 +224,11 @@
         const textoL1 = helper.transformarATexto(l1);
         console.log('L1:');
         console.log(textoL1);
+
+        const cierre = new Cierre();
+        const array = ['c', 'd'];
+        console.log('Cierre de', array);
+        console.log(cierre.calcularCierre(array, l1));
 
         const l2 = rt.atributosExtranos();
         // const textoL2 = helper.transformarATexto(l2);
