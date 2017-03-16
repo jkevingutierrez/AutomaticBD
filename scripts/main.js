@@ -9,11 +9,6 @@
             let cierre = [];
             let longitud = 0;
 
-            if (variables.indexOf('c') > -1 && variables.indexOf('f') > -1) {
-                console.log('dependei');
-                console.log(dependencias);
-            }
-
             if (variables instanceof Array && variables.length > 0) {
                 for (let variable of variables) {
                     cierre.push(variable);
@@ -42,7 +37,6 @@
     }
 
     class Conversor {
-
         // transformarART(json) {
         //     const variables = json.t || [];
         //     const dependencias = json.l || [];
@@ -112,16 +106,7 @@
             this.l1 = [];
             this.l2 = [];
             this.l3 = [];
-        }
-
-        buscarDependencia(dependencia, dependencias) {
-            const dependenciaEncontrada = dependencias.find(
-                dependenciaActual =>
-                dependenciaActual.variablesImplicado.equals(dependencia.variablesImplicado) &&
-                dependenciaActual.variablesImplicante.equals(dependencia.variablesImplicante)
-            );
-
-            return dependenciaEncontrada ? true : false;
+            this.cierre = new Cierre();
         }
 
         dependenciasElementales() {
@@ -157,11 +142,23 @@
                 if (dependencia.variablesImplicante.length === 1 && !existeDependencia) {
                     this.l2.push(dependencia);
                 } else {
-                    let longitud = dependencia.variablesImplicante.length;
-                    let variablesTemporales = dependencia.variablesImplicante.slice();
+                    let variablesAuxiliar = dependencia.variablesImplicante.slice();
+                    for (let index = dependencia.variablesImplicante.length - 1; index >= 0; index--) {
+                        let variable = variablesAuxiliar[index];
+                        let variablesTemporales = variablesAuxiliar.filter((test, j) => index !== j);
 
-                    for (let variable of dependencia.variablesImplicante) {
+                        const cierreArray = this.cierre.calcularCierre(variablesTemporales, this.l1);
+                        const contieneVariable = dependencia.variablesImplicado.every(elem => cierreArray.indexOf(elem) > -1);
 
+                        if (contieneVariable) {
+                            variablesAuxiliar.splice(index, 1);
+                        }
+                    }
+
+                    const nuevaDependencia = new DependenciaFuncional(variablesAuxiliar, dependencia.variablesImplicado);
+                    const existeNuevaDependencia = this.buscarDependencia(nuevaDependencia, this.l2);
+                    if (!existeNuevaDependencia) {
+                        this.l2.push(nuevaDependencia);
                     }
                 }
 
@@ -171,63 +168,16 @@
         }
 
         dependenciasRedundantes() {
-
-            const l2Json = [{
-                implicante: ['c'],
-                implicado: ['a']
-            }, {
-                implicante: ['d'],
-                implicado: ['e']
-            }, {
-                implicante: ['d'],
-                implicado: ['f']
-            }, {
-                implicante: ['a', 'b'],
-                implicado: ['c']
-            }, {
-                implicante: ['b', 'c'],
-                implicado: ['d']
-            }, {
-                implicante: ['b', 'e'],
-                implicado: ['c']
-            }, {
-                implicante: ['c' ,'f'],
-                implicado: ['b']
-            }, {
-                implicante: ['c', 'f'],
-                implicado: ['d']
-            }, {
-                implicante: ['c', 'd'],
-                implicado: ['b']
-            }, {
-                implicante: ['c', 'e'],
-                implicado: ['f']
-            }].reverse();
-
-            let dependencias = [];
-            l2Json.forEach(function(dependencia) {
-                const dependenciaFuncional = new DependenciaFuncional(dependencia.implicante, dependencia.implicado);
-                dependencias.push(dependenciaFuncional);
-            });
-
-            this.l2 = dependencias.slice();
             this.l3 = [];
 
-            let l2Auxiliar = this.l2.slice();
-            const cierre = new Cierre();
+            let l2Auxiliar = this.l2.slice().reverse();
 
             for (let index = this.l2.length - 1; index >= 0; index--) {
                 let dependencia = l2Auxiliar[index];
-                let dependenciasTemporales = l2Auxiliar.filter((test, j) => {
-                    return index !== j;
-                });
+                let dependenciasTemporales = l2Auxiliar.filter((test, j) => index !== j);
 
-                const cierreArray = cierre.calcularCierre(dependencia.variablesImplicante, dependenciasTemporales);
+                const cierreArray = this.cierre.calcularCierre(dependencia.variablesImplicante, dependenciasTemporales);
                 const contieneVariable = dependencia.variablesImplicado.every(elem => cierreArray.indexOf(elem) > -1);
-
-                // console.log(dependenciasTemporales);
-                // console.log(dependencia.variablesImplicante.join('.') + ' -> ' + dependencia.variablesImplicado.join('.'), contieneVariable);
-                // console.log(cierreArray);
 
                 const existeDependencia = this.buscarDependencia(dependencia, this.l3);
                 if (contieneVariable) {
@@ -238,6 +188,16 @@
             }
 
             return this.l3;
+        }
+
+        buscarDependencia(dependencia, dependencias) {
+            const dependenciaEncontrada = dependencias.find(
+                dependenciaActual =>
+                dependenciaActual.variablesImplicado.equals(dependencia.variablesImplicado) &&
+                dependenciaActual.variablesImplicante.equals(dependencia.variablesImplicante)
+            );
+
+            return dependenciaEncontrada ? true : false;
         }
     }
 
@@ -313,36 +273,36 @@
         }];
 
         const l2Json = [{
-                implicante: ['c'],
-                implicado: ['a']
-            }, {
-                implicante: ['d'],
-                implicado: ['e']
-            }, {
-                implicante: ['d'],
-                implicado: ['f']
-            }, {
-                implicante: ['a', 'b'],
-                implicado: ['c']
-            }, {
-                implicante: ['b', 'c'],
-                implicado: ['d']
-            }, {
-                implicante: ['b', 'e'],
-                implicado: ['c']
-            }, {
-                implicante: ['c' ,'f'],
-                implicado: ['b']
-            }, {
-                implicante: ['c', 'f'],
-                implicado: ['d']
-            }, {
-                implicante: ['c', 'd'],
-                implicado: ['b']
-            }, {
-                implicante: ['c', 'e'],
-                implicado: ['f']
-            }];
+            implicante: ['c'],
+            implicado: ['a']
+        }, {
+            implicante: ['d'],
+            implicado: ['e']
+        }, {
+            implicante: ['d'],
+            implicado: ['f']
+        }, {
+            implicante: ['a', 'b'],
+            implicado: ['c']
+        }, {
+            implicante: ['b', 'c'],
+            implicado: ['d']
+        }, {
+            implicante: ['b', 'e'],
+            implicado: ['c']
+        }, {
+            implicante: ['c', 'f'],
+            implicado: ['b']
+        }, {
+            implicante: ['c', 'f'],
+            implicado: ['d']
+        }, {
+            implicante: ['c', 'd'],
+            implicado: ['b']
+        }, {
+            implicante: ['c', 'e'],
+            implicado: ['f']
+        }];
 
         console.log('JSON Inicial:');
         console.log(json);
@@ -355,11 +315,10 @@
         console.log('L1:');
         console.log(textoL1);
 
-        // const l2 = rt.atributosExtranos();
-        // const textoL2 = helper.transformarATexto(l2);
-        // console.log('L2:');
-        // console.log(textoL2);
-
+        const l2 = rt.atributosExtranos();
+        const textoL2 = helper.transformarATexto(l2);
+        console.log('L2:');
+        console.log(textoL2);
 
         const l3 = rt.dependenciasRedundantes();
         const textoL3 = helper.transformarATexto(l3);
