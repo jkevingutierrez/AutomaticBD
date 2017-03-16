@@ -10,9 +10,7 @@
             let longitud = 0;
 
             if (variables instanceof Array && variables.length > 0) {
-                for (let variable of variables) {
-                    cierre.push(variable);
-                }
+                cierre = variables.slice();
             } else if (typeof variables === 'string') {
                 cierre.push(variables);
             }
@@ -26,7 +24,7 @@
                     const variableImplicado = dependencia.variablesImplicado[0];
 
                     if (dependencia.variablesImplicante.length <= cierreInicial.length && contieneVariables && cierre.indexOf(variableImplicado) === -1) {
-                        cierre.push(dependencia.variablesImplicado[0]);
+                        cierre.push(...dependencia.variablesImplicado);
                     }
                 }
             }
@@ -145,7 +143,7 @@
                     let variablesAuxiliar = dependencia.variablesImplicante.slice();
                     for (let index = dependencia.variablesImplicante.length - 1; index >= 0; index--) {
                         let variable = variablesAuxiliar[index];
-                        let variablesTemporales = variablesAuxiliar.filter((test, j) => index !== j);
+                        let variablesTemporales = variablesAuxiliar.filter((elem, j) => index !== j);
 
                         const cierreArray = this.cierre.calcularCierre(variablesTemporales, this.l1);
                         const contieneVariable = dependencia.variablesImplicado.every(elem => cierreArray.indexOf(elem) > -1);
@@ -170,11 +168,11 @@
         dependenciasRedundantes() {
             this.l3 = [];
 
-            let l2Auxiliar = this.l2.slice().reverse();
+            let l2Auxiliar = this.l2.slice();
 
             for (let index = this.l2.length - 1; index >= 0; index--) {
                 let dependencia = l2Auxiliar[index];
-                let dependenciasTemporales = l2Auxiliar.filter((test, j) => index !== j);
+                let dependenciasTemporales = l2Auxiliar.filter((elem, j) => index !== j);
 
                 const cierreArray = this.cierre.calcularCierre(dependencia.variablesImplicante, dependenciasTemporales);
                 const contieneVariable = dependencia.variablesImplicado.every(elem => cierreArray.indexOf(elem) > -1);
