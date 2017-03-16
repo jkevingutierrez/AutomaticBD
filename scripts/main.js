@@ -313,6 +313,43 @@
             }]
         };
 
+        const json5 = {
+            t: ['a', 'b', 'c', 'd', 'g', 'h'],
+            l: [{
+                implicante: ['a', 'b'],
+                implicado: ['c']
+            }, {
+                implicante: ['b'],
+                implicado: ['d']
+            }, {
+                implicante: ['d'],
+                implicado: ['g', 'c']
+            }, {
+                implicante: ['c', 'g'],
+                implicado: ['h']
+            }]
+        };
+
+        const json6 = {
+            t: ['a', 'b', 'c', 'd'],
+            l: [{
+                implicante: ['a'],
+                implicado: ['b', 'c']
+            }, {
+                implicante: ['b'],
+                implicado: ['c']
+            }, {
+                implicante: ['a'],
+                implicado: ['b']
+            }, {
+                implicante: ['a', 'b'],
+                implicado: ['c']
+            }, {
+                implicante: ['a', 'c'],
+                implicado: ['d']
+            }]
+        };
+
         const l1Json = [{
             implicante: ['a', 'b'],
             implicado: ['c']
@@ -381,10 +418,10 @@
         }];
 
         console.log('JSON Inicial:');
-        console.log(json4);
+        console.log(json6);
 
         const helper = new Conversor();
-        const rt = helper.transformarART(json4);
+        const rt = helper.transformarART(json6);
 
         const l1 = rt.dependenciasElementales();
         const textoL1 = helper.transformarATexto(l1);
