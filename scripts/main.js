@@ -168,7 +168,7 @@
         dependenciasRedundantes() {
             this.l3 = [];
 
-            let l2Auxiliar = this.l2.slice();
+            let l2Auxiliar = this.l2.slice().reverse();
 
             for (let index = this.l2.length - 1; index >= 0; index--) {
                 let dependencia = l2Auxiliar[index];
@@ -232,6 +232,84 @@
             }, {
                 implicante: ['c', 'e'],
                 implicado: ['a', 'f']
+            }]
+        };
+
+        const json2 = {
+            t: ['a', 'b', 'c', 'd', 'e'],
+            l: [{
+                implicante: ['a'],
+                implicado: ['b', 'd']
+            }, {
+                implicante: ['b'],
+                implicado: ['c', 'd']
+            }, {
+                implicante: ['a', 'c'],
+                implicado: ['e']
+            }]
+        };
+
+        const json3 = {
+            t: ['a', 'b', 'c', 'd', 'e'],
+            l: [{
+                implicante: ['a'],
+                implicado: ['b']
+            }, {
+                implicante: ['b'],
+                implicado: ['c']
+            }, {
+                implicante: ['c'],
+                implicado: ['d']
+            }, {
+                implicante: ['d'],
+                implicado: ['e']
+            }, {
+                implicante: ['e'],
+                implicado: ['a']
+            }, {
+                implicante: ['a'],
+                implicado: ['c']
+            }, {
+                implicante: ['c'],
+                implicado: ['e']
+            }, {
+                implicante: ['e'],
+                implicado: ['b']
+            }, {
+                implicante: ['b'],
+                implicado: ['d']
+            }, {
+                implicante: ['d'],
+                implicado: ['a']
+            }]
+        };
+
+        const json4 = {
+            t: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'],
+            l: [{
+                implicante: ['a'],
+                implicado: ['b']
+            }, {
+                implicante: ['a', 'e'],
+                implicado: ['d']
+            }, {
+                implicante: ['b'],
+                implicado: ['c']
+            }, {
+                implicante: ['d', 'h'],
+                implicado: ['c']
+            }, {
+                implicante: ['c'],
+                implicado: ['d']
+            }, {
+                implicante: ['c', 'g'],
+                implicado: ['b']
+            }, {
+                implicante: ['d'],
+                implicado: ['a']
+            }, {
+                implicante: ['b', 'f'],
+                implicado: ['a']
             }]
         };
 
@@ -303,10 +381,10 @@
         }];
 
         console.log('JSON Inicial:');
-        console.log(json);
+        console.log(json4);
 
         const helper = new Conversor();
-        const rt = helper.transformarART(json);
+        const rt = helper.transformarART(json4);
 
         const l1 = rt.dependenciasElementales();
         const textoL1 = helper.transformarATexto(l1);
