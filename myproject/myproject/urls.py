@@ -1,5 +1,5 @@
 from django.conf.urls import include, url
 
 urlpatterns = [
-    url(r'^myapp/', include('myapp.urls'))
+    url(r'^myapp', include('myapp.urls'))
 ]
