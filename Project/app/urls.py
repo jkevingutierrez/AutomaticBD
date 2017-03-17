@@ -1,8 +1,8 @@
 from django.conf.urls import url
 
-from app.views import HomePageView
+from app.views import IndexView
 
 
 urlpatterns = [
-    url(r'^$', HomePageView.as_view(), name='index'),
+    url(r'^$', IndexView.as_view(), name='index')
 ]

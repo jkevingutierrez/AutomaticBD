@@ -1,21 +1,12 @@
-import textwrap
+from django.core.urlresolvers import reverse
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404
+from django.utils import timezone
+from django.views import generic
 
-from django.http import HttpResponse
-from django.views.generic.base import View
 
+class IndexView(generic.ListView):
+    template_name = "index.html"
 
-class HomePageView(View):
-
-    def dispatch(request, *args, **kwargs):
-        response_text = textwrap.dedent('''\
-            <html>
-            <head>
-                <title>Greetings to the world</title>
-            </head>
-            <body>
-                <h1>Greetings to the world</h1>
-                <p>Hello, world!</p>
-            </body>
-            </html>
-        ''')
-        return HttpResponse(response_text)
+    def get_queryset(self):
+        return 'hello'
