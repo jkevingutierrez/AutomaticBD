@@ -3,6 +3,7 @@ import textwrap
 from django.http import HttpResponse
 from django.views.generic.base import View
 
+
 class HomePageView(View):
 
     def dispatch(request, *args, **kwargs):

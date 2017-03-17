@@ -95,3 +95,6 @@ celerybeat-schedule
 
 # sqlite files
 *.sqlite*
+
+# PyCharm files
+.idea/
