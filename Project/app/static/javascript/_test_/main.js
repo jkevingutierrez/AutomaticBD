@@ -417,11 +417,8 @@
             implicado: ['f']
         }];
 
-        console.log('JSON Inicial:');
-        console.log(json6);
-
         const helper = new Conversor();
-        const rt = helper.transformarART(json6);
+        const rt = helper.transformarART(json);
 
         const l1 = rt.dependenciasElementales();
         const textoL1 = helper.transformarATexto(l1);

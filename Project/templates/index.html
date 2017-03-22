@@ -1,14 +1,53 @@
 {% load static %}
 <!doctype html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}" />
-    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'styles/style.css' %}" />
+    <title>AutomaticBD</title>
 </head>
+
 <body>
-    <h1>{{ projectName }}</h1>
+    <header>
+        <div class="container">
+            <h1>{{ projectName }}</h1>
+        </div>
+    </header>
+    <main ng-view>
+        <div ng-if="::false" class="waiting-giff">
+            <!-- <div class="loader" title="Cargando...">Cargando...</div> -->
+            <div class="loading-title">
+                <h4>Cargando...</h4>
+            </div>
+            <div class="sk-cube-grid" title="Cargando...">
+                <div class="sk-cube sk-cube1"></div>
+                <div class="sk-cube sk-cube2"></div>
+                <div class="sk-cube sk-cube3"></div>
+                <div class="sk-cube sk-cube4"></div>
+                <div class="sk-cube sk-cube5"></div>
+                <div class="sk-cube sk-cube6"></div>
+                <div class="sk-cube sk-cube7"></div>
+                <div class="sk-cube sk-cube8"></div>
+                <div class="sk-cube sk-cube9"></div>
+            </div>
+        </div>
+    </main>
+    <div id="bootstrapCssTest" class="hidden"></div>
+    <script src="//code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular-route.js"></script>
+    <script src="{% static 'javascript/app/app.js' %}"></script>
+    <script src="{% static 'javascript/app/config.js' %}"></script>
+    <script src="{% static 'javascript/app/run.js' %}"></script>
+    <script src="{% static 'javascript/app/controllers/main.js' %}"></script>
+    <script src="{% static 'javascript/app/directives/customOnChange.js' %}"></script>
+    <script src="{% static 'javascript/_test_/helpers.js' %}"></script>
+    <script src="{% static 'javascript/_test_/main.js' %}"></script>
 </body>
+
 </html>
