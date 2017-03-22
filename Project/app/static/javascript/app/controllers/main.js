@@ -13,9 +13,14 @@
     function MainController($scope, $http, $location) {
         var baseUrl = $location.absUrl();
         var vm = this;
+
         vm.hasFinishedLoading = true;
 
-        vm.uploadFile = function($event) {
+        vm.uploadFile = uploadFile;
+
+        vm.initPanel = initPanel;
+
+        function uploadFile($event) {
             console.log('upload');
             console.log($event);
 
@@ -48,7 +53,7 @@
             }
         };
 
-        vm.initPanel = function() {
+        function initPanel() {
             function toggleChevron(e) {
 
                 var $panelHeading = $(e.target).prev('.panel-heading');
@@ -66,11 +71,6 @@
             $('#accordion').click(function(e) {
                 e.preventDefault();
             });
-
-        };
-
-        function main() {
-            getJson();
         }
 
         function getJson() {
@@ -114,6 +114,11 @@
 
             return textoDependencias;
         }
+
+        function main() {
+            getJson();
+        }
+
 
         main();
     }
