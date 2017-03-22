@@ -119,17 +119,19 @@
             $('#helpPopup').hide('fast');
         }
 
-        function getJson(url) {
+        function getJsonFromUrl(url) {
             $http({
                 method: 'GET',
                 url: url
             }).then(function(response) {
-                var json = response.data;
-                var jsonTest = {
-                    variables: json.t,
-                    dependencias: json.l
-                };
-                vm.jsonExample = json;
+                if (response.data) {
+                    var json = response.data;
+                    var jsonTest = {
+                        variables: json.t,
+                        dependencias: json.l
+                    };
+                    vm.jsonExample = json;
+                }
             }).catch(function(error) {
                 console.error(error);
             });
@@ -141,9 +143,11 @@
                 url: baseUrl + 'file',
                 data: json
             }).then(function(response) {
-                var json = response.data;
-                saveFile(json, 'test.json');
                 console.log(response);
+                if (response.data) {
+                    var json = response.data;
+                    saveFile(JSON.stringify(json), 'test.json');
+                }
             }).catch(function(error) {
                 console.error(error);
             });
@@ -153,9 +157,8 @@
             var a = document.createElement("a");
             a.style = 'display: none';
             document.body.appendChild(a);
-            var json = JSON.stringify(data),
-                blob = new Blob([json], { type: 'octet/stream' }),
-                url = window.URL.createObjectURL(blob);
+            var blob = new Blob([data], { type: 'octet/stream' });
+            var url = window.URL.createObjectURL(blob);
             a.href = url;
             a.download = fileName;
             a.click();
@@ -169,12 +172,15 @@
                 data: json
             }).then(function(response) {
                 console.log(response);
-                vm.solution = {};
-                vm.solution = response.data;
+                if (response.data) {
+                    vm.solution = {};
+                    vm.solution = response.data;
+                    saveFile(vm.solution.file, 'Recubrimiento.txt');
 
-                console.log(transform(vm.solution.l1));
-                console.log(transform(vm.solution.l2));
-                console.log(transform(vm.solution.l3));
+                    console.log(transform(vm.solution.l1));
+                    console.log(transform(vm.solution.l2));
+                    console.log(transform(vm.solution.l3));
+                }
             }).catch(function(error) {
                 console.error(error);
             });
@@ -195,7 +201,7 @@
         function main() {
             var resource = Math.floor((Math.random() * 6) + 1);
             console.log(resource);
-            getJson(baseUrl + 'static/resource/' + resource + '.json');
+            getJsonFromUrl(baseUrl + 'static/resource/' + resource + '.json');
         }
 
 

@@ -107,8 +107,14 @@ class ServiceView(View):
                 'original' : to_json,
                 'l1': [],
                 'l2': [],
-                'l3': []
+                'l3': [],
+                'file': ''
             }
+
+            full_path = smart_str(os.path.join(settings.BASE_DIR, 'Recubrimiento.txt'))
+
+            with open(full_path, 'r') as f:
+                response['file'] = f.read()
 
             for dependencia in l1:
                 elem = {

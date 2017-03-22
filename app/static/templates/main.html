@@ -46,10 +46,10 @@
         </div>
         <div class="form-group">
             <button type="button" class="btn btn-primary" ng-click="vm.calculateMinimalCover(vm.initialJson)" ng-disabled="!vm.initialJson">Calcular Recubrimiento Mínimo</button>
-            <button type="button" class="btn btn-default" ng-click="vm.clearFile(vm.initialJson)" ng-disabled="!vm.initialJson">Borrar Archivo</button>
+            <button type="button" class="btn btn-default" ng-click="vm.clearFile(vm.initialJson)" ng-disabled="!vm.currentFile">Borrar Archivo</button>
         </div>
         <div class="form-group">
-            <button type="button" class="btn btn-primary" ng-click="vm.exportFile(vm.initialJson)" ng-disabled="!vm.initialJson">Exportar Archivo</button>
+            <button type="button" class="btn btn-primary" ng-click="vm.exportFile(vm.initialJson)" ng-disabled="!vm.initialJson">Exportar JSON</button>
         </div>
     </form>
     <div class="panel-group" id="accordion" data-ng-init="vm.initPanel()" ng-if="vm.solution.original">
