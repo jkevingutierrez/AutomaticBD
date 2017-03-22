@@ -99,3 +99,8 @@ ENV/
 
 # PyCharm files
 .idea/
+
+# Custom files
+salida.json
+Recubrimiento.txt
+salida.json

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="12px" height="12px" viewBox="0 0 12 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 40.3 (33839) - http://www.bohemiancoding.com/sketch -->
+    <title>Assets/ICono_Informacion_Activo</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="10NuevoPortal" transform="translate(-618.000000, -235.000000)" fill="#4A4A4A">
+            <g id="Portales" transform="translate(155.000000, 99.000000)">
+                <g id="Nuevo-Portal" transform="translate(0.000000, 66.000000)">
+                    <g id="Indexado-en" transform="translate(310.000000, 67.000000)">
+                        <path d="M159,3 C155.6865,3 153,5.6865 153,9 C153,12.3135 155.6865,15 159,15 C162.3135,15 165,12.3135 165,9 C165,5.6865 162.3135,3 159,3 L159,3 Z M159,14 C156.238571,14 154,11.7614286 154,9 C154,6.23857143 156.238571,4 159,4 C161.761429,4 164,6.23857143 164,9 C164,11.7614286 161.761429,14 159,14 L159,14 Z M158,6 L158,9 C158,9.553 158.448,10 159,10 C159.552,10 160,9.553 160,9 L160,6 C160,5.448 159.552,5 159,5 C158.448,5 158,5.448 158,6 Z M159,11 C158.448,11 158,11.448 158,12 C158,12.553 158.448,13 159,13 C159.552,13 160,12.553 160,12 C160,11.448 159.552,11 159,11 L159,11 Z" id="Assets/ICono_Informacion_Activo" transform="translate(159.000000, 9.000000) rotate(-180.000000) translate(-159.000000, -9.000000) "></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,35 @@
+.help-dialog {
+    background-color: #f9f9f9;
+    border: 1px solid #ebebeb;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.30);
+    font-size: 10px;
+    left: 0;
+    max-width: 500px;
+    min-width: 300px;
+    padding: 10px;
+    position: absolute;
+    text-align: left;
+    top: 0;
+    z-index: 20;
+}
+
+.help-dialog .close-popup {
+    cursor: pointer;
+    float: right;
+    height: 8px;
+    margin-top: -5px;
+    width: 8px;
+}
+
+.dialog-title {
+    font-weight: bold;
+}
+
+.dialog-message {
+    font-style: italic;
+    font-weight: normal;
+}
+
+.dialog-message pre {
+    margin-top: 5px;
+}

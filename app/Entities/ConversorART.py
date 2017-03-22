@@ -8,9 +8,13 @@ class ConversorART:
         variables = []
         dependenciasFuncionales = []
 
-        if 'variables' in j:
+        if 't' in j:
+            variables = j['t']
+        elif 'variables' in j:
             variables = j['variables']
-        if 'dependencias' in j:
+        if 'l' in j:
+            dependencias = j['l']
+        elif 'dependencias' in j:
             dependencias = j['dependencias']
 
         for dependencia in dependencias:

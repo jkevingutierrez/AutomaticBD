@@ -38,7 +38,6 @@ class RT:
 
         conversor_text = ConversorATexto()
 
-
         archivo = Archivo()
         archivo.escribirSobreArchivoExistente('Recubrimiento.txt', 'Paso 1 Agregar Dependencias Elementales:\n\n')
 

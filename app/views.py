@@ -1,7 +1,8 @@
 import json
+import pickle
 from django.views.generic import ListView
 from django.views.generic.base import View
-from django.http import JsonResponse, HttpResponseBadRequest
+from django.http import JsonResponse, HttpResponseBadRequest, HttpResponse
 from app.Entities.ConversorART import ConversorART
 from app.Entities.ConversorATexto import ConversorATexto
 from app.Entities.Archivo import Archivo
@@ -13,10 +14,26 @@ class IndexView(ListView):
     context_object_name = 'projectName'
 
 
+class FileView(View):
+
+    @staticmethod
+    def post(request, *args, **kwargs):
+        print('POST in FileView')
+
+        to_json = json.loads(request.body)
+        name = 'salida.json'
+        with open(name, 'w+') as f:
+            json.dump(to_json, f)
+
+        return HttpResponse('Archivo "' + name + '" creado')
+
+
 class ServiceView(View):
 
     @staticmethod
     def get(request):
+        print('GET in ServiceView')
+
         to_json = {
             "key1": "value1",
             "key2": "value2"
@@ -25,6 +42,8 @@ class ServiceView(View):
 
     @staticmethod
     def post(request, *args, **kwargs):
+        print('POST in ServiceView')
+
         separador = ', '
 
         conversor_art = ConversorART()

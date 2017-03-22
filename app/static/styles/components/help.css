@@ -1,0 +1,8 @@
+.help-container .help-block,
+.help-container img {
+    display: inline-block;
+}
+
+.help-container img {
+    cursor: pointer
+}

@@ -16,13 +16,43 @@
     </div>
 </div>
 <div class="container">
-    <form>
+    <div class="alert alert-danger" ng-if="vm.hasErrors">
+        <strong>Ha ocuriddo un error al cargar el archivo {$ vm.currentFile.name $}: </strong>
+        <span>{$ vm.errorMessage $}.</span>
+    </div>
+    <form name="form">
+        <div class="help-container">
+            <span class="help-block">Carga un archivo con extension .json en un formato valido</span>
+            <img src="static/images/help.svg" alt="Ayuda" title="Ayuda" ng-click="vm.showPopUp($event)">
+        </div>
+        <div class="help-dialog" id="helpPopup" ng-show="showPopUp">
+            <div class="close-popup">
+                <img src="static/images/close.svg" alt="Cerrar" ng-click="vm.closePoUp()" title="Cerrar">
+            </div>
+            <span class="dialog-title">Ejemplo de JSON valido:</span>
+            <div class="dialog-message">
+                <pre>{$ vm.jsonExample | json $}</pre>
+            </div>
+        </div>
+        <div class="form-group" ng-class="{ 'has-error' : (form.$invalid && form.file.$touched) || vm.hasErrors, 'has-success': form.$valid && !vm.hasErrors && vm.initialJson }">
+            <div class="input-group">
+                <label class="input-group-btn">
+                    <span class="btn btn-primary">
+                        Cargar Archivo <input type="file" accept=".json,.txt" custom-on-change="vm.uploadFile" ng-model="vm.currentFile">
+                    </span>
+                </label>
+                <input type="text" class="form-control" ng-model="vm.currentFile.name" readonly>
+            </div>
+        </div>
         <div class="form-group">
-            <label for="file">Archivo:</label>
-            <input type="file" class="form-control" id="file" accept=".json,.txt" name="file" custom-on-change="vm.uploadFile">
+            <button type="button" class="btn btn-primary" ng-click="vm.calculateMinimalCover(vm.initialJson)" ng-disabled="!vm.initialJson">Calcular Recubrimiento Mínimo</button>
+            <button type="button" class="btn btn-default" ng-click="vm.clearFile(vm.initialJson)" ng-disabled="!vm.initialJson">Borrar Archivo</button>
+        </div>
+        <div class="form-group">
+            <button type="button" class="btn btn-primary" ng-click="vm.exportFile(vm.initialJson)" ng-disabled="!vm.initialJson">Exportar Archivo</button>
         </div>
     </form>
-    <div class="panel-group" id="accordion" data-ng-init="vm.initPanel()">
+    <div class="panel-group" id="accordion" data-ng-init="vm.initPanel()" ng-if="vm.solution.original">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h4 class="panel-title">

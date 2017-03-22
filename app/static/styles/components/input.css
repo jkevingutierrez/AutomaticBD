@@ -1,0 +1,25 @@
+.input-group {
+    border-collapse: separate;
+    display: table;
+    position: relative;
+    width: 100%;
+}
+
+.input-group input[type=file] {
+    display: none;
+}
+
+.input-group input[type=text] {
+    left: 118px;
+    pointer-events: none;
+    position: absolute;
+    width: calc(100% - 118px);
+}
+
+.input-group .input-group-btn {
+    cursor: pointer;
+    font-size: 0;
+    position: relative;
+    white-space: nowrap;
+    width: 100%;
+}
