@@ -106,19 +106,17 @@
         }
 
         function showPopUp($event) {
-            $scope.showPopUp = true;
             var el = $event.currentTarget;
             $('#helpPopup').css({
                 'left': el.offsetLeft - el.scrollLeft + 6,
-                'top': el.offsetTop - el.scrollTop - 60
+                'top': el.offsetTop - el.scrollTop + 6
             });
-            $('#helpPopup').show();
+            $('#helpPopup').toggle('fast');
 
         }
 
         function closePopUp() {
-            $scope.showPopUp = false;
-            $('#helpPopup').hide();
+            $('#helpPopup').hide('fast');
         }
 
         function getJson(url) {
@@ -143,10 +141,25 @@
                 url: baseUrl + 'file',
                 data: json
             }).then(function(response) {
+                var json = response.data;
+                saveFile(json, 'test.json');
                 console.log(response);
             }).catch(function(error) {
                 console.error(error);
             });
+        }
+
+        function saveFile(data, fileName) {
+            var a = document.createElement("a");
+            a.style = 'display: none';
+            document.body.appendChild(a);
+            var json = JSON.stringify(data),
+                blob = new Blob([json], { type: 'octet/stream' }),
+                url = window.URL.createObjectURL(blob);
+            a.href = url;
+            a.download = fileName;
+            a.click();
+            window.URL.revokeObjectURL(url);
         }
 
         function calculateMinimalCover(json) {

@@ -1,8 +1,11 @@
 import json
-import pickle
+import os
+import mimetypes
 from django.views.generic import ListView
 from django.views.generic.base import View
 from django.http import JsonResponse, HttpResponseBadRequest, HttpResponse
+from django.utils.encoding import smart_str
+from django.conf import settings
 from app.Entities.ConversorART import ConversorART
 from app.Entities.ConversorATexto import ConversorATexto
 from app.Entities.Archivo import Archivo
@@ -21,11 +24,25 @@ class FileView(View):
         print('POST in FileView')
 
         to_json = json.loads(request.body)
-        name = 'salida.json'
-        with open(name, 'w+') as f:
+        filename = 'salida.json'
+        full_path = smart_str(os.path.join(settings.BASE_DIR, filename))
+        with open(filename, 'w+') as f:
             json.dump(to_json, f)
 
-        return HttpResponse('Archivo "' + name + '" creado')
+        with open(full_path, 'r') as f:
+            data = f.read()
+
+        response = HttpResponse(data, content_type=mimetypes.guess_type(full_path)[0])
+        #response['Content-Type'] = 'application/force-download'
+        response['Content-Disposition'] = "attachment; filename={0}".format(filename)
+        response['Content-Length'] = os.path.getsize(full_path)
+        #response['X-Sendfile'] = smart_str(os.path.join(settings.BASE_DIR, filename))
+
+        print(full_path)
+        print(os.path.getsize(full_path))
+        print(mimetypes.guess_type(full_path))
+
+        return response
 
 
 class ServiceView(View):
