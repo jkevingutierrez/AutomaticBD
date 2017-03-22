@@ -2,6 +2,9 @@ language: python
 python:
   - "3.6"
 
+env:
+  - DJANGO=1.10.6
+
 # command to install dependencies
 install: "pip install -r Project/requirements.txt"
 
