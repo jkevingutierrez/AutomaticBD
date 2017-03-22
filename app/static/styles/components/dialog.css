@@ -5,7 +5,7 @@
     display: none;
     font-size: 10px;
     left: 0;
-    max-width: 500px;
+    max-width: 400px;
     min-width: 300px;
     padding: 10px;
     position: absolute;
@@ -32,5 +32,7 @@
 }
 
 .dialog-message pre {
+    font-size: 10px;
+    font-style: italic;
     margin-top: 5px;
 }
