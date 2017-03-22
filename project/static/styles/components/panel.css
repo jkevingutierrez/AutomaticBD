@@ -1,0 +1,32 @@
+.panel-heading {
+    position: relative;
+}
+
+.panel-default>.panel-heading {
+    background-color: #969696;
+    transition: background-color .4s cubic-bezier(.25, .8, .25, 1)
+}
+
+.panel-default:hover > .panel-heading {
+    background-color: #08b9ff;
+}
+
+.panel-title>.small,
+.panel-title>.small>a,
+.panel-title>a,
+.panel-title>small,
+.panel-title>small>a {
+    color: white;
+    display: block;
+    width: 100%;
+}
+
+.panel-title .indicator {
+    bottom: 0;
+    color: white;
+    margin: auto;
+    pointer-events: none;
+    position: absolute;
+    right: 20px;
+    top: 13px;
+}
