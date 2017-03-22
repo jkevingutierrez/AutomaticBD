@@ -70,10 +70,13 @@
         $interpolateProvider.startSymbol('{$');
         $interpolateProvider.endSymbol('$}');
 
-        $locationProvider.html5Mode({
-            enabled: true,
-            requireBase: false
-        });
+        // $locationProvider.html5Mode({
+        //     enabled: true,
+        //     requireBase: false
+        // });
+
+        $locationProvider.html5Mode(false);
+        $locationProvider.hashPrefix("!");
     }
 
 })();
