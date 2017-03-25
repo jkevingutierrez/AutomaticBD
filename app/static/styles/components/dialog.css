@@ -17,9 +17,9 @@
 .help-dialog .close-popup {
     cursor: pointer;
     float: right;
-    height: 8px;
+    height: 15px;
     margin-top: -5px;
-    width: 8px;
+    width: 15px;
 }
 
 .dialog-title {
