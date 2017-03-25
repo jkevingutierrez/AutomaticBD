@@ -34,23 +34,21 @@
                 <pre>{$ vm.jsonExample | json $}</pre>
             </div>
         </div>
-        <div class="row">
-            <div class="form-group col-sm-10" ng-class="{ 'has-error' : (form.$invalid && form.file.$touched) || vm.hasErrors, 'has-success': form.$valid && !vm.hasErrors && vm.initialJson }">
-                <div class="input-group">
-                    <label class="input-group-btn">
-                        <span class="btn btn-primary">
+        <div class="form-group col-sm-10" ng-class="{ 'has-error' : (form.$invalid && form.file.$touched) || vm.hasErrors, 'has-success': form.$valid && !vm.hasErrors && vm.initialJson }">
+            <div class="input-group">
+                <label class="input-group-btn">
+                    <span class="btn btn-primary">
                             <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span> Cargar Archivo
-                        </span>
-                        <input type="file" accept=".json,.txt" custom-on-change="vm.uploadFile" ng-model="vm.currentFile">
-                    </label>
-                    <input type="text" class="form-control" ng-model="vm.currentFile.name" readonly>
-                </div>
+                    </span>
+                    <input type="file" accept=".json,.txt" custom-on-change="vm.uploadFile" ng-model="vm.currentFile">
+                </label>
+                <input type="text" class="form-control" ng-model="vm.currentFile.name" readonly>
             </div>
-            <div class="form-group col-sm-2">
-                <button type="button" class="btn btn-danger" ng-click="vm.clearFile(vm.initialJson)" ng-disabled="!vm.currentFile">
-                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Borrar Archivo
-                </button>
-            </div>
+        </div>
+        <div class="form-group col-sm-2">
+            <button type="button" class="btn btn-danger" ng-click="vm.clearFile(vm.initialJson)" ng-disabled="!vm.currentFile">
+                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Borrar Archivo
+            </button>
         </div>
     </form>
     <div class="model-container">
