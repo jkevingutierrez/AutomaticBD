@@ -70,7 +70,7 @@ class RT:
         conversor_text = ConversorATexto()
 
         archivo = Archivo()
-        archivo.escribirSobreArchivoExistente('Recubrimiento.txt', 'Paso 2 Eliminar Atributos Extraños:\n\n')
+        archivo.escribirSobreArchivoExistente('Recubrimiento.txt', 'Paso 2 Eliminar Atributos Extra\u00F1os:\n\n')
 
         for dependencia in self.l1:
             existeDependencia = self.buscarDependencia(dependencia, self.l2)
@@ -85,7 +85,6 @@ class RT:
                     variablesTemporales = [elem for j, elem in enumerate(variablesAuxiliar) if i != j]
                     if len(variablesTemporales) > 0:
                         cierreArray = cierre.calcularCierre(variablesTemporales, self.l1)
-
 
                     contieneVariable = all(elem in cierreArray for elem in dependencia.variablesImplicado)
 
@@ -137,4 +136,3 @@ class RT:
 
         archivo.escribirSobreArchivoExistente('Recubrimiento.txt', '\n')
         return self.l3
-

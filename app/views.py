@@ -1,6 +1,7 @@
 import json
 import os
 import mimetypes
+import codecs
 from django.views.generic import ListView
 from django.views.generic.base import View
 from django.http import JsonResponse, HttpResponseBadRequest, HttpResponse
@@ -23,13 +24,14 @@ class FileView(View):
     def post(request, *args, **kwargs):
         print('POST in FileView')
 
-        to_json = json.loads(request.body)
+        to_json = json.loads(request.body.decode("utf-8"))
+
         filename = 'salida.json'
         full_path = smart_str(os.path.join(settings.BASE_DIR, filename))
-        with open(filename, 'w+') as f:
+        with codecs.open(full_path, 'w+', 'utf-8') as f:
             json.dump(to_json, f)
 
-        with open(full_path, 'r') as f:
+        with codecs.open(full_path, 'r', 'utf-8') as f:
             data = f.read()
 
         response = HttpResponse(data, content_type=mimetypes.guess_type(full_path)[0])
@@ -38,24 +40,14 @@ class FileView(View):
         response['Content-Length'] = os.path.getsize(full_path)
         #response['X-Sendfile'] = smart_str(os.path.join(settings.BASE_DIR, filename))
 
-        print(full_path)
-        print(os.path.getsize(full_path))
-        print(mimetypes.guess_type(full_path))
+        print('Full File Path:', full_path)
+        print('File Size:', os.path.getsize(full_path))
+        print('File Mimetypes:', mimetypes.guess_type(full_path))
 
         return response
 
 
 class ServiceView(View):
-
-    @staticmethod
-    def get(request):
-        print('GET in ServiceView')
-
-        to_json = {
-            "key1": "value1",
-            "key2": "value2"
-        }
-        return JsonResponse(to_json)
 
     @staticmethod
     def post(request, *args, **kwargs):
@@ -66,7 +58,7 @@ class ServiceView(View):
         conversor_art = ConversorART()
         conversor_texto = ConversorATexto()
         # print('Raw Data: "%s"' % request.META)
-        to_json = json.loads(request.body)
+        to_json = json.loads(request.body.decode("utf-8"))
 
         rt = conversor_art.transformar(to_json)
 
@@ -74,7 +66,7 @@ class ServiceView(View):
 
         if variableInvalida == True:
             archivo = Archivo('Recubrimiento.txt')
-            archivo.escribir('RECUBRIMIENTO MÍNIMO\n')
+            archivo.escribir('RECUBRIMIENTO M\u00CDNIMO\n')
             archivo.escribir('____________________\n\n')
             archivo.escribir('Modelo Original:\n')
             archivo.escribir('RT(t, l)=\n')

@@ -41,19 +41,22 @@
         vm.clearFile = clearFile;
 
         function uploadFile($event) {
-            console.log('upload');
+            console.log('Upload File');
             console.log($event);
 
-            var files = $event.target.files; // FileList object
+            // FileList object
+            var files = $event.target.files;
 
             // Loop through the FileList and render image files as thumbnails.
-            for (var i = 0, f; f = files[i]; i++) {
+            for (var i = 0, file; file = files[i]; i++) {
                 var reader = new FileReader();
 
                 // Closure to capture the file information.
                 reader.onload = (function(theFile) {
-                    return function(e) {
-                        var result = e.target.result;
+                    return function(event) {
+                        console.log('On Load File');
+                        console.log(event);
+                        var result = event.target.result;
                         var json;
 
                         try {
@@ -72,13 +75,14 @@
                                 size: theFile.size,
                                 type: theFile.type
                             };
+                            vm.variables = vm.initialJson.t || vm.initialJson.variables || [];
+                            vm.dependencies = vm.initialJson.l || vm.initialJson.dependencias || [];
                         });
 
                     };
-                })(f);
+                })(file);
 
-                // Read in the image file as a data URL.
-                reader.readAsText(f);
+                reader.readAsText(file);
             }
         }
 
@@ -122,14 +126,13 @@
         function getJsonFromUrl(url) {
             $http({
                 method: 'GET',
-                url: url
+                url: url,
+                contentType: 'application/json; charset=utf-8'
             }).then(function(response) {
+                console.log('Get Json From Url');
+                console.log(response);
                 if (response.data) {
                     var json = response.data;
-                    var jsonTest = {
-                        variables: json.t,
-                        dependencias: json.l
-                    };
                     vm.jsonExample = json;
                 }
             }).catch(function(error) {
@@ -141,12 +144,14 @@
             $http({
                 method: 'POST',
                 url: baseUrl + 'file',
-                data: json
+                data: json,
+                contentType: 'application/json; charset=utf-8'
             }).then(function(response) {
+                console.log('Export File');
                 console.log(response);
                 if (response.data) {
                     var json = response.data;
-                    saveFile(JSON.stringify(json), 'test.json');
+                    saveFile(JSON.stringify(json, null, 4), 'test.json');
                 }
             }).catch(function(error) {
                 console.error(error);
@@ -154,7 +159,7 @@
         }
 
         function saveFile(data, fileName) {
-            var a = document.createElement("a");
+            var a = document.createElement('a');
             a.style = 'display: none';
             document.body.appendChild(a);
             var blob = new Blob([data], { type: 'octet/stream' });
@@ -166,24 +171,31 @@
         }
 
         function calculateMinimalCover(json) {
-            $http({
-                method: 'POST',
-                url: baseUrl + 'api',
-                data: json
-            }).then(function(response) {
-                console.log(response);
-                if (response.data) {
-                    vm.solution = {};
-                    vm.solution = response.data;
-                    saveFile(vm.solution.file, 'Recubrimiento.txt');
+            if (json && json.l && json.t && json.l.length > 0 && json.t.length > 0) {
+                $http({
+                    method: 'POST',
+                    url: baseUrl + 'api',
+                    data: json,
+                    contentType: 'application/json; charset=utf-8'
+                }).then(function(response) {
+                    console.log('Calculate Minimal Cover');
+                    console.log(response);
+                    if (response.data) {
+                        vm.solution = {};
+                        vm.solution = response.data;
+                        saveFile(vm.solution.file, 'Recubrimiento.txt');
 
-                    console.log(transform(vm.solution.l1));
-                    console.log(transform(vm.solution.l2));
-                    console.log(transform(vm.solution.l3));
-                }
-            }).catch(function(error) {
-                console.error(error);
-            });
+                        console.log('L1: ', transform(vm.solution.l1));
+                        console.log('L2: ', transform(vm.solution.l2));
+                        console.log('L3: ', transform(vm.solution.l3));
+                    }
+                }).catch(function(error) {
+                    console.error(error);
+                });
+            } else {
+                console.error('La estructura del json es incorrecta');
+            }
+
         }
 
         function transform(dependencies) {
@@ -200,7 +212,6 @@
 
         function main() {
             var resource = Math.floor((Math.random() * 6) + 1);
-            console.log(resource);
             getJsonFromUrl(baseUrl + 'static/resource/' + resource + '.json');
         }
 

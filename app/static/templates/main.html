@@ -45,13 +45,47 @@
             </div>
         </div>
         <div class="form-group">
-            <button type="button" class="btn btn-primary" ng-click="vm.calculateMinimalCover(vm.initialJson)" ng-disabled="!vm.initialJson">Calcular Recubrimiento Mínimo</button>
+            <button type="button" class="btn btn-primary" ng-click="vm.calculateMinimalCover(vm.initialJson)" ng-disabled="!vm.initialJson || (!vm.initialJson.l && ! vm.initialJson.dependencias) || (!vm.initialJson.t && ! vm.initialJson.variables)">Calcular Recubrimiento Mínimo</button>
             <button type="button" class="btn btn-default" ng-click="vm.clearFile(vm.initialJson)" ng-disabled="!vm.currentFile">Borrar Archivo</button>
         </div>
         <div class="form-group">
-            <button type="button" class="btn btn-primary" ng-click="vm.exportFile(vm.initialJson)" ng-disabled="!vm.initialJson">Exportar JSON</button>
+            <button type="button" class="btn btn-primary" ng-click="vm.exportFile(vm.initialJson)" ng-disabled="!vm.initialJson || (!vm.initialJson.l && ! vm.initialJson.dependencias) || (!vm.initialJson.t && ! vm.initialJson.variables)">Exportar JSON</button>
         </div>
     </form>
+    <div>
+        <div class="form-group">
+            <h3>Variables:</h3>
+            <ui-select multiple ng-model="vm.initialJson.t" theme="bootstrap" title="Choose a color" tagging tagging-label="">
+                <ui-select-match placeholder="Seleccionar Variables Del modelo">{$ $item $}</ui-select-match>
+                <ui-select-choices repeat="variable in vm.variables | filter:$select.search">
+                    {$ variable $}
+                </ui-select-choices>
+            </ui-select>
+            <p>Variables del modelo: {$ vm.initialJson.t $}</p>
+        </div>
+        <div class="form-group">
+            <h3>Dependencias:</h3>
+            <p>Dependencias: {$ vm.initialJson.l $}</p>
+        </div>
+        <div class="form-group">
+            <label>Implicantes</label>
+            <ui-select multiple ng-model="vm.initialJson.l" theme="bootstrap" title="Choose a color" tagging tagging-label="">
+                <ui-select-match placeholder="Seleccionar Variables">{$ $item $}</ui-select-match>
+                <ui-select-choices repeat="dependencia in vm.initialJson.l | filter:$select.search">
+                    {$ dependencia $}
+                </ui-select-choices>
+            </ui-select>
+        </div>
+        <div class="form-group">
+            <label>Implicados</label>
+            <ui-select multiple ng-model="vm.initialJson.l" theme="bootstrap" title="Choose a color" tagging tagging-label="">
+                <ui-select-match placeholder="Seleccionar Variables">{$ $item $}</ui-select-match>
+                <ui-select-choices repeat="dependencia in vm.initialJson.l | filter:$select.search">
+                    {$ dependencia $}
+                </ui-select-choices>
+            </ui-select>
+        </div>
+    </div>
     <div class="panel-group" id="accordion" data-ng-init="vm.initPanel()" ng-if="vm.solution.original">
         <div class="panel panel-default">
             <div class="panel-heading">
