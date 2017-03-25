@@ -185,8 +185,8 @@
         function showPopUp($event) {
             var el = $event.currentTarget;
             $('#helpPopup').css({
-                'left': el.offsetLeft - el.scrollLeft + 6,
-                'top': el.offsetTop - el.scrollTop + 6
+                'left': el.offsetLeft - el.scrollLeft + 10,
+                'top': el.offsetTop - el.scrollTop + 10
             });
             $('#helpPopup').toggle('fast');
 

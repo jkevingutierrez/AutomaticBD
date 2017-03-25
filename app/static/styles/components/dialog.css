@@ -17,9 +17,18 @@
 .help-dialog .close-popup {
     cursor: pointer;
     float: right;
-    height: 15px;
+    height: 14px;
     margin-top: -5px;
-    width: 15px;
+    width: 14px;
+}
+
+.help-dialog .close-popup button {
+    height: 14px;
+    width: 14px;
+}
+
+.help-dialog .close-popup .glyphicon {
+    min-width: 0;
 }
 
 .dialog-title {
