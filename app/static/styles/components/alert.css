@@ -1,0 +1,18 @@
+.sweet-alert {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.sweet-alert h2 {
+    font-weight: 400;
+}
+
+.sweet-alert p {
+    font-size: 14px;
+}
+
+.sweet-alert button {
+    border-radius: 0;
+    font-size: 14px;
+    font-weight: 300;
+    padding: 9px 30px;
+}

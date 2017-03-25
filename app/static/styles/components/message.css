@@ -1,0 +1,46 @@
+.alertify-logs,
+.alertify-logs:not(.right) {
+    bottom: 0;
+    color: #f9f9f9;
+    font-size: 12px;
+    font-weight: 300;
+    left: 0;
+    margin: auto;
+    right: 0;
+    text-align: left;
+    width: 100%;
+    z-index: 200;
+}
+
+.alertify-logs .show {
+    padding: 0;
+    width: 100%;
+}
+
+.alertify-logs .message-wrapper {
+    display: flex;
+    min-height: 26px;
+    width: 100%;
+}
+
+.alertify-logs .message-icon {
+    display: inline-block;
+    flex: 1;
+    height: 100%;
+    margin: auto 5px auto 20px;
+    width: 19px;
+}
+
+.alertify-logs .message {
+    display: inline-block;
+    flex: 99;
+    margin: auto;
+}
+
+.alertify-logs > .success {
+    background-color: #95bc11;
+}
+
+.alertify-logs > .error {
+    background-color: #e1452d;
+}

@@ -5,12 +5,31 @@
         .module('AutomaticBD')
         .controller('MainController', MainController);
 
-    MainController.$inject = ['$scope', '$http', '$location'];
+    MainController.$inject = ['$scope', '$http', '$location', 'messages', 'SweetAlert'];
 
     /**
      * @namespace MainController
      */
-    function MainController($scope, $http, $location) {
+    function MainController($scope, $http, $location, messages, SweetAlert) {
+        // Classes
+        var Model = function() {
+            if (this instanceof Model) {
+                this.t = [];
+                this.l = [];
+            } else {
+                return new Model();
+            }
+        };
+
+        var Dependency = function() {
+            if (this instanceof Dependency) {
+                this.implicante = [];
+                this.implicado = [];
+            } else {
+                return new Dependency();
+            }
+        };
+
         var baseUrl = $location.absUrl();
         var vm = this;
 
@@ -20,11 +39,11 @@
 
         vm.solution = {};
 
+        vm.initialJson = new Model();
+
         vm.hasFinishedLoading = true;
 
         vm.hasErrors = false;
-
-        vm.errorMessage = '';
 
         vm.uploadFile = uploadFile;
 
@@ -39,6 +58,43 @@
         vm.showPopUp = showPopUp;
 
         vm.clearFile = clearFile;
+
+        vm.addDependency = addDependency;
+
+        vm.removeDependency = removeDependency;
+
+        function addDependency() {
+            if (!vm.initialJson.t || vm.initialJson.t.length === 0) {
+                var message = 'No existe ninguna variable';
+                console.error(message);
+                messages.error(message);
+            } else {
+                var dependency = {
+                    implicante: [],
+                    implicado: []
+                };
+                vm.initialJson.l.push(dependency);
+            }
+        }
+
+        function removeDependency($index) {
+            SweetAlert.swal({
+                    title: '¿Desea continuar?',
+                    text: 'Esta a punto de eliminar una dependencia. Esta operación no se puede deshacer',
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#DD6B55',
+                    confirmButtonText: 'Continuar',
+                    cancelButtonText: 'Cancelar'
+                },
+                function(isConfirm) {
+                    if (isConfirm) {
+                        var message = 'La dependencia ha sido eliminada exitosamente';
+                        messages.success(message);
+                        vm.initialJson.l.splice($index, 1);
+                    }
+                });
+        }
 
         function uploadFile($event) {
             console.log('Upload File');
@@ -57,15 +113,16 @@
                         console.log('On Load File');
                         console.log(event);
                         var result = event.target.result;
-                        var json;
+                        var json = new Model();
 
                         try {
                             vm.hasErrors = false;
                             json = JSON.parse(result);
                         } catch (error) {
+                            var message = 'Error al cargar el archivo <i>' + theFile.name + '</i>: ' + error;
                             vm.hasErrors = true;
-                            vm.errorMessage = error;
                             console.error(error);
+                            messages.error(message);
                         }
 
                         $scope.$apply(function() {
@@ -87,9 +144,25 @@
         }
 
         function clearFile() {
-            vm.hasErrors = false;
-            vm.currentFile = undefined;
-            vm.initialJson = undefined;
+            SweetAlert.swal({
+                    title: '¿Desea continuar?',
+                    text: 'Esta a punto de borrar el archivo seleccionado. Esta operación también borrara las variables y las dependencias existentes',
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#DD6B55',
+                    confirmButtonText: 'Continuar',
+                    cancelButtonText: 'Cancelar'
+                },
+                function(isConfirm) {
+                    if (isConfirm) {
+                        var message = 'El archivo y el modelo han sido eliminados';
+                        messages.success(message);
+                        vm.hasErrors = false;
+                        vm.currentFile = undefined;
+                        vm.initialJson = new Model();
+                        $('input[type=file]').val('');
+                    }
+                });
         }
 
         function initPanel() {
@@ -99,12 +172,12 @@
 
                 $panelHeading
                     .find('i.indicator')
-                    .toggleClass('glyphicon glyphicon-chevron-down glyphicon glyphicon-chevron-up');
+                    .toggleClass('glyphicon-menu-down glyphicon-menu-up');
             }
 
-            $('#accordion').on('hidden.bs.collapse', toggleChevron);
-            $('#accordion').on('shown.bs.collapse', toggleChevron);
-            $('#accordion').click(function(e) {
+            $('#accordion, #accordion-initial').on('hidden.bs.collapse', toggleChevron);
+            $('#accordion, #accordion-initial').on('shown.bs.collapse', toggleChevron);
+            $('#accordion, #accordion-initial').click(function(e) {
                 e.preventDefault();
             });
         }
@@ -137,6 +210,7 @@
                 }
             }).catch(function(error) {
                 console.error(error);
+                messages.error(error);
             });
         }
 
@@ -151,10 +225,11 @@
                 console.log(response);
                 if (response.data) {
                     var json = response.data;
-                    saveFile(JSON.stringify(json, null, 4), 'test.json');
+                    saveFile(JSON.stringify(json, null, 4), 'salida.json');
                 }
             }).catch(function(error) {
                 console.error(error);
+                messages.error(error);
             });
         }
 
@@ -191,9 +266,12 @@
                     }
                 }).catch(function(error) {
                     console.error(error);
+                    messages.error(error);
                 });
             } else {
-                console.error('La estructura del json es incorrecta');
+                var message = 'La estructura del json es incorrecta';
+                console.error(message);
+                messages.error(message);
             }
 
         }

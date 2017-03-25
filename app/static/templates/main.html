@@ -16,85 +16,122 @@
     </div>
 </div>
 <div class="container">
-    <div class="alert alert-danger" ng-if="vm.hasErrors">
-        <strong>Ha ocuriddo un error al cargar el archivo {$ vm.currentFile.name $}: </strong>
-        <span>{$ vm.errorMessage $}.</span>
-    </div>
     <form name="form">
         <div class="help-container">
             <span class="help-block">Carga un archivo con extension .json o .txt en un formato valido</span>
-            <img src="static/images/help.svg" alt="Ayuda" title="Ayuda" ng-click="vm.showPopUp($event)">
+            <button type="button" title="Ayuda" class="empty-background" ng-click="vm.showPopUp($event)">
+                <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+            </button>
         </div>
         <div class="help-dialog" id="helpPopup">
             <div class="close-popup">
-                <img src="static/images/close.svg" alt="Cerrar" ng-click="vm.closePoUp()" title="Cerrar">
+                <button type="button" title="Cerrar" class="empty-background" ng-click="vm.closePoUp()">
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                </button>
             </div>
             <span class="dialog-title">Ejemplo de JSON valido:</span>
             <div class="dialog-message">
                 <pre>{$ vm.jsonExample | json $}</pre>
             </div>
         </div>
-        <div class="form-group" ng-class="{ 'has-error' : (form.$invalid && form.file.$touched) || vm.hasErrors, 'has-success': form.$valid && !vm.hasErrors && vm.initialJson }">
-            <div class="input-group">
-                <label class="input-group-btn">
-                    <span class="btn btn-primary">
-                        Cargar Archivo <input type="file" accept=".json,.txt" custom-on-change="vm.uploadFile" ng-model="vm.currentFile">
-                    </span>
-                </label>
-                <input type="text" class="form-control" ng-model="vm.currentFile.name" readonly>
+        <div class="row">
+            <div class="form-group col-sm-10" ng-class="{ 'has-error' : (form.$invalid && form.file.$touched) || vm.hasErrors, 'has-success': form.$valid && !vm.hasErrors && vm.initialJson }">
+                <div class="input-group">
+                    <label class="input-group-btn">
+                        <span class="btn btn-primary">
+                            <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span> Cargar Archivo
+                        </span>
+                        <input type="file" accept=".json,.txt" custom-on-change="vm.uploadFile" ng-model="vm.currentFile">
+                    </label>
+                    <input type="text" class="form-control" ng-model="vm.currentFile.name" readonly>
+                </div>
+            </div>
+            <div class="form-group col-sm-2">
+                <button type="button" class="btn btn-danger" ng-click="vm.clearFile(vm.initialJson)" ng-disabled="!vm.currentFile">
+                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Borrar Archivo
+                </button>
             </div>
         </div>
-        <div class="form-group">
-            <button type="button" class="btn btn-default" ng-click="vm.clearFile(vm.initialJson)" ng-disabled="!vm.currentFile">Borrar Archivo</button>
-        </div>
     </form>
-    <div>
+    <div class="model-container">
         <div class="form-group">
-            <h3>Variables:</h3>
-            <ui-select multiple ng-model="vm.initialJson.t" theme="bootstrap" title="Choose a color" tagging tagging-label="">
-                <ui-select-match placeholder="Seleccionar Variables Del modelo">{$ $item $}</ui-select-match>
+            <h4>Variables:</h4>
+            <ui-select multiple ng-model="vm.initialJson.t" theme="bootstrap" tagging tagging-label="">
+                <ui-select-match placeholder="Agregar variables al modelo">{$ $item $}</ui-select-match>
                 <ui-select-choices repeat="variable in vm.variables | filter:$select.search">
                     {$ variable $}
                 </ui-select-choices>
             </ui-select>
-            <p>Variables del modelo: {$ vm.initialJson.t $}</p>
         </div>
         <div class="form-group">
-            <h3>Dependencias:</h3>
-            <p>Dependencias: {$ vm.initialJson.l $}</p>
+            <h4>Dependencias:</h4>
         </div>
-        <div class="form-group">
-            <label>Implicantes</label>
-            <ui-select multiple ng-model="vm.initialJson.l" theme="bootstrap" title="Choose a color" tagging tagging-label="">
-                <ui-select-match placeholder="Seleccionar Variables">{$ $item $}</ui-select-match>
-                <ui-select-choices repeat="dependencia in vm.initialJson.l | filter:$select.search">
-                    {$ dependencia $}
-                </ui-select-choices>
-            </ui-select>
+        <div class="dependencies-container">
+            <div class="dependecy-container" ng-repeat="dependency in vm.initialJson.l">
+                <div class="form-group">
+                    <label>Implicantes</label>
+                    <ui-select multiple ng-model="dependency.implicante" theme="bootstrap">
+                        <ui-select-match placeholder="Seleccionar Variables">{$ $item $}</ui-select-match>
+                        <ui-select-choices repeat="variable in vm.initialJson.t | filter:$select.search">
+                            {$ variable $}
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+                <div class="form-group">
+                    <label>Implicados</label>
+                    <ui-select multiple ng-model="dependency.implicado" theme="bootstrap">
+                        <ui-select-match placeholder="Seleccionar Variables">{$ $item $}</ui-select-match>
+                        <ui-select-choices repeat="variable in vm.initialJson.t | filter:$select.search">
+                            {$ variable $}
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+                <div class="form-group text-right">
+                    <button type="button" class="btn btn-danger" ng-click="vm.removeDependency($index)">
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Eliminar Dependencia
+                    </button>
+                </div>
+            </div>
+            <div class="form-group">
+                <button type="button" class="btn btn-success" ng-click="vm.addDependency()" ng-disabled="(!vm.initialJson.t || vm.initialJson.t.length === 0)">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Agregar Dependencia
+                </button>
+            </div>
         </div>
-        <div class="form-group">
-            <label>Implicados</label>
-            <ui-select multiple ng-model="vm.initialJson.l" theme="bootstrap" title="Choose a color" tagging tagging-label="">
-                <ui-select-match placeholder="Seleccionar Variables">{$ $item $}</ui-select-match>
-                <ui-select-choices repeat="dependencia in vm.initialJson.l | filter:$select.search">
-                    {$ dependencia $}
-                </ui-select-choices>
-            </ui-select>
+    </div>
+    <div class="form-group">
+        <h4>Modelo:</h4>
+    </div>
+    <div class="panel-group" id="accordion-initial" data-ng-init="vm.initPanel()" ng-if="!vm.solution.original">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h5 class="panel-title">
+                    <a class="small" data-toggle="collapse" data-parent="#accordion-initial" href="#collapse-initial" role="button">JSON</a>
+                    <i class="indicator glyphicon glyphicon-menu-down pull-right" aria-hidden="true"></i>
+                </h5>
+            </div>
+            <div id="collapse-initial" class="panel-collapse collapse">
+                <div class="panel-body"><pre>{$ vm.initialJson | json $}</pre></div>
+            </div>
         </div>
     </div>
     <div class="actions">
         <div class="form-group">
-            <button type="button" class="btn btn-primary" ng-click="vm.calculateMinimalCover(vm.initialJson)" ng-disabled="!vm.initialJson || (!vm.initialJson.l && ! vm.initialJson.dependencias) || (!vm.initialJson.t && ! vm.initialJson.variables)">Calcular Recubrimiento Mínimo</button>
-            <button type="button" class="btn btn-primary" ng-click="vm.exportFile(vm.initialJson)" ng-disabled="!vm.initialJson || (!vm.initialJson.l && ! vm.initialJson.dependencias) || (!vm.initialJson.t && ! vm.initialJson.variables)">Exportar JSON</button>
+            <button type="button" class="btn btn-default" ng-click="vm.exportFile(vm.initialJson)" ng-disabled="!vm.initialJson || !vm.initialJson.l || !vm.initialJson.t">
+                <span class="glyphicon glyphicon-save" aria-hidden="true"></span> Exportar JSON
+            </button>
+            <button type="button" class="btn btn-default" ng-click="vm.calculateMinimalCover(vm.initialJson)" ng-disabled="!vm.initialJson || !vm.initialJson.l || !vm.initialJson.t || vm.initialJson.t.length === 0 || vm.initialJson.l.length === 0">
+                <span class="glyphicon glyphicon-th" aria-hidden="true"></span> Calcular Recubrimiento Mínimo
+            </button>
         </div>
     </div>
     <div class="panel-group" id="accordion" data-ng-init="vm.initPanel()" ng-if="vm.solution.original">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h4 class="panel-title">
+                <h5 class="panel-title">
                     <a class="small" data-toggle="collapse" data-parent="#accordion" href="#collapse1" role="button">Original JSON</a>
-                    <i class="indicator glyphicon glyphicon-chevron-down pull-right"></i>
-                </h4>
+                    <i class="indicator glyphicon glyphicon-menu-down pull-right" aria-hidden="true"></i>
+                </h5>
             </div>
             <div id="collapse1" class="panel-collapse collapse">
                 <div class="panel-body"><pre>{$ vm.solution.original | json $}</pre></div>
@@ -102,10 +139,10 @@
         </div>
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h4 class="panel-title">
+                <h5 class="panel-title">
                     <a class="small" data-toggle="collapse" data-parent="#accordion" href="#collapse2" role="button">L1</a>
-                    <i class="indicator glyphicon glyphicon-chevron-down pull-right"></i>
-                </h4>
+                    <i class="indicator glyphicon glyphicon-menu-down pull-right" aria-hidden="true"></i>
+                </h5>
             </div>
             <div id="collapse2" class="panel-collapse collapse">
                 <div class="panel-body"><pre>{$ vm.solution.l1 | json $}</pre></div>
@@ -113,10 +150,10 @@
         </div>
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h4 class="panel-title">
+                <h5 class="panel-title">
                     <a class="small" data-toggle="collapse" data-parent="#accordion" href="#collapse3" role="button">L2</a>
-                    <i class="indicator glyphicon glyphicon-chevron-down pull-right"></i>
-                </h4>
+                    <i class="indicator glyphicon glyphicon-menu-down pull-right" aria-hidden="true"></i>
+                </h5>
             </div>
             <div id="collapse3" class="panel-collapse collapse">
                 <div class="panel-body"><pre>{$ vm.solution.l2 | json $}</pre></div>
@@ -124,10 +161,10 @@
         </div>
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h4 class="panel-title">
+                <h5 class="panel-title">
                     <a class="small" data-toggle="collapse" data-parent="#accordion" href="#collapse4" role="button">L3</a>
-                    <i class="indicator glyphicon glyphicon-chevron-down pull-right"></i>
-                </h4>
+                    <i class="indicator glyphicon glyphicon-menu-down pull-right" aria-hidden="true"></i>
+                </h5>
             </div>
             <div id="collapse4" class="panel-collapse collapse">
                 <div class="panel-body"><pre>{$ vm.solution.l3 | json $}</pre></div>

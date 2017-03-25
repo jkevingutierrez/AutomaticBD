@@ -1,4 +1,21 @@
+body {
+    font-weight: 300;
+}
+
 a:focus,
 a:hover {
     text-decoration: none;
+}
+
+pre {
+    font-weight: 300;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: 400;
 }

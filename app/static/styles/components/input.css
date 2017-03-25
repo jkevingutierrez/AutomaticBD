@@ -1,3 +1,10 @@
+input,
+.form-control,
+.ui-select-multiple.ui-select-bootstrap {
+    border-radius: 0;
+    padding: 2px 5px;
+}
+
 .input-group {
     border-collapse: separate;
     display: table;
@@ -10,7 +17,7 @@
 }
 
 .input-group input[type=text] {
-    left: 118px;
+    left: 136px;
     pointer-events: none;
     position: absolute;
     width: calc(100% - 118px);
@@ -22,4 +29,8 @@
     position: relative;
     white-space: nowrap;
     width: 100%;
+}
+
+.ui-select-multiple.ui-select-bootstrap .ui-select-match-item {
+    border-radius: 20px;
 }
