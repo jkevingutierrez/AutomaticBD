@@ -6,3 +6,13 @@
 .help-container img {
     cursor: pointer
 }
+
+@media screen and (max-width:767px) {
+    .help-container .help-block,
+    .help-container img {
+        margin-bottom: 0;
+    }
+    .help-container .empty-background {
+        margin-top: 0;
+    }
+}

@@ -46,7 +46,7 @@
                     <input type="text" class="form-control" ng-model="vm.currentFile.name" readonly>
                 </div>
             </div>
-            <div class="form-group col-sm-2 text-right">
+            <div class="form-group col-sm-2 text-right sm-center">
                 <button type="button" class="btn btn-danger" ng-click="vm.clearFile(vm.initialJson)" ng-disabled="!vm.currentFile">
                     <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Borrar Archivo
                 </button>
@@ -96,9 +96,9 @@
                     </button>
                 </div>
             </div>
-            <div class="form-group dependency-button">
+            <div class="form-group dependency-button sm-center">
                 <button type="button" class="btn btn-success" ng-click="vm.addDependency()" ng-disabled="(!vm.initialJson.t || vm.initialJson.t.length === 0)">
-                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Agregar Dependencia
+                    <span class="glyphicon glyphicon-plus sm-center" aria-hidden="true"></span> Agregar Dependencia
                 </button>
             </div>
         </div>
@@ -120,7 +120,7 @@
         </div>
     </div>
     <div class="actions">
-        <div class="form-group">
+        <div class="form-group sm-center">
             <button type="button" class="btn btn-default" ng-click="vm.exportFile(vm.initialJson)" ng-disabled="!vm.initialJson || !vm.initialJson.l || !vm.initialJson.t">
                 <span class="glyphicon glyphicon-save" aria-hidden="true"></span> Exportar JSON
             </button>
