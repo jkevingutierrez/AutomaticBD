@@ -31,6 +31,10 @@ input,
     width: 100%;
 }
 
+.initial-input-container {
+    margin: 0 15px;
+}
+
 .ui-select-multiple.ui-select-bootstrap .ui-select-match-item {
     border-radius: 20px;
 }
