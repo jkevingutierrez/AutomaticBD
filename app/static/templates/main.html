@@ -56,35 +56,39 @@
     <div class="model-container">
         <div class="form-group">
             <h4>Variables:</h4>
-            <ui-select multiple ng-model="vm.initialJson.t" theme="bootstrap" tagging tagging-label="">
-                <ui-select-match placeholder="Agregar variables al modelo">{$ $item $}</ui-select-match>
-                <ui-select-choices repeat="variable in vm.variables | filter:$select.search">
-                    {$ variable $}
-                </ui-select-choices>
-            </ui-select>
+            <div class="variable-container">
+                <ui-select multiple ng-model="vm.initialJson.t" theme="bootstrap" tagging tagging-label="">
+                    <ui-select-match placeholder="Agregar variables al modelo">{$ $item $}</ui-select-match>
+                    <ui-select-choices repeat="variable in vm.variables | filter:$select.search">
+                        {$ variable $}
+                    </ui-select-choices>
+                </ui-select>
+            </div>
         </div>
         <div class="form-group">
             <h4>Dependencias:</h4>
         </div>
         <div class="dependencies-container">
             <div class="dependecy-container" ng-repeat="dependency in vm.initialJson.l">
-                <div class="form-group">
-                    <label>Implicantes</label>
-                    <ui-select multiple ng-model="dependency.implicante" theme="bootstrap">
-                        <ui-select-match placeholder="Seleccionar Variables">{$ $item $}</ui-select-match>
-                        <ui-select-choices repeat="variable in vm.initialJson.t | filter:$select.search">
-                            {$ variable $}
-                        </ui-select-choices>
-                    </ui-select>
-                </div>
-                <div class="form-group">
-                    <label>Implicados</label>
-                    <ui-select multiple ng-model="dependency.implicado" theme="bootstrap">
-                        <ui-select-match placeholder="Seleccionar Variables">{$ $item $}</ui-select-match>
-                        <ui-select-choices repeat="variable in vm.initialJson.t | filter:$select.search">
-                            {$ variable $}
-                        </ui-select-choices>
-                    </ui-select>
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                        <label>Implicante</label>
+                        <ui-select multiple ng-model="dependency.implicante" theme="bootstrap">
+                            <ui-select-match placeholder="Seleccionar Variables">{$ $item $}</ui-select-match>
+                            <ui-select-choices repeat="variable in vm.initialJson.t | filter:$select.search">
+                                {$ variable $}
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label>Implicado</label>
+                        <ui-select multiple ng-model="dependency.implicado" theme="bootstrap">
+                            <ui-select-match placeholder="Seleccionar Variables">{$ $item $}</ui-select-match>
+                            <ui-select-choices repeat="variable in vm.initialJson.t | filter:$select.search">
+                                {$ variable $}
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
                 </div>
                 <div class="form-group text-right">
                     <button type="button" class="btn btn-danger" ng-click="vm.removeDependency($index)">
@@ -92,14 +96,14 @@
                     </button>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group dependency-button">
                 <button type="button" class="btn btn-success" ng-click="vm.addDependency()" ng-disabled="(!vm.initialJson.t || vm.initialJson.t.length === 0)">
                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Agregar Dependencia
                 </button>
             </div>
         </div>
     </div>
-    <div class="form-group">
+    <div class="form-group" ng-if="!vm.solution.original">
         <h4>Modelo:</h4>
     </div>
     <div class="panel-group" id="accordion-initial" data-ng-init="vm.initPanel()" ng-if="!vm.solution.original">
@@ -124,6 +128,9 @@
                 <span class="glyphicon glyphicon-th" aria-hidden="true"></span> Calcular Recubrimiento Mínimo
             </button>
         </div>
+    </div>
+    <div class="form-group" ng-if="vm.solution.original">
+        <h4>Resultado:</h4>
     </div>
     <div class="panel-group" id="accordion" data-ng-init="vm.initPanel()" ng-if="vm.solution.original">
         <div class="panel panel-default">
@@ -162,7 +169,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h5 class="panel-title">
-                    <a class="small" data-toggle="collapse" data-parent="#accordion" href="#collapse4" role="button">L3</a>
+                    <a class="small" data-toggle="collapse" data-parent="#accordion" href="#collapse4" role="button">L3 - Recubrimiento mínimo</a>
                     <i class="indicator glyphicon glyphicon-menu-down pull-right" aria-hidden="true"></i>
                 </h5>
             </div>

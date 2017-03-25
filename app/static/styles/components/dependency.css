@@ -1,5 +1,14 @@
-.dependecy-container {
+.dependencies-container .dependecy-container {
     border: 1px solid #cfcfcf;
-    margin: 20px;
+    margin: 30px;
     padding: 10px;
+}
+
+.dependencies-container .dependecy-container:first-of-type {
+    margin-top: 0;
+}
+
+.dependency-button {
+    margin: 0 30px;
+    margin-bottom: 15px;
 }
