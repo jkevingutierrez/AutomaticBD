@@ -12,6 +12,12 @@ from app.Entities.ConversorATexto import ConversorATexto
 from app.Entities.Archivo import Archivo
 
 
+class NotFoundView(ListView):
+    template_name = "404.html"
+    queryset = 'AutomaticBD'
+    context_object_name = 'projectName'
+
+
 class IndexView(ListView):
     template_name = "index.html"
     queryset = 'AutomaticBD'
