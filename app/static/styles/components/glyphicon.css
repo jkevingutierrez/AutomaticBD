@@ -1,9 +1,3 @@
 .glyphicon {
     min-width: 20px;
 }
-
-.thin-glyphicon {
-    color: #fff;
-    text-stroke: 1px #737373;
-    -webkit-text-stroke: 1px #737373;
-}
