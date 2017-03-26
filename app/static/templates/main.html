@@ -115,7 +115,9 @@
                 </h5>
             </div>
             <div id="collapse-initial" class="panel-collapse collapse">
-                <div class="panel-body"><pre>{$ vm.initialJson | json $}</pre></div>
+                <div class="panel-body">
+                    <pre>{$ vm.initialJson | json $}</pre>
+                </div>
             </div>
         </div>
     </div>
@@ -141,7 +143,9 @@
                 </h5>
             </div>
             <div id="collapse1" class="panel-collapse collapse">
-                <div class="panel-body"><pre>{$ vm.solution.original | json $}</pre></div>
+                <div class="panel-body">
+                    <pre>{$ vm.solution.original | json $}</pre>
+                </div>
             </div>
         </div>
         <div class="panel panel-default">
@@ -152,7 +156,10 @@
                 </h5>
             </div>
             <div id="collapse2" class="panel-collapse collapse">
-                <div class="panel-body"><pre>{$ vm.solution.l1 | json $}</pre></div>
+                <div class="panel-body">
+                    {$ vm.transform(vm.solution.l1) $}
+                    <pre>{$ vm.solution.l1 | json $}</pre>
+                </div>
             </div>
         </div>
         <div class="panel panel-default">
@@ -163,7 +170,10 @@
                 </h5>
             </div>
             <div id="collapse3" class="panel-collapse collapse">
-                <div class="panel-body"><pre>{$ vm.solution.l2 | json $}</pre></div>
+                <div class="panel-body">
+                    {$ vm.transform(vm.solution.l2) $}
+                    <pre>{$ vm.solution.l2 | json $}</pre>
+                </div>
             </div>
         </div>
         <div class="panel panel-default">
@@ -174,7 +184,10 @@
                 </h5>
             </div>
             <div id="collapse4" class="panel-collapse collapse">
-                <div class="panel-body"><pre>{$ vm.solution.l3 | json $}</pre></div>
+                <div class="panel-body">
+                    {$ vm.transform(vm.solution.l3) $}
+                    <pre>{$ vm.solution.l3 | json $}</pre>
+                </div>
             </div>
         </div>
     </div>

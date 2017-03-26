@@ -63,6 +63,8 @@
 
         vm.removeDependency = removeDependency;
 
+        vm.transform = transform;
+
         function addDependency() {
             if (!vm.initialJson.t || vm.initialJson.t.length === 0) {
                 var message = 'Error agregando la dependencia: Para agregar una dependencia debe existir al menos una variable.';
