@@ -126,7 +126,7 @@
                 },
                 function(isConfirm) {
                     if (isConfirm) {
-                        var message = 'El archivo y el modelo han sido eliminados';
+                        var message = 'El archivo y el modelo han sido eliminados.';
                         messages.success(message);
                         vm.hasErrors = false;
                         vm.currentFile = undefined;
