@@ -2,7 +2,7 @@
 .alertify-logs:not(.right) {
     bottom: 0;
     color: #f9f9f9;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 300;
     left: 0;
     margin: auto;
@@ -38,9 +38,13 @@
 }
 
 .alertify-logs > .success {
-    background-color: #95bc11;
+    background-color: #449d44;
 }
 
 .alertify-logs > .error {
-    background-color: #e1452d;
+    background-color: #c9302c;
+}
+
+.alertify-logs .glyphicon {
+    font-size: 18px;
 }

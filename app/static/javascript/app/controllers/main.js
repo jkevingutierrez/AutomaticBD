@@ -65,7 +65,7 @@
 
         function addDependency() {
             if (!vm.initialJson.t || vm.initialJson.t.length === 0) {
-                var message = 'No existe ninguna variable';
+                var message = 'Error agregando la dependencia: Para agregar una dependencia debe existir al menos una variable.';
                 console.error(message);
                 messages.error(message);
             } else {
@@ -89,7 +89,7 @@
                 },
                 function(isConfirm) {
                     if (isConfirm) {
-                        var message = 'La dependencia ha sido eliminada exitosamente';
+                        var message = 'La dependencia ha sido eliminada exitosamente.';
                         messages.success(message);
                         vm.initialJson.l.splice($index, 1);
                     }
@@ -108,36 +108,7 @@
                 var reader = new FileReader();
 
                 // Closure to capture the file information.
-                reader.onload = (function(theFile) {
-                    return function(event) {
-                        console.log('On Load File');
-                        console.log(event);
-                        var result = event.target.result;
-                        var json = new Model();
-
-                        try {
-                            vm.hasErrors = false;
-                            json = JSON.parse(result);
-                        } catch (error) {
-                            var message = 'Error al cargar el archivo <i>' + theFile.name + '</i>: ' + error;
-                            vm.hasErrors = true;
-                            console.error(error);
-                            messages.error(message);
-                        }
-
-                        $scope.$apply(function() {
-                            vm.initialJson = angular.copy(json);
-                            vm.currentFile = {
-                                name: theFile.name,
-                                size: theFile.size,
-                                type: theFile.type
-                            };
-                            vm.variables = vm.initialJson.t || vm.initialJson.variables || [];
-                            vm.dependencies = vm.initialJson.l || vm.initialJson.dependencias || [];
-                        });
-
-                    };
-                })(file);
+                reader.onload = (onLoadHandler)(file);
 
                 reader.readAsText(file);
             }
@@ -163,6 +134,37 @@
                         $('input[type=file]').val('');
                     }
                 });
+        }
+
+        function onLoadHandler(theFile) {
+            return function(event) {
+                console.log('On Load File');
+                console.log(event);
+                var result = event.target.result;
+                var json = new Model();
+
+                try {
+                    vm.hasErrors = false;
+                    json = JSON.parse(result);
+                } catch (error) {
+                    var message = 'Error cargando el archivo <i>' + theFile.name + '</i>: ' + error;
+                    vm.hasErrors = true;
+                    console.error(error);
+                    messages.error(message);
+                }
+
+                $scope.$apply(function() {
+                    vm.initialJson = angular.copy(json);
+                    vm.currentFile = {
+                        name: theFile.name,
+                        size: theFile.size,
+                        type: theFile.type
+                    };
+                    vm.variables = vm.initialJson.t || vm.initialJson.variables || [];
+                    vm.dependencies = vm.initialJson.l || vm.initialJson.dependencias || [];
+                });
+
+            };
         }
 
         function initPanel() {
@@ -205,12 +207,15 @@
                 console.log('Get Json From Url');
                 console.log(response);
                 if (response.data) {
+                    var message = 'El archivo de ejemplo <i>' + url + '</i> se ha cargado exitosamente.';
+                    messages.success(message);
                     var json = response.data;
                     vm.jsonExample = json;
                 }
             }).catch(function(error) {
+                var message = 'Error leyendo el archivo JSON desde <i>' + url + '</i>:  error';
                 console.error(error);
-                messages.error(error);
+                messages.error(message);
             });
         }
 
@@ -224,12 +229,15 @@
                 console.log('Export File');
                 console.log(response);
                 if (response.data) {
+                    var message = 'El modelo se ha exportado exitosamente en el archivo <i>salida.json</i>.';
+                    messages.success(message);
                     var json = response.data;
                     saveFile(JSON.stringify(json, null, 4), 'salida.json');
                 }
             }).catch(function(error) {
+                var message = 'Error exportando el archivo <i>salida.json</i>: ' + error;
                 console.error(error);
-                messages.error(error);
+                messages.error(message);
             });
         }
 
@@ -256,6 +264,8 @@
                     console.log('Calculate Minimal Cover');
                     console.log(response);
                     if (response.data) {
+                        var message = 'El recubrimiento mínimo se ha calculado exitosamente y se ha generado el archivo <i>Recubrimiento.txt</i>, el cual contiene el registro de las operaciones.';
+                        messages.success(message);
                         vm.solution = {};
                         vm.solution = response.data;
                         saveFile(vm.solution.file, 'Recubrimiento.txt');
@@ -265,11 +275,12 @@
                         console.log('L3: ', transform(vm.solution.l3));
                     }
                 }).catch(function(error) {
+                    var message = 'Error calculando el recubrimiento mínimo: ' + error;
                     console.error(error);
-                    messages.error(error);
+                    messages.error(message);
                 });
             } else {
-                var message = 'La estructura del json es incorrecta';
+                var message = 'Error calculando el recubrimiento mínimo: La estructura del modelo JSON es incorrecta.';
                 console.error(message);
                 messages.error(message);
             }
