@@ -20,7 +20,7 @@ input,
     left: 136px;
     pointer-events: none;
     position: absolute;
-    width: calc(100% - 118px);
+    width: calc(100% - 136px);
 }
 
 .input-group .input-group-btn {
