@@ -4,7 +4,11 @@
 }
 
 .help-container img {
-    cursor: pointer
+    cursor: pointer;
+}
+
+.help-container .empty-background {
+    margin-left: -3px;
 }
 
 @media screen and (max-width:767px) {
@@ -13,6 +17,7 @@
         margin-bottom: 0;
     }
     .help-container .empty-background {
+        margin-left: 0;
         margin-top: 0;
     }
 }
