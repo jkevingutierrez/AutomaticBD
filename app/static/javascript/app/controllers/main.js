@@ -210,7 +210,7 @@
                 url: url,
                 contentType: 'application/json; charset=utf-8'
             }).then(function(response) {
-                console.log('Get Json From Url');
+                console.log('Get JSON From Url');
                 console.log(response);
                 if (response.data) {
                     var message = 'El archivo de ejemplo <i>' + url + '</i> se ha cargado exitosamente.';
