@@ -1,7 +1,6 @@
 import json
 import os
 import mimetypes
-import codecs
 from django.views.generic import ListView
 from django.views.generic.base import View
 from django.http import JsonResponse, HttpResponseBadRequest, HttpResponse
@@ -34,10 +33,10 @@ class FileView(View):
 
         filename = 'salida.json'
         full_path = smart_str(os.path.join(settings.BASE_DIR, filename))
-        with codecs.open(full_path, 'w+', 'utf-8') as f:
+        with open(full_path, 'w+') as f:
             json.dump(to_json, f)
 
-        with codecs.open(full_path, 'r', 'utf-8') as f:
+        with open(full_path, 'r') as f:
             data = f.read()
 
         response = HttpResponse(data, content_type=mimetypes.guess_type(full_path)[0])
