@@ -306,8 +306,7 @@
         }
 
         function main() {
-            var resource = Math.floor((Math.random() * 6) + 1);
-            getJsonFromUrl(baseUrl + 'static/resource/' + resource + '.json');
+            getJsonFromUrl(exampleJson);
         }
 
 
