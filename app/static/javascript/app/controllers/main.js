@@ -144,13 +144,17 @@
                 console.log(event);
                 var result = event.target.result;
                 var json = new Model();
+                var message;
 
                 try {
                     vm.hasErrors = false;
                     json = JSON.parse(result);
+                    message = 'El archivo <i>' + theFile.name + '</i> se ha cargado exitosamente';
+                    messages.success(message);
+                    console.log(json);
                 } catch (error) {
-                    var message = 'Error cargando el archivo <i>' + theFile.name + '</i>: ' + error;
                     vm.hasErrors = true;
+                    message = 'Error cargando el archivo <i>' + theFile.name + '</i>: ' + error;
                     console.error(error);
                     messages.error(message);
                 }
