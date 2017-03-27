@@ -1,8 +1,8 @@
 class DependenciaFuncional:
-    def __init__(self, variablesImplicante, variablesImplicado):
-        self.variablesImplicante = variablesImplicante
-        self.variablesImplicado = variablesImplicado
+    def __init__(self, atributosImplicante, atributosImplicado):
+        self.atributosImplicante = atributosImplicante
+        self.atributosImplicado = atributosImplicado
 
-        if type(variablesImplicado) is str:
-            self.variablesImplicado = []
-            self.variablesImplicado.append(variablesImplicado)
+        if type(atributosImplicado) is str:
+            self.atributosImplicado = []
+            self.atributosImplicado.append(atributosImplicado)

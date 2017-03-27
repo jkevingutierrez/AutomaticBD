@@ -12,21 +12,21 @@ class RT:
         self.l2 = []
         self.l3 = []
 
-    def validarVariables(self):
+    def validarAtributos(self):
         for dependencia in self.l:
-            for variable in dependencia.variablesImplicado:
-                if variable not in self.t:
-                    return variable
-            for variable in dependencia.variablesImplicante:
-                if variable not in self.t:
-                    return variable
+            for atributo in dependencia.atributosImplicado:
+                if atributo not in self.t:
+                    return atributo
+            for atributo in dependencia.atributosImplicante:
+                if atributo not in self.t:
+                    return atributo
 
         return True
 
     def buscarDependencia(self, dependencia, dependencias):
         for dependenciaActual in dependencias:
-            if sorted(dependencia.variablesImplicado) == sorted(dependenciaActual.variablesImplicado) and \
-                    sorted(dependencia.variablesImplicante) == sorted(dependenciaActual.variablesImplicante):
+            if sorted(dependencia.atributosImplicado) == sorted(dependenciaActual.atributosImplicado) and \
+                    sorted(dependencia.atributosImplicante) == sorted(dependenciaActual.atributosImplicante):
                 return True
 
         return False
@@ -43,14 +43,14 @@ class RT:
 
         for dependencia in self.l:
             existeDependencia = self.buscarDependencia(dependencia, self.l1)
-            if len(dependencia.variablesImplicado) == 1 and existeDependencia == False:
+            if len(dependencia.atributosImplicado) == 1 and existeDependencia == False:
                 archivo.escribirSobreArchivoExistente('Recubrimiento.txt', '\tAgregar dependencia elemental: ')
                 archivo.escribirSobreArchivoExistente('Recubrimiento.txt', conversor_text.transformarDependencia(dependencia))
                 archivo.escribirSobreArchivoExistente('Recubrimiento.txt', '\n')
                 self.l1.append(dependencia)
             else:
-                for variable in dependencia.variablesImplicado:
-                    nuevaDependencia = DependenciaFuncional(dependencia.variablesImplicante, variable)
+                for atributo in dependencia.atributosImplicado:
+                    nuevaDependencia = DependenciaFuncional(dependencia.atributosImplicante, atributo)
                     existeDependencia = self.buscarDependencia(nuevaDependencia, self.l1)
                     if existeDependencia == False:
                         archivo.escribirSobreArchivoExistente('Recubrimiento.txt', '\tAgregar dependencia elemental: ')
@@ -75,28 +75,28 @@ class RT:
         for dependencia in self.l1:
             existeDependencia = self.buscarDependencia(dependencia, self.l2)
 
-            if len(dependencia.variablesImplicante) == 1 and existeDependencia == False:
+            if len(dependencia.atributosImplicante) == 1 and existeDependencia == False:
                 self.l2.append(dependencia)
             else:
-                variablesAuxiliar = dependencia.variablesImplicante[:]
-                for i in reversed(range(len(variablesAuxiliar))):
+                atributosAuxiliar = dependencia.atributosImplicante[:]
+                for i in reversed(range(len(atributosAuxiliar))):
                     cierreArray = []
-                    variable = variablesAuxiliar[i]
-                    variablesTemporales = [elem for j, elem in enumerate(variablesAuxiliar) if i != j]
-                    if len(variablesTemporales) > 0:
-                        cierreArray = cierre.calcularCierre(variablesTemporales, self.l1)
+                    atributo = atributosAuxiliar[i]
+                    atributosTemporales = [elem for j, elem in enumerate(atributosAuxiliar) if i != j]
+                    if len(atributosTemporales) > 0:
+                        cierreArray = cierre.calcularCierre(atributosTemporales, self.l1)
 
-                    contieneVariable = all(elem in cierreArray for elem in dependencia.variablesImplicado)
+                    contieneAtributo = all(elem in cierreArray for elem in dependencia.atributosImplicado)
 
-                    if contieneVariable == True and len(cierreArray) > 0:
-                        variablesAuxiliar.pop(i)
-                        archivo.escribirSobreArchivoExistente('Recubrimiento.txt', '\tEliminar variable: ')
-                        archivo.escribirSobreArchivoExistente('Recubrimiento.txt', variable)
+                    if contieneAtributo == True and len(cierreArray) > 0:
+                        atributosAuxiliar.pop(i)
+                        archivo.escribirSobreArchivoExistente('Recubrimiento.txt', '\tEliminar atributo: ')
+                        archivo.escribirSobreArchivoExistente('Recubrimiento.txt', atributo)
                         archivo.escribirSobreArchivoExistente('Recubrimiento.txt', ' en ')
                         archivo.escribirSobreArchivoExistente('Recubrimiento.txt', conversor_text.transformarDependencia(dependencia))
                         archivo.escribirSobreArchivoExistente('Recubrimiento.txt', '\n')
 
-                    nuevaDependencia = DependenciaFuncional(variablesAuxiliar, dependencia.variablesImplicado);
+                    nuevaDependencia = DependenciaFuncional(atributosAuxiliar, dependencia.atributosImplicado);
                     existeNuevaDependencia = self.buscarDependencia(nuevaDependencia, self.l2);
                     if existeNuevaDependencia == False:
                         self.l2.append(nuevaDependencia)
@@ -121,12 +121,12 @@ class RT:
             dependencia = l2Auxiliar[i]
             dependenciasTemporales = [elem for j, elem in enumerate(l2Auxiliar) if i != j]
 
-            if len(dependencia.variablesImplicante) > 0:
-                cierreArray = cierre.calcularCierre(dependencia.variablesImplicante, dependenciasTemporales)
+            if len(dependencia.atributosImplicante) > 0:
+                cierreArray = cierre.calcularCierre(dependencia.atributosImplicante, dependenciasTemporales)
 
-            contieneVariable = all(elem in cierreArray for elem in dependencia.variablesImplicado)
+            contieneAtributo = all(elem in cierreArray for elem in dependencia.atributosImplicado)
             existeDependencia = self.buscarDependencia(dependencia, self.l3)
-            if contieneVariable == True and len(cierreArray) > 0:
+            if contieneAtributo == True and len(cierreArray) > 0:
                 l2Auxiliar.pop(i)
                 archivo.escribirSobreArchivoExistente('Recubrimiento.txt', '\tEliminar dependencia: ')
                 archivo.escribirSobreArchivoExistente('Recubrimiento.txt', conversor_text.transformarDependencia(dependencia))

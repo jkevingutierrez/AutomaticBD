@@ -5,13 +5,13 @@ from app.Entities.RT import RT
 class ConversorART:
     def transformar(self, j):
         dependencias = []
-        variables = []
+        atributos = []
         dependenciasFuncionales = []
 
         if 't' in j:
-            variables = j['t']
-        elif 'variables' in j:
-            variables = j['variables']
+            atributos = j['t']
+        elif 'atributos' in j:
+            atributos = j['atributos']
         if 'l' in j:
             dependencias = j['l']
         elif 'dependencias' in j:
@@ -22,5 +22,5 @@ class ConversorART:
                 dependenciaFuncional = DependenciaFuncional(dependencia['implicante'], dependencia['implicado'])
                 dependenciasFuncionales.append(dependenciaFuncional)
 
-        rt = RT(variables, dependenciasFuncionales)
+        rt = RT(atributos, dependenciasFuncionales)
         return rt

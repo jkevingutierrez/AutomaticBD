@@ -2,22 +2,22 @@ from app.Entities.Archivo import Archivo
 from app.Entities.ConversorATexto import ConversorATexto
 
 class Cierre:
-    def calcularCierre(self, variables, dependencias):
+    def calcularCierre(self, atributos, dependencias):
 
         cierre = []
         longitud = 0
 
-        if type(variables) is list and len(variables) > 0:
-            cierre = sorted(variables)[:]
-        elif type(variables) is str:
-            cierre.append(variables)
+        if type(atributos) is list and len(atributos) > 0:
+            cierre = sorted(atributos)[:]
+        elif type(atributos) is str:
+            cierre.append(atributos)
 
         conversor_texto = ConversorATexto()
 
         separador = ', '
         archivo = Archivo()
         archivo.escribirSobreArchivoExistente('Recubrimiento.txt', '\t\tCierre(')
-        archivo.escribirSobreArchivoExistente('Recubrimiento.txt', separador.join(variables))
+        archivo.escribirSobreArchivoExistente('Recubrimiento.txt', separador.join(atributos))
         archivo.escribirSobreArchivoExistente('Recubrimiento.txt', ') = [')
 
         while longitud < len(cierre):
@@ -25,11 +25,11 @@ class Cierre:
             cierreInicial = cierre[:]
 
             for dependencia in dependencias:
-                contieneVariables = all(elem in cierre for elem in dependencia.variablesImplicante)
-                variableImplicado = dependencia.variablesImplicado[0]
+                contieneAtributos = all(elem in cierre for elem in dependencia.atributosImplicante)
+                atributoImplicado = dependencia.atributosImplicado[0]
 
-                if len(dependencia.variablesImplicante) <= len(cierreInicial) and contieneVariables == True and variableImplicado not in cierre:
-                    cierre.extend(dependencia.variablesImplicado)
+                if len(dependencia.atributosImplicante) <= len(cierreInicial) and contieneAtributos == True and atributoImplicado not in cierre:
+                    cierre.extend(dependencia.atributosImplicado)
 
         cierreOrdenado = sorted(cierre)
         archivo.escribirSobreArchivoExistente('Recubrimiento.txt', separador.join(cierreOrdenado))

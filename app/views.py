@@ -68,9 +68,9 @@ class ServiceView(View):
 
         rt = conversor_art.transformar(to_json)
 
-        variableInvalida = rt.validarVariables()
+        atributoInvalido = rt.validarAtributos()
 
-        if variableInvalida == True:
+        if atributoInvalido == True:
             archivo = Archivo('Recubrimiento.txt')
             archivo.escribir('RECUBRIMIENTO M\u00CDNIMO\n')
             archivo.escribir('____________________\n\n')
@@ -116,28 +116,28 @@ class ServiceView(View):
 
             for dependencia in l1:
                 elem = {
-                    'variablesImplicado': dependencia.variablesImplicado,
-                    'variablesImplicante': dependencia.variablesImplicante
+                    'atributosImplicado': dependencia.atributosImplicado,
+                    'atributosImplicante': dependencia.atributosImplicante
                 }
                 response['l1'].append(elem)
 
             for dependencia in l2:
                 elem = {
-                    'variablesImplicado': dependencia.variablesImplicado,
-                    'variablesImplicante': dependencia.variablesImplicante
+                    'atributosImplicado': dependencia.atributosImplicado,
+                    'atributosImplicante': dependencia.atributosImplicante
                 }
                 response['l2'].append(elem)
 
             for dependencia in l3:
                 elem = {
-                    'variablesImplicado': dependencia.variablesImplicado,
-                    'variablesImplicante': dependencia.variablesImplicante
+                    'atributosImplicado': dependencia.atributosImplicado,
+                    'atributosImplicante': dependencia.atributosImplicante
                 }
                 response['l3'].append(elem)
 
             return JsonResponse(response)
 
-        return HttpResponseBadRequest('La variable "' + variableInvalida + '" no se encuentra definida')
+        return HttpResponseBadRequest('La atributo "' + atributoInvalido + '" no se encuentra definida')
 
         # response_json = json.dumps([ob.__dict__ for ob in l1], sort_keys=True)
         # return JsonResponse(response_json, safe=False)

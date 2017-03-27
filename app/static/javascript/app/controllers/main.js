@@ -35,7 +35,7 @@
 
         vm.dependencies = [];
 
-        vm.variables = [];
+        vm.atributos = [];
 
         vm.solution = {};
 
@@ -67,7 +67,7 @@
 
         function addDependency() {
             if (!vm.initialJson.t || vm.initialJson.t.length === 0) {
-                var message = 'Error agregando la dependencia: Para agregar una dependencia debe existir al menos una variable.';
+                var message = 'Error agregando la dependencia: Para agregar una dependencia debe existir al menos un atributo.';
                 console.error(message);
                 messages.error(message);
             } else {
@@ -119,7 +119,7 @@
         function clearFile() {
             SweetAlert.swal({
                     title: '¿Desea continuar?',
-                    text: 'Esta a punto de borrar el archivo seleccionado. Esta operación también borrara las variables y las dependencias existentes',
+                    text: 'Esta a punto de borrar el archivo seleccionado. Esta operación también borrara los atributos y las dependencias existentes',
                     type: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#DD6B55',
@@ -166,7 +166,7 @@
                         size: theFile.size,
                         type: theFile.type
                     };
-                    vm.variables = vm.initialJson.t || vm.initialJson.variables || [];
+                    vm.atributos = vm.initialJson.t || vm.initialJson.atributos || [];
                     vm.dependencies = vm.initialJson.l || vm.initialJson.dependencias || [];
                 });
 
@@ -298,7 +298,7 @@
 
             if (dependencies) {
                 dependencies.forEach(function(dependency) {
-                    textArray.push(dependency.variablesImplicante.join('.') + ' -> ' + dependency.variablesImplicado.join('.'));
+                    textArray.push(dependency.atributosImplicante.join('.') + ' -> ' + dependency.atributosImplicado.join('.'));
                 });
             }
 

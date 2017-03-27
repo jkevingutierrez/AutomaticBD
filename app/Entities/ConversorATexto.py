@@ -3,11 +3,11 @@ class ConversorATexto:
         textoDependencias = []
         for dependencia in dependencias:
             separador = '.'
-            texto = separador.join(dependencia.variablesImplicante) + ' -> ' + separador.join(dependencia.variablesImplicado)
+            texto = separador.join(dependencia.atributosImplicante) + ' -> ' + separador.join(dependencia.atributosImplicado)
             textoDependencias.append(texto)
         return textoDependencias
 
     def transformarDependencia(self, dependencia):
         separador = '.'
-        texto = separador.join(dependencia.variablesImplicante) + ' -> ' + separador.join(dependencia.variablesImplicado)
+        texto = separador.join(dependencia.atributosImplicante) + ' -> ' + separador.join(dependencia.atributosImplicado)
         return texto

@@ -1,4 +1,4 @@
-<div ng-if="!vm.hasFinishedLoading || isLoading" class="waiting-giff loading">
+<div ng-if="true" class="waiting-giff loading">
     <!-- <div class="loader" title="Cargando...">Cargando...</div> -->
     <div class="loading-title">
         <h4>Cargando...</h4>
@@ -55,12 +55,12 @@
     </form>
     <div class="model-container">
         <div class="form-group">
-            <h4>Variables:</h4>
-            <div class="variable-container">
+            <h4>Atributos:</h4>
+            <div class="atributo-container">
                 <ui-select multiple ng-model="vm.initialJson.t" theme="bootstrap" tagging tagging-label="">
-                    <ui-select-match placeholder="Agregar variables al modelo">{$ $item $}</ui-select-match>
-                    <ui-select-choices repeat="variable in vm.variables | filter:$select.search">
-                        {$ variable $}
+                    <ui-select-match placeholder="Agregar atributos al modelo">{$ $item $}</ui-select-match>
+                    <ui-select-choices repeat="atributo in vm.atributos | filter:$select.search">
+                        {$ atributo $}
                     </ui-select-choices>
                 </ui-select>
             </div>
@@ -74,18 +74,18 @@
                     <div class="form-group col-sm-6">
                         <label>Implicante</label>
                         <ui-select multiple ng-model="dependency.implicante" theme="bootstrap">
-                            <ui-select-match placeholder="Seleccionar Variables">{$ $item $}</ui-select-match>
-                            <ui-select-choices repeat="variable in vm.initialJson.t | filter:$select.search">
-                                {$ variable $}
+                            <ui-select-match placeholder="Seleccionar Atributos">{$ $item $}</ui-select-match>
+                            <ui-select-choices repeat="atributo in vm.initialJson.t | filter:$select.search">
+                                {$ atributo $}
                             </ui-select-choices>
                         </ui-select>
                     </div>
                     <div class="form-group col-sm-6">
                         <label>Implicado</label>
                         <ui-select multiple ng-model="dependency.implicado" theme="bootstrap">
-                            <ui-select-match placeholder="Seleccionar Variables">{$ $item $}</ui-select-match>
-                            <ui-select-choices repeat="variable in vm.initialJson.t | filter:$select.search">
-                                {$ variable $}
+                            <ui-select-match placeholder="Seleccionar Atributos">{$ $item $}</ui-select-match>
+                            <ui-select-choices repeat="atributo in vm.initialJson.t | filter:$select.search">
+                                {$ atributo $}
                             </ui-select-choices>
                         </ui-select>
                     </div>
