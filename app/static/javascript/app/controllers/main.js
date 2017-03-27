@@ -1,4 +1,4 @@
-(function() {
+﻿(function() {
     'use strict';
 
     angular
@@ -213,7 +213,7 @@
                 console.log('Get JSON From Url');
                 console.log(response);
                 if (response.data) {
-                    var message = 'El archivo de ejemplo <i>' + url + '</i> se ha cargado exitosamente.';
+                    var message = 'El archivo de ejemplo se ha cargado exitosamente.';
                     messages.success(message);
                     var json = response.data;
                     vm.jsonExample = json;
