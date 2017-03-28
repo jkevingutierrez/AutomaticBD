@@ -123,11 +123,14 @@
     </div>
     <div class="actions">
         <div class="form-group sm-center">
-            <button type="button" class="btn btn-default" ng-click="vm.exportFile(vm.initialJson)" ng-disabled="!vm.initialJson || !vm.initialJson.l || !vm.initialJson.t">
-                <span class="glyphicon glyphicon-save" aria-hidden="true"></span> Exportar JSON
+            <button type="button" class="btn btn-default" ng-click="vm.exportFile(vm.initialJson, 'modelo.json')" ng-disabled="!vm.initialJson || !vm.initialJson.l || !vm.initialJson.t">
+                <span class="glyphicon glyphicon-save" aria-hidden="true"></span> Exportar modelo a JSON
             </button>
             <button type="button" class="btn btn-default" ng-click="vm.calculateMinimalCover(vm.initialJson)" ng-disabled="!vm.initialJson || !vm.initialJson.l || !vm.initialJson.t || vm.initialJson.t.length === 0 || vm.initialJson.l.length === 0">
                 <span class="glyphicon glyphicon-th" aria-hidden="true"></span> Calcular Recubrimiento Mínimo
+            </button>
+            <button type="button" class="btn btn-default" ng-click="vm.exportMinimalCover(vm.solution, 'recubrimiento.json')" ng-if="vm.solution && vm.solution.l3">
+                <span class="glyphicon glyphicon-save" aria-hidden="true"></span> Exportar recubrimiento mínimo a JSON
             </button>
         </div>
     </div>

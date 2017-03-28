@@ -39,7 +39,7 @@ class FileView(View):
         with open(full_path, 'r') as f:
             data = f.read()
 
-        response = HttpResponse(data, content_type=mimetypes.guess_type(full_path)[0])
+        response = HttpResponse(data)
         #response['Content-Type'] = 'application/force-download'
         response['Content-Type'] = 'application/json'
         response['Content-Disposition'] = "attachment; filename={0}".format(filename)

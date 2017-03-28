@@ -53,6 +53,8 @@
 
         vm.exportFile = exportFile;
 
+        vm.exportMinimalCover = exportMinimalCover;
+
         vm.closePoUp = closePopUp;
 
         vm.showPopUp = showPopUp;
@@ -119,7 +121,7 @@
         function clearFile() {
             SweetAlert.swal({
                     title: '¿Desea continuar?',
-                    text: 'Esta a punto de borrar el archivo seleccionado. Esta operación también borrara los atributos y las dependencias existentes',
+                    text: 'Esta a punto de borrar el archivo seleccionado. Esta operación también eliminará los atributos y las dependencias existentes',
                     type: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#DD6B55',
@@ -225,26 +227,34 @@
             });
         }
 
-        function exportFile(json) {
+        function exportFile(json, fileName) {
             $http({
                 method: 'POST',
                 url: baseUrl + 'file',
                 data: json,
-                contentType: 'application/json; charset=utf-8'
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json'
             }).then(function(response) {
                 console.log('Export File');
                 console.log(response);
                 if (response.data) {
-                    var message = 'El modelo se ha exportado exitosamente en el archivo <i>salida.json</i>.';
+                    var message = 'El archivo <i>' + fileName + '</i> se ha generado exitosamente.';
                     messages.success(message);
                     var json = response.data;
-                    saveFile(JSON.stringify(json, null, 4), 'salida.json');
+                    saveFile(JSON.stringify(json, null, 4), fileName);
                 }
             }).catch(function(error) {
-                var message = 'Error exportando el archivo <i>salida.json</i>: ' + error;
+                var message = 'Error exportando el archivo <i>' + fileName + '</i>: ' + error;
                 console.error(error);
                 messages.error(message);
             });
+        }
+
+        function exportMinimalCover(json, fileName) {
+            var output = {
+                recubrimiento: json.l3
+            };
+            exportFile(output, fileName);
         }
 
         function saveFile(data, fileName) {
@@ -265,7 +275,8 @@
                     method: 'POST',
                     url: baseUrl + 'api',
                     data: json,
-                    contentType: 'application/json; charset=utf-8'
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json'
                 }).then(function(response) {
                     console.log('Calculate Minimal Cover');
                     console.log(response);
@@ -306,7 +317,7 @@
         }
 
         function main() {
-            getJsonFromUrl(exampleJson);
+            getJsonFromUrl(window.exampleJson);
         }
 
 
