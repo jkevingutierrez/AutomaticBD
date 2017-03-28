@@ -41,6 +41,7 @@ class FileView(View):
 
         response = HttpResponse(data, content_type=mimetypes.guess_type(full_path)[0])
         #response['Content-Type'] = 'application/force-download'
+        response['Content-Type'] = 'application/json'
         response['Content-Disposition'] = "attachment; filename={0}".format(filename)
         response['Content-Length'] = os.path.getsize(full_path)
         #response['X-Sendfile'] = smart_str(os.path.join(settings.BASE_DIR, filename))
