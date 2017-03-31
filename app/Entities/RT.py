@@ -65,6 +65,7 @@ class RT:
 
         existeCierre = {}
 
+        llave = ''
 
         archivo = Archivo()
         archivo.escribirSobreArchivoExistente('Recubrimiento.txt', 'Paso 2 Eliminar Atributos Extra\u00F1os:\n\n')
@@ -85,7 +86,7 @@ class RT:
                     if len(atributosTemporales) > 0 and llave not in existeCierre:
                         cierreArray = Cierre.calcularCierre(atributosTemporales, self.l1)
                         existeCierre[llave] = cierreArray
-                    elif llave != '':
+                    elif not llave:
                         cierreArray = existeCierre[llave]
 
                     contieneAtributo = all(elem in cierreArray for elem in dependencia.atributosImplicado)
