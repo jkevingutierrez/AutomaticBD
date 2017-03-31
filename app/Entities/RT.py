@@ -36,25 +36,23 @@ class RT:
         self.l2 = []
         self.l3 = []
 
-        conversor_text = ConversorATexto()
-
         archivo = Archivo()
         archivo.escribirSobreArchivoExistente('Recubrimiento.txt', 'Paso 1 Agregar Dependencias Elementales:\n\n')
 
         for dependencia in self.l:
             existeDependencia = self.buscarDependencia(dependencia, self.l1)
-            if len(dependencia.atributosImplicado) == 1 and existeDependencia == False:
+            if len(dependencia.atributosImplicado) == 1 and existeDependencia is False:
                 archivo.escribirSobreArchivoExistente('Recubrimiento.txt', '\tAgregar dependencia elemental: ')
-                archivo.escribirSobreArchivoExistente('Recubrimiento.txt', conversor_text.transformarDependencia(dependencia))
+                archivo.escribirSobreArchivoExistente('Recubrimiento.txt', ConversorATexto.transformarDependencia(dependencia))
                 archivo.escribirSobreArchivoExistente('Recubrimiento.txt', '\n')
                 self.l1.append(dependencia)
             else:
                 for atributo in dependencia.atributosImplicado:
                     nuevaDependencia = DependenciaFuncional(dependencia.atributosImplicante, atributo)
                     existeDependencia = self.buscarDependencia(nuevaDependencia, self.l1)
-                    if existeDependencia == False:
+                    if existeDependencia is False:
                         archivo.escribirSobreArchivoExistente('Recubrimiento.txt', '\tAgregar dependencia elemental: ')
-                        archivo.escribirSobreArchivoExistente('Recubrimiento.txt', conversor_text.transformarDependencia(nuevaDependencia))
+                        archivo.escribirSobreArchivoExistente('Recubrimiento.txt', ConversorATexto.transformarDependencia(nuevaDependencia))
                         archivo.escribirSobreArchivoExistente('Recubrimiento.txt', '\n')
                         self.l1.append(nuevaDependencia)
 
@@ -65,9 +63,8 @@ class RT:
         self.l2 = []
         self.l3 = []
 
-        cierre = Cierre()
+        existeCierre = {}
 
-        conversor_text = ConversorATexto()
 
         archivo = Archivo()
         archivo.escribirSobreArchivoExistente('Recubrimiento.txt', 'Paso 2 Eliminar Atributos Extra\u00F1os:\n\n')
@@ -75,7 +72,7 @@ class RT:
         for dependencia in self.l1:
             existeDependencia = self.buscarDependencia(dependencia, self.l2)
 
-            if len(dependencia.atributosImplicante) == 1 and existeDependencia == False:
+            if len(dependencia.atributosImplicante) == 1 and existeDependencia is False:
                 self.l2.append(dependencia)
             else:
                 atributosAuxiliar = dependencia.atributosImplicante[:]
@@ -83,22 +80,27 @@ class RT:
                     cierreArray = []
                     atributo = atributosAuxiliar[i]
                     atributosTemporales = [elem for j, elem in enumerate(atributosAuxiliar) if i != j]
-                    if len(atributosTemporales) > 0:
-                        cierreArray = cierre.calcularCierre(atributosTemporales, self.l1)
+                    llave = '-'.join(atributosTemporales)
+
+                    if len(atributosTemporales) > 0 and llave not in existeCierre:
+                        cierreArray = Cierre.calcularCierre(atributosTemporales, self.l1)
+                        existeCierre[llave] = cierreArray
+                    elif llave != '':
+                        cierreArray = existeCierre[llave]
 
                     contieneAtributo = all(elem in cierreArray for elem in dependencia.atributosImplicado)
 
-                    if contieneAtributo == True and len(cierreArray) > 0:
+                    if contieneAtributo is True and len(cierreArray) > 0:
                         atributosAuxiliar.pop(i)
                         archivo.escribirSobreArchivoExistente('Recubrimiento.txt', '\tEliminar atributo: ')
                         archivo.escribirSobreArchivoExistente('Recubrimiento.txt', atributo)
                         archivo.escribirSobreArchivoExistente('Recubrimiento.txt', ' en ')
-                        archivo.escribirSobreArchivoExistente('Recubrimiento.txt', conversor_text.transformarDependencia(dependencia))
+                        archivo.escribirSobreArchivoExistente('Recubrimiento.txt', ConversorATexto.transformarDependencia(dependencia))
                         archivo.escribirSobreArchivoExistente('Recubrimiento.txt', '\n')
 
-                    nuevaDependencia = DependenciaFuncional(atributosAuxiliar, dependencia.atributosImplicado);
-                    existeNuevaDependencia = self.buscarDependencia(nuevaDependencia, self.l2);
-                    if existeNuevaDependencia == False:
+                    nuevaDependencia = DependenciaFuncional(atributosAuxiliar, dependencia.atributosImplicado)
+                    existeNuevaDependencia = self.buscarDependencia(nuevaDependencia, self.l2)
+                    if existeNuevaDependencia is False:
                         self.l2.append(nuevaDependencia)
 
         archivo.escribirSobreArchivoExistente('Recubrimiento.txt', '\n')
@@ -109,9 +111,6 @@ class RT:
 
         l2Auxiliar = self.l2[:]
         l2Auxiliar.reverse()
-        cierre = Cierre()
-
-        conversor_text = ConversorATexto()
 
         archivo = Archivo()
         archivo.escribirSobreArchivoExistente('Recubrimiento.txt', 'Paso 3 Eliminar Dependencias Redundantes:\n\n')
@@ -122,16 +121,16 @@ class RT:
             dependenciasTemporales = [elem for j, elem in enumerate(l2Auxiliar) if i != j]
 
             if len(dependencia.atributosImplicante) > 0:
-                cierreArray = cierre.calcularCierre(dependencia.atributosImplicante, dependenciasTemporales)
+                cierreArray = Cierre.calcularCierre(dependencia.atributosImplicante, dependenciasTemporales)
 
             contieneAtributo = all(elem in cierreArray for elem in dependencia.atributosImplicado)
             existeDependencia = self.buscarDependencia(dependencia, self.l3)
-            if contieneAtributo == True and len(cierreArray) > 0:
+            if contieneAtributo is True and len(cierreArray) > 0:
                 l2Auxiliar.pop(i)
                 archivo.escribirSobreArchivoExistente('Recubrimiento.txt', '\tEliminar dependencia: ')
-                archivo.escribirSobreArchivoExistente('Recubrimiento.txt', conversor_text.transformarDependencia(dependencia))
+                archivo.escribirSobreArchivoExistente('Recubrimiento.txt', ConversorATexto.transformarDependencia(dependencia))
                 archivo.escribirSobreArchivoExistente('Recubrimiento.txt', '\n')
-            elif existeDependencia == False:
+            elif existeDependencia is False:
                 self.l3.append(dependencia)
 
         archivo.escribirSobreArchivoExistente('Recubrimiento.txt', '\n')

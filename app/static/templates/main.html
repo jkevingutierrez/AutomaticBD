@@ -56,8 +56,11 @@
     <div class="model-container">
         <div class="form-group">
             <h4>Atributos:</h4>
+            <div class="help-container">
+                <span class="help-block">Los atributos se componen de caracteres alfanuméricos, sin espacios, y se recomienda que vayan en minúscula</span>
+            </div>
             <div class="atributo-container">
-                <ui-select multiple ng-model="vm.initialJson.t" theme="bootstrap" tagging tagging-label="">
+                <ui-select multiple ng-model="vm.initialJson.t" theme="bootstrap" tagging tagging-label="" on-select="vm.replaceNonAlphaNumeric($item)">
                     <ui-select-match placeholder="Agregar atributos al modelo">{$ $item $}</ui-select-match>
                     <ui-select-choices repeat="atributo in vm.atributos | filter:$select.search">
                         {$ atributo $}

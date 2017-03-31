@@ -26,7 +26,7 @@ class IndexView(ListView):
 class FileView(View):
 
     @staticmethod
-    def post(request, *args, **kwargs):
+    def post(request):
         print('POST in FileView')
 
         to_json = json.loads(request.body.decode("utf-8"))
@@ -40,11 +40,11 @@ class FileView(View):
             data = f.read()
 
         response = HttpResponse(data)
-        #response['Content-Type'] = 'application/force-download'
+        # response['Content-Type'] = 'application/force-download'
         response['Content-Type'] = 'application/json'
         response['Content-Disposition'] = "attachment; filename={0}".format(filename)
         response['Content-Length'] = os.path.getsize(full_path)
-        #response['X-Sendfile'] = smart_str(os.path.join(settings.BASE_DIR, filename))
+        # response['X-Sendfile'] = smart_str(os.path.join(settings.BASE_DIR, filename))
 
         print('Full File Path:', full_path)
         print('File Size:', os.path.getsize(full_path))
@@ -56,21 +56,19 @@ class FileView(View):
 class ServiceView(View):
 
     @staticmethod
-    def post(request, *args, **kwargs):
+    def post(request):
         print('POST in ServiceView')
 
         separador = ', '
 
-        conversor_art = ConversorART()
-        conversor_texto = ConversorATexto()
         # print('Raw Data: "%s"' % request.META)
         to_json = json.loads(request.body.decode("utf-8"))
 
-        rt = conversor_art.transformar(to_json)
+        rt = ConversorART.transformar(to_json)
 
         atributoInvalido = rt.validarAtributos()
 
-        if atributoInvalido == True:
+        if atributoInvalido is True:
             archivo = Archivo('Recubrimiento.txt')
             archivo.escribir('RECUBRIMIENTO M\u00CDNIMO\n')
             archivo.escribir('____________________\n\n')
@@ -80,29 +78,29 @@ class ServiceView(View):
             archivo.escribir(separador.join(rt.t))
             archivo.escribir(']\n')
             archivo.escribir('\tl = [')
-            archivo.escribir(separador.join(conversor_texto.transformarDependencias(rt.l)))
+            archivo.escribir(separador.join(ConversorATexto.transformarDependencias(rt.l)))
             archivo.escribir(']\n\n')
 
             l1 = rt.dependenciasElementales()
-            texto_l1 = conversor_texto.transformarDependencias(l1)
+            texto_l1 = ConversorATexto.transformarDependencias(l1)
             archivo.escribir('\tl1 = [')
             archivo.escribir(separador.join(texto_l1))
             archivo.escribir(']\n\n')
 
             l2 = rt.atributosExtranos()
-            texto_l2 = conversor_texto.transformarDependencias(l2)
+            texto_l2 = ConversorATexto.transformarDependencias(l2)
             archivo.escribir('\tl2 = [')
             archivo.escribir(separador.join(texto_l2))
             archivo.escribir(']\n\n')
 
             l3 = rt.dependenciasRedundantes()
-            texto_l3 = conversor_texto.transformarDependencias(l3)
+            texto_l3 = ConversorATexto.transformarDependencias(l3)
             archivo.escribir('\tl3 = [')
             archivo.escribir(separador.join(texto_l3))
             archivo.escribir(']\n\n')
 
             response = {
-                'original' : to_json,
+                'original': to_json,
                 'l1': [],
                 'l2': [],
                 'l3': [],

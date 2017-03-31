@@ -1,8 +1,11 @@
 from app.Entities.Archivo import Archivo
 from app.Entities.ConversorATexto import ConversorATexto
 
+
 class Cierre:
-    def calcularCierre(self, atributos, dependencias):
+
+    @staticmethod
+    def calcularCierre(atributos, dependencias):
 
         cierre = []
         longitud = 0
@@ -28,15 +31,17 @@ class Cierre:
                 contieneAtributos = all(elem in cierre for elem in dependencia.atributosImplicante)
                 atributoImplicado = dependencia.atributosImplicado[0]
 
-                if len(dependencia.atributosImplicante) <= len(cierreInicial) and contieneAtributos == True and atributoImplicado not in cierre:
+                if len(dependencia.atributosImplicante) <= len(cierreInicial) and \
+                        contieneAtributos is True and \
+                        atributoImplicado not in cierre:
                     cierre.extend(dependencia.atributosImplicado)
 
         cierreOrdenado = sorted(cierre)
         archivo.escribirSobreArchivoExistente('Recubrimiento.txt', separador.join(cierreOrdenado))
         archivo.escribirSobreArchivoExistente('Recubrimiento.txt', '] para ')
         archivo.escribirSobreArchivoExistente('Recubrimiento.txt', '[')
-        archivo.escribirSobreArchivoExistente('Recubrimiento.txt', separador.join(conversor_texto.transformarDependencias(dependencias)))
+        archivo.escribirSobreArchivoExistente('Recubrimiento.txt',
+                                              separador.join(conversor_texto.transformarDependencias(dependencias)))
         archivo.escribirSobreArchivoExistente('Recubrimiento.txt', ']')
         archivo.escribirSobreArchivoExistente('Recubrimiento.txt', '\n')
         return cierreOrdenado
-

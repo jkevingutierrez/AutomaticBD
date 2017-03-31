@@ -3,7 +3,9 @@ from app.Entities.RT import RT
 
 
 class ConversorART:
-    def transformar(self, j):
+
+    @staticmethod
+    def transformar(j):
         dependencias = []
         atributos = []
         dependenciasFuncionales = []

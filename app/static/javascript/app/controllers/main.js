@@ -67,6 +67,8 @@
 
         vm.transform = transform;
 
+        vm.replaceNonAlphaNumeric = replaceNonAlphaNumeric;
+
         function addDependency() {
             if (!vm.initialJson.t || vm.initialJson.t.length === 0) {
                 var message = 'Error agregando la dependencia: Para agregar una dependencia debe existir al menos un atributo.';
@@ -314,6 +316,12 @@
             }
 
             return textArray;
+        }
+
+        function replaceNonAlphaNumeric($item) {
+            var itemWithNonAlphanumeric = $item.toLowerCase().replace(/\W+/g, '');
+            var lastIndex = vm.initialJson.t.length - 1;
+            vm.initialJson.t[lastIndex] = itemWithNonAlphanumeric;
         }
 
         function main() {
