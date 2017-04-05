@@ -6,10 +6,10 @@ class Relacion:
 
     def validar_atributos(self):
         for dependencia in self.dependencias:
-            for atributo in dependencia.atributos_implicado:
+            for atributo in dependencia.implicado:
                 if atributo not in self.atributos:
                     return atributo
-            for atributo in dependencia.atributos_implicante:
+            for atributo in dependencia.implicante:
                 if atributo not in self.atributos:
                     return atributo
 

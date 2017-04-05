@@ -115,22 +115,22 @@ class ServiceView(View):
 
             for dependencia in l1:
                 elem = {
-                    'implicado': dependencia.atributos_implicado,
-                    'implicante': dependencia.atributos_implicante
+                    'implicado': dependencia.implicado,
+                    'implicante': dependencia.implicante
                 }
                 response['l1'].append(elem)
 
             for dependencia in l2:
                 elem = {
-                    'implicado': dependencia.atributos_implicado,
-                    'implicante': dependencia.atributos_implicante
+                    'implicado': dependencia.implicado,
+                    'implicante': dependencia.implicante
                 }
                 response['l2'].append(elem)
 
             for dependencia in l3:
                 elem = {
-                    'implicado': dependencia.atributos_implicado,
-                    'implicante': dependencia.atributos_implicante
+                    'implicado': dependencia.implicado,
+                    'implicante': dependencia.implicante
                 }
                 response['l3'].append(elem)
 

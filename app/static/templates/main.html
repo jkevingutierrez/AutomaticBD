@@ -133,7 +133,7 @@
     <div class="actions">
         <div class="form-group sm-center">
             <button type="button" class="btn btn-default" ng-click="vm.exportFile(vm.initialJson, 'modelo.json')" ng-disabled="!vm.initialJson || !vm.initialJson.dependencias || !vm.initialJson.atributos">
-                <span class="glyphicon glyphicon-save" aria-hidden="true"></span> Exportar modelo a JSON
+                <span class="glyphicon glyphicon-save" aria-hidden="true"></span> Exportar relación actual a JSON
             </button>
             <button type="button" class="btn btn-default" ng-click="vm.calculateMinimalCover(vm.initialJson)" ng-disabled="!vm.initialJson || !vm.initialJson.dependencias || !vm.initialJson.atributos || vm.initialJson.atributos.length === 0 || vm.initialJson.dependencias.length === 0">
                 <span class="glyphicon glyphicon-th" aria-hidden="true"></span> Calcular Recubrimiento Mínimo

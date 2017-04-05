@@ -16,14 +16,14 @@ class RecubrimientoMinimo:
 
         for dependencia in dependencias:
             existe_dependencia = Buscador.buscar_dependencia(dependencia, l1)
-            if len(dependencia.atributos_implicado) == 1 and existe_dependencia is False:
+            if len(dependencia.implicado) == 1 and existe_dependencia is False:
                 archivo.escribir_sobre_archivo_existente('Recubrimiento.txt', '\tAgregar dependencia elemental: ')
                 archivo.escribir_sobre_archivo_existente('Recubrimiento.txt', ConversorATexto.transformar_dependencia(dependencia))
                 archivo.escribir_sobre_archivo_existente('Recubrimiento.txt', '\n')
                 l1.append(dependencia)
             else:
-                for atributo in dependencia.atributos_implicado:
-                    nueva_dependencia = DependenciaFuncional(dependencia.atributos_implicante, atributo)
+                for atributo in dependencia.implicado:
+                    nueva_dependencia = DependenciaFuncional(dependencia.implicante, atributo)
                     existe_dependencia = Buscador.buscar_dependencia(nueva_dependencia, l1)
                     if existe_dependencia is False:
                         archivo.escribir_sobre_archivo_existente('Recubrimiento.txt', '\tAgregar dependencia elemental: ')
@@ -46,10 +46,10 @@ class RecubrimientoMinimo:
         for dependencia in dependencias:
             existe_dependencia = Buscador.buscar_dependencia(dependencia, l2)
 
-            if len(dependencia.atributos_implicante) == 1 and existe_dependencia is False:
+            if len(dependencia.implicante) == 1 and existe_dependencia is False:
                 l2.append(dependencia)
             else:
-                atributos_auxiliares = dependencia.atributos_implicante[:]
+                atributos_auxiliares = dependencia.implicante[:]
                 for i in reversed(range(len(atributos_auxiliares))):
                     cierre_array = []
                     atributo = atributos_auxiliares[i]
@@ -62,7 +62,7 @@ class RecubrimientoMinimo:
                     elif llave:
                         cierre_array = existe_cierre[llave]
 
-                    contiene_atributo = all(elem in cierre_array for elem in dependencia.atributos_implicado)
+                    contiene_atributo = all(elem in cierre_array for elem in dependencia.implicado)
 
                     if contiene_atributo is True and len(cierre_array) > 0:
                         atributos_auxiliares.pop(i)
@@ -72,7 +72,7 @@ class RecubrimientoMinimo:
                         archivo.escribir_sobre_archivo_existente('Recubrimiento.txt', ConversorATexto.transformar_dependencia(dependencia))
                         archivo.escribir_sobre_archivo_existente('Recubrimiento.txt', '\n')
 
-                    nueva_dependencia = DependenciaFuncional(atributos_auxiliares, dependencia.atributos_implicado)
+                    nueva_dependencia = DependenciaFuncional(atributos_auxiliares, dependencia.implicado)
                     existe_nueva_dependencia = Buscador.buscar_dependencia(nueva_dependencia, l2)
                     if existe_nueva_dependencia is False:
                         l2.append(nueva_dependencia)
@@ -95,10 +95,10 @@ class RecubrimientoMinimo:
             dependencia = l2_auxiliar[i]
             dependencias_temporales = [dependencia for j, dependencia in enumerate(l2_auxiliar) if i != j]
 
-            if len(dependencia.atributos_implicante) > 0:
-                cierre_array = Cierre.calcular_cierre(dependencia.atributos_implicante, dependencias_temporales)
+            if len(dependencia.implicante) > 0:
+                cierre_array = Cierre.calcular_cierre(dependencia.implicante, dependencias_temporales)
 
-            contiene_atributo = all(elem in cierre_array for elem in dependencia.atributos_implicado)
+            contiene_atributo = all(elem in cierre_array for elem in dependencia.implicado)
             existe_dependencia = Buscador.buscar_dependencia(dependencia, recubrimiento_minimo)
             if contiene_atributo is True and len(cierre_array) > 0:
                 l2_auxiliar.pop(i)

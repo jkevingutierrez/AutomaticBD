@@ -26,13 +26,13 @@ class Cierre:
             cierreInicial = cierre[:]
 
             for dependencia in dependencias:
-                contieneAtributos = all(elem in cierre for elem in dependencia.atributos_implicante)
-                atributoImplicado = dependencia.atributos_implicado[0]
+                contieneAtributos = all(elem in cierre for elem in dependencia.implicante)
+                atributoImplicado = dependencia.implicado[0]
 
-                if len(dependencia.atributos_implicante) <= len(cierreInicial) and \
+                if len(dependencia.implicante) <= len(cierreInicial) and \
                         contieneAtributos is True and \
                         atributoImplicado not in cierre:
-                    cierre.extend(dependencia.atributos_implicado)
+                    cierre.extend(dependencia.implicado)
 
         cierre_ordenado = sorted(cierre)
         archivo.escribir_sobre_archivo_existente('Recubrimiento.txt', separador.join(cierre_ordenado))
