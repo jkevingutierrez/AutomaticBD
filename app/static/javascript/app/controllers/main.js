@@ -14,8 +14,8 @@
         // Classes
         var Model = function() {
             if (this instanceof Model) {
-                this.t = [];
-                this.l = [];
+                this.atributos = [];
+                this.dependencias = [];
             } else {
                 return new Model();
             }
@@ -65,12 +65,12 @@
 
         vm.removeDependency = removeDependency;
 
-        vm.transform = transform;
+        vm.transformDependencies = transformDependencies;
 
         vm.replaceNonAlphaNumeric = replaceNonAlphaNumeric;
 
         function addDependency() {
-            if (!vm.initialJson.t || vm.initialJson.t.length === 0) {
+            if (!vm.initialJson.atributos || vm.initialJson.atributos.length === 0) {
                 var message = 'Error agregando la dependencia: Para agregar una dependencia debe existir al menos un atributo.';
                 console.error(message);
                 messages.error(message);
@@ -79,7 +79,7 @@
                     implicante: [],
                     implicado: []
                 };
-                vm.initialJson.l.push(dependency);
+                vm.initialJson.dependencias.push(dependency);
             }
         }
 
@@ -97,13 +97,13 @@
                     if (isConfirm) {
                         var message = 'La dependencia ha sido eliminada exitosamente.';
                         messages.success(message);
-                        vm.initialJson.l.splice($index, 1);
+                        vm.initialJson.dependencias.splice($index, 1);
                     }
                 });
         }
 
         function uploadFile($event) {
-            console.log('Upload File');
+            console.log('uploadFile:');
             console.log($event);
 
             // FileList object
@@ -136,6 +136,7 @@
                         messages.success(message);
                         vm.hasErrors = false;
                         vm.currentFile = undefined;
+                        vm.solution = undefined;
                         vm.initialJson = new Model();
                         $('input[type=file]').val('');
                     }
@@ -144,7 +145,7 @@
 
         function onLoadHandler(theFile) {
             return function(event) {
-                console.log('On Load File');
+                console.log('onLoadHandler:');
                 console.log(event);
                 var result = event.target.result;
                 var json = new Model();
@@ -155,7 +156,6 @@
                     json = JSON.parse(result);
                     message = 'El archivo <i>' + theFile.name + '</i> se ha cargado exitosamente';
                     messages.success(message);
-                    console.log(json);
                 } catch (error) {
                     vm.hasErrors = true;
                     message = 'Error cargando el archivo <i>' + theFile.name + '</i>: ' + error;
@@ -170,8 +170,8 @@
                         size: theFile.size,
                         type: theFile.type
                     };
-                    vm.atributos = vm.initialJson.t || vm.initialJson.atributos || [];
-                    vm.dependencies = vm.initialJson.l || vm.initialJson.dependencias || [];
+                    vm.atributos = vm.initialJson.atributos || [];
+                    vm.dependencies = vm.initialJson.dependencias || [];
                 });
 
             };
@@ -214,7 +214,7 @@
                 url: url,
                 contentType: 'application/json; charset=utf-8'
             }).then(function(response) {
-                console.log('Get JSON From Url');
+                console.log('getJsonFromUrl:');
                 console.log(response);
                 if (response.data) {
                     var message = 'El archivo de ejemplo se ha cargado exitosamente.';
@@ -237,7 +237,7 @@
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json'
             }).then(function(response) {
-                console.log('Export File');
+                console.log('exportFile');
                 console.log(response);
                 if (response.data) {
                     var message = 'El archivo <i>' + fileName + '</i> se ha generado exitosamente.';
@@ -272,7 +272,7 @@
         }
 
         function calculateMinimalCover(json) {
-            if (json && json.l && json.t && json.l.length > 0 && json.t.length > 0) {
+            if (json && json.atributos && json.atributos.length > 0 && json.dependencias && json.dependencias.length > 0) {
                 $http({
                     method: 'POST',
                     url: baseUrl + 'api',
@@ -280,7 +280,7 @@
                     contentType: 'application/json; charset=utf-8',
                     dataType: 'json'
                 }).then(function(response) {
-                    console.log('Calculate Minimal Cover');
+                    console.log('calculateMinimalCover:');
                     console.log(response);
                     if (response.data) {
                         var message = 'El recubrimiento mínimo se ha calculado exitosamente y se ha generado el archivo <i>Recubrimiento.txt</i>, el cual contiene el registro de las operaciones.';
@@ -289,9 +289,9 @@
                         vm.solution = response.data;
                         saveFile(vm.solution.file, 'Recubrimiento.txt');
 
-                        console.log('L1: ', transform(vm.solution.l1));
-                        console.log('L2: ', transform(vm.solution.l2));
-                        console.log('L3: ', transform(vm.solution.l3));
+                        console.log('L1: ', transformDependencies(vm.solution.l1));
+                        console.log('L2: ', transformDependencies(vm.solution.l2));
+                        console.log('L3: ', transformDependencies(vm.solution.l3));
                     }
                 }).catch(function(error) {
                     var message = 'Error calculando el recubrimiento mínimo: ' + error;
@@ -306,22 +306,22 @@
 
         }
 
-        function transform(dependencies) {
+        function transformDependencies(dependencies) {
             var textArray = [];
 
             if (dependencies) {
                 dependencies.forEach(function(dependency) {
-                    textArray.push(dependency.atributosImplicante.join('.') + ' -> ' + dependency.atributosImplicado.join('.'));
+                    textArray.push(dependency.implicante.join('.') + ' -> ' + dependency.implicado.join('.'));
                 });
             }
 
-            return textArray;
+            return '{ ' + textArray.join(', ') + ' }';
         }
 
         function replaceNonAlphaNumeric($item) {
             var itemWithNonAlphanumeric = $item.toLowerCase().replace(/\W+/g, '');
-            var lastIndex = vm.initialJson.t.length - 1;
-            vm.initialJson.t[lastIndex] = itemWithNonAlphanumeric;
+            var lastIndex = vm.initialJson.atributos.length - 1;
+            vm.initialJson.atributos[lastIndex] = itemWithNonAlphanumeric;
         }
 
         function main() {

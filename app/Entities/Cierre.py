@@ -5,7 +5,7 @@ from app.Entities.ConversorATexto import ConversorATexto
 class Cierre:
 
     @staticmethod
-    def calcularCierre(atributos, dependencias):
+    def calcular_cierre(atributos, dependencias):
 
         cierre = []
         longitud = 0
@@ -15,33 +15,31 @@ class Cierre:
         elif type(atributos) is str:
             cierre.append(atributos)
 
-        conversor_texto = ConversorATexto()
-
         separador = ', '
         archivo = Archivo()
-        archivo.escribirSobreArchivoExistente('Recubrimiento.txt', '\t\tCierre(')
-        archivo.escribirSobreArchivoExistente('Recubrimiento.txt', separador.join(atributos))
-        archivo.escribirSobreArchivoExistente('Recubrimiento.txt', ') = [')
+        archivo.escribir_sobre_archivo_existente('Recubrimiento.txt', '\t\tCierre(')
+        archivo.escribir_sobre_archivo_existente('Recubrimiento.txt', separador.join(atributos))
+        archivo.escribir_sobre_archivo_existente('Recubrimiento.txt', ') = [')
 
         while longitud < len(cierre):
             longitud = len(cierre)
             cierreInicial = cierre[:]
 
             for dependencia in dependencias:
-                contieneAtributos = all(elem in cierre for elem in dependencia.atributosImplicante)
-                atributoImplicado = dependencia.atributosImplicado[0]
+                contieneAtributos = all(elem in cierre for elem in dependencia.atributos_implicante)
+                atributoImplicado = dependencia.atributos_implicado[0]
 
-                if len(dependencia.atributosImplicante) <= len(cierreInicial) and \
+                if len(dependencia.atributos_implicante) <= len(cierreInicial) and \
                         contieneAtributos is True and \
                         atributoImplicado not in cierre:
-                    cierre.extend(dependencia.atributosImplicado)
+                    cierre.extend(dependencia.atributos_implicado)
 
-        cierreOrdenado = sorted(cierre)
-        archivo.escribirSobreArchivoExistente('Recubrimiento.txt', separador.join(cierreOrdenado))
-        archivo.escribirSobreArchivoExistente('Recubrimiento.txt', '] para ')
-        archivo.escribirSobreArchivoExistente('Recubrimiento.txt', '[')
-        archivo.escribirSobreArchivoExistente('Recubrimiento.txt',
-                                              separador.join(conversor_texto.transformarDependencias(dependencias)))
-        archivo.escribirSobreArchivoExistente('Recubrimiento.txt', ']')
-        archivo.escribirSobreArchivoExistente('Recubrimiento.txt', '\n')
-        return cierreOrdenado
+        cierre_ordenado = sorted(cierre)
+        archivo.escribir_sobre_archivo_existente('Recubrimiento.txt', separador.join(cierre_ordenado))
+        archivo.escribir_sobre_archivo_existente('Recubrimiento.txt', '] en ')
+        archivo.escribir_sobre_archivo_existente('Recubrimiento.txt', '[')
+        archivo.escribir_sobre_archivo_existente('Recubrimiento.txt',
+                                              separador.join(ConversorATexto.transformar_dependencias(dependencias)))
+        archivo.escribir_sobre_archivo_existente('Recubrimiento.txt', ']')
+        archivo.escribir_sobre_archivo_existente('Recubrimiento.txt', '\n')
+        return cierre_ordenado

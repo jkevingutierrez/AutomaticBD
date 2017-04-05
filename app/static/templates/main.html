@@ -60,7 +60,7 @@
                 <span class="help-block">Los atributos se componen de caracteres alfanuméricos, sin espacios, y se recomienda que vayan en minúscula</span>
             </div>
             <div class="atributo-container">
-                <ui-select multiple ng-model="vm.initialJson.t" theme="bootstrap" tagging tagging-label="" on-select="vm.replaceNonAlphaNumeric($item)">
+                <ui-select multiple ng-model="vm.initialJson.atributos" theme="bootstrap" tagging tagging-label="" on-select="vm.replaceNonAlphaNumeric($item)" sortable="true">
                     <ui-select-match placeholder="Agregar atributos al modelo">{$ $item $}</ui-select-match>
                     <ui-select-choices repeat="atributo in vm.atributos | filter:$select.search">
                         {$ atributo $}
@@ -72,24 +72,30 @@
             <h4>Dependencias:</h4>
         </div>
         <div class="dependencies-container">
-            <div class="dependecy-container" ng-repeat="dependency in vm.initialJson.l">
+            <div class="dependecy-container" ng-repeat="dependencia in vm.initialJson.dependencias">
                 <div class="row">
                     <div class="form-group col-sm-6">
                         <label>Implicante</label>
-                        <ui-select multiple ng-model="dependency.implicante" theme="bootstrap">
+                        <ui-select multiple ng-model="dependencia.implicante" theme="bootstrap" sortable="true">
                             <ui-select-match placeholder="Seleccionar Atributos">{$ $item $}</ui-select-match>
-                            <ui-select-choices repeat="atributo in vm.initialJson.t | filter:$select.search">
+                            <ui-select-choices repeat="atributo in vm.initialJson.atributos | filter:$select.search">
                                 {$ atributo $}
                             </ui-select-choices>
+                            <ui-select-no-choice>
+                                No existe ninguna coincidencia en los atributos
+                            </ui-select-no-choice>
                         </ui-select>
                     </div>
                     <div class="form-group col-sm-6">
                         <label>Implicado</label>
-                        <ui-select multiple ng-model="dependency.implicado" theme="bootstrap">
+                        <ui-select multiple ng-model="dependencia.implicado" theme="bootstrap" sortable="true">
                             <ui-select-match placeholder="Seleccionar Atributos">{$ $item $}</ui-select-match>
-                            <ui-select-choices repeat="atributo in vm.initialJson.t | filter:$select.search">
+                            <ui-select-choices repeat="atributo in vm.initialJson.dependencias | filter:$select.search">
                                 {$ atributo $}
                             </ui-select-choices>
+                            <ui-select-no-choice>
+                                No existe ninguna coincidencia en los atributos
+                            </ui-select-no-choice>
                         </ui-select>
                     </div>
                 </div>
@@ -100,7 +106,7 @@
                 </div>
             </div>
             <div class="form-group dependency-button sm-center">
-                <button type="button" class="btn btn-success" ng-click="vm.addDependency()" ng-disabled="(!vm.initialJson.t || vm.initialJson.t.length === 0)">
+                <button type="button" class="btn btn-success" ng-click="vm.addDependency()" ng-disabled="(!vm.initialJson.atributos || vm.initialJson.atributos.length === 0)">
                     <span class="glyphicon glyphicon-plus sm-center" aria-hidden="true"></span> Agregar Dependencia
                 </button>
             </div>
@@ -126,10 +132,10 @@
     </div>
     <div class="actions">
         <div class="form-group sm-center">
-            <button type="button" class="btn btn-default" ng-click="vm.exportFile(vm.initialJson, 'modelo.json')" ng-disabled="!vm.initialJson || !vm.initialJson.l || !vm.initialJson.t">
+            <button type="button" class="btn btn-default" ng-click="vm.exportFile(vm.initialJson, 'modelo.json')" ng-disabled="!vm.initialJson || !vm.initialJson.dependencias || !vm.initialJson.atributos">
                 <span class="glyphicon glyphicon-save" aria-hidden="true"></span> Exportar modelo a JSON
             </button>
-            <button type="button" class="btn btn-default" ng-click="vm.calculateMinimalCover(vm.initialJson)" ng-disabled="!vm.initialJson || !vm.initialJson.l || !vm.initialJson.t || vm.initialJson.t.length === 0 || vm.initialJson.l.length === 0">
+            <button type="button" class="btn btn-default" ng-click="vm.calculateMinimalCover(vm.initialJson)" ng-disabled="!vm.initialJson || !vm.initialJson.dependencias || !vm.initialJson.atributos || vm.initialJson.atributos.length === 0 || vm.initialJson.dependencias.length === 0">
                 <span class="glyphicon glyphicon-th" aria-hidden="true"></span> Calcular Recubrimiento Mínimo
             </button>
             <button type="button" class="btn btn-default" ng-click="vm.exportMinimalCover(vm.solution, 'recubrimiento.json')" ng-disabled="!vm.solution || !vm.solution.l3">

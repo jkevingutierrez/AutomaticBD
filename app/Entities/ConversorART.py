@@ -1,28 +1,24 @@
 from app.Entities.DependenciaFuncional import DependenciaFuncional
-from app.Entities.RT import RT
+from app.Entities.Relacion import Relacion
 
 
 class ConversorART:
 
     @staticmethod
-    def transformar(j):
+    def transformar(json):
         dependencias = []
         atributos = []
-        dependenciasFuncionales = []
+        dependencias_funcionales = []
 
-        if 't' in j:
-            atributos = j['t']
-        elif 'atributos' in j:
-            atributos = j['atributos']
-        if 'l' in j:
-            dependencias = j['l']
-        elif 'dependencias' in j:
-            dependencias = j['dependencias']
+        if 'atributos' in json:
+            atributos = json['atributos']
+        if 'dependencias' in json:
+            dependencias = json['dependencias']
 
         for dependencia in dependencias:
             if 'implicante' in dependencia and 'implicado' in dependencia:
-                dependenciaFuncional = DependenciaFuncional(dependencia['implicante'], dependencia['implicado'])
-                dependenciasFuncionales.append(dependenciaFuncional)
+                dependencia_funcional = DependenciaFuncional(dependencia['implicante'], dependencia['implicado'])
+                dependencias_funcionales.append(dependencia_funcional)
 
-        rt = RT(atributos, dependenciasFuncionales)
-        return rt
+        relacion = Relacion(atributos, dependencias_funcionales)
+        return relacion

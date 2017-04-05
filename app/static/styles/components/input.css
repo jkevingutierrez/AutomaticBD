@@ -38,3 +38,7 @@ input,
 .ui-select-multiple.ui-select-bootstrap .ui-select-match-item {
     border-radius: 20px;
 }
+
+.ui-select-bootstrap>ul.ui-select-no-choice {
+    padding: 5px;
+}

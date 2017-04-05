@@ -1,6 +1,6 @@
 {
-    "t": ["a", "b", "c", "d", "e", "f"],
-    "l": [{
+    "atributos": ["a", "b", "c", "d", "e", "f"],
+    "dependencias": [{
         "implicante": ["a", "b"],
         "implicado": ["c"]
     }, {
