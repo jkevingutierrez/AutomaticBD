@@ -10,6 +10,7 @@ from app.Entities.ConversorART import ConversorART
 from app.Entities.ConversorATexto import ConversorATexto
 from app.Entities.Archivo import Archivo
 from app.Entities.RecubrimientoMinimo import RecubrimientoMinimo
+from app.Entities.AlgoritmoLlaves import AlgoritmoLlaves
 
 
 class NotFoundView(ListView):
@@ -67,9 +68,9 @@ class ServiceView(View):
 
         relacion = ConversorART.transformar(to_json)
 
-        atributo_invalido = relacion.validar_atributos()
+        atributos_validos = relacion.validar_atributos()
 
-        if atributo_invalido is True:
+        if atributos_validos is True:
             archivo = Archivo('Recubrimiento.txt')
             archivo.escribir('RECUBRIMIENTO M\u00CDNIMO\n')
             archivo.escribir('____________________\n\n')
@@ -99,6 +100,11 @@ class ServiceView(View):
             archivo.escribir('\tl3 = [')
             archivo.escribir(separador.join(texto_l3))
             archivo.escribir(']\n\n')
+
+            relacion_recubrimiento = relacion
+            relacion_recubrimiento.dependencias = l3
+
+            AlgoritmoLlaves.validar_z(relacion_recubrimiento)
 
             response = {
                 'original': to_json,
