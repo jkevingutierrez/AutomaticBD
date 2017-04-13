@@ -90,7 +90,7 @@
                         <label>Implicado</label>
                         <ui-select multiple ng-model="dependencia.implicado" theme="bootstrap" sortable="true">
                             <ui-select-match placeholder="Seleccionar Atributos">{$ $item $}</ui-select-match>
-                            <ui-select-choices repeat="atributo in vm.initialJson.dependencias | filter:$select.search">
+                            <ui-select-choices repeat="atributo in vm.initialJson.atributos | filter:$select.search">
                                 {$ atributo $}
                             </ui-select-choices>
                             <ui-select-no-choice>

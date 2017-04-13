@@ -110,7 +110,8 @@
             var files = $event.target.files;
 
             // Loop through the FileList and render image files as thumbnails.
-            for (var i = 0, file; file = files[i]; i++) {
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
                 var reader = new FileReader();
 
                 // Closure to capture the file information.
@@ -149,16 +150,31 @@
                 console.log(event);
                 var result = event.target.result;
                 var json = new Model();
-                var message;
+                var message = '';
 
                 try {
                     vm.hasErrors = false;
-                    json = JSON.parse(result);
-                    message = 'El archivo <i>' + theFile.name + '</i> se ha cargado exitosamente';
-                    messages.success(message);
+                    var temporalJson = JSON.parse(result);
+
+                    if (temporalJson.dependencias && temporalJson.atributos) {
+                        json = JSON.parse(result);
+                        message = 'El archivo <i>' + theFile.name + '</i> se ha cargado exitosamente';
+                        messages.success(message);
+                    } else {
+                        vm.hasErrors = true;
+                        message = 'Error cargando el archivo <i>' + theFile.name + '</i>';
+                        message = message + ': El archivo no contiene dependencias o atributos';
+
+                        console.error(message);
+                        messages.error(message);
+                    }
                 } catch (error) {
                     vm.hasErrors = true;
-                    message = 'Error cargando el archivo <i>' + theFile.name + '</i>: ' + error;
+                    message = 'Error cargando el archivo <i>' + theFile.name + '</i>';
+                    if (error) {
+                        message = message + ': ' + error;
+                    }
+
                     console.error(error);
                     messages.error(message);
                 }
@@ -223,7 +239,10 @@
                     vm.jsonExample = json;
                 }
             }).catch(function(error) {
-                var message = 'Error leyendo el archivo JSON desde <i>' + url + '</i>:  error';
+                var message = 'Error leyendo el archivo JSON desde <i>' + url + '</i>';
+                if (error & error.statusText) {
+                    message = message + ': ' + error.statusText();
+                }
                 console.error(error);
                 messages.error(message);
             });
@@ -246,7 +265,10 @@
                     saveFile(JSON.stringify(json, null, 4), fileName);
                 }
             }).catch(function(error) {
-                var message = 'Error exportando el archivo <i>' + fileName + '</i>: ' + error;
+                var message = 'Error exportando el archivo <i>' + fileName + '</i>';
+                if (error & error.statusText) {
+                    message = message + ': ' + error.statusText();
+                }
                 console.error(error);
                 messages.error(message);
             });
@@ -254,7 +276,8 @@
 
         function exportMinimalCover(json, fileName) {
             var output = {
-                recubrimiento: json.l3
+                atributos: vm.initialJson.atributos,
+                dependencias: json.l3
             };
             exportFile(output, fileName);
         }
@@ -283,18 +306,21 @@
                     console.log('calculateMinimalCover:');
                     console.log(response);
                     if (response.data) {
-                        var message = 'El recubrimiento mínimo se ha calculado exitosamente y se ha generado el archivo <i>Recubrimiento.txt</i>, el cual contiene el registro de las operaciones.';
+                        var message = 'El recubrimiento mínimo se ha calculado exitosamente y se ha generado el archivo <i>Salida.txt</i>, el cual contiene el registro de las operaciones.';
                         messages.success(message);
                         vm.solution = {};
                         vm.solution = response.data;
-                        saveFile(vm.solution.file, 'Recubrimiento.txt');
+                        saveFile(vm.solution.file, 'Salida.txt');
 
                         console.log('L1: ', transformDependencies(vm.solution.l1));
                         console.log('L2: ', transformDependencies(vm.solution.l2));
                         console.log('L3: ', transformDependencies(vm.solution.l3));
                     }
                 }).catch(function(error) {
-                    var message = 'Error calculando el recubrimiento mínimo: ' + error;
+                    var message = 'Error calculando el recubrimiento mínimo';
+                    if (error & error.statusText) {
+                        message = message + ': ' + error.statusText();
+                    }
                     console.error(error);
                     messages.error(message);
                 });
@@ -319,9 +345,14 @@
         }
 
         function replaceNonAlphaNumeric($item) {
-            var itemWithNonAlphanumeric = $item.toLowerCase().replace(/\W+/g, '');
             var lastIndex = vm.initialJson.atributos.length - 1;
-            vm.initialJson.atributos[lastIndex] = itemWithNonAlphanumeric;
+
+            if ($item) {
+                var itemWithNonAlphanumeric = $item.toLowerCase().replace(/\W+/g, '');
+                vm.initialJson.atributos[lastIndex] = itemWithNonAlphanumeric;
+            } else {
+                vm.initialJson.atributos.splice(lastIndex, 1);
+            }
         }
 
         function main() {

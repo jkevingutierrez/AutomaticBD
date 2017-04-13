@@ -1,5 +1,4 @@
 class Relacion:
-
     def __init__(self, atributos, dependencias):
         self.atributos = sorted(atributos)
         self.dependencias = dependencias

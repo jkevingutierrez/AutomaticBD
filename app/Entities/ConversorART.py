@@ -3,7 +3,6 @@ from app.Entities.Relacion import Relacion
 
 
 class ConversorART:
-
     @staticmethod
     def transformar(json):
         dependencias = []

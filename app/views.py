@@ -26,7 +26,6 @@ class IndexView(ListView):
 
 
 class FileView(View):
-
     @staticmethod
     def post(request):
         print('POST in FileView')
@@ -56,14 +55,12 @@ class FileView(View):
 
 
 class ServiceView(View):
-
     @staticmethod
     def post(request):
         print('POST in ServiceView')
 
         separador = ', '
 
-        # print('Raw Data: "%s"' % request.META)
         to_json = json.loads(request.body.decode("utf-8"))
 
         relacion = ConversorART.transformar(to_json)
@@ -71,7 +68,7 @@ class ServiceView(View):
         atributos_validos = relacion.validar_atributos()
 
         if atributos_validos is True:
-            archivo = Archivo('Recubrimiento.txt')
+            archivo = Archivo('Salida.txt')
             archivo.escribir('RECUBRIMIENTO M\u00CDNIMO\n')
             archivo.escribir('____________________\n\n')
             archivo.escribir('Modelo Original:\n')
@@ -101,10 +98,35 @@ class ServiceView(View):
             archivo.escribir(separador.join(texto_l3))
             archivo.escribir(']\n\n')
 
+            archivo.escribir('RecubrimientoMinimo = [')
+            archivo.escribir(separador.join(texto_l3))
+            archivo.escribir(']\n\n')
+
             relacion_recubrimiento = relacion
             relacion_recubrimiento.dependencias = l3
 
-            AlgoritmoLlaves.validar_z(relacion_recubrimiento)
+            archivo.escribir('\n\n')
+            archivo.escribir('CALCULO DE LLAVES\n')
+            archivo.escribir('____________________\n\n')
+
+            llaves = []
+            z = AlgoritmoLlaves.calcular_z(relacion_recubrimiento)
+
+            if AlgoritmoLlaves.validar_z(relacion_recubrimiento, z):
+                llaves = z
+            else:
+                w = AlgoritmoLlaves.calcular_w(relacion_recubrimiento)
+                v = AlgoritmoLlaves.calcular_v(relacion_recubrimiento, z, w)
+                m1 = []
+                m2 = []
+
+            archivo.escribir('\n\n')
+            archivo.escribir('Llaves candidatas = [')
+            archivo.escribir(ConversorATexto.transformar_atributos(llaves))
+            archivo.escribir(']')
+
+            print('Llaves:')
+            print(llaves)
 
             response = {
                 'original': to_json,
@@ -114,35 +136,35 @@ class ServiceView(View):
                 'file': ''
             }
 
-            full_path = smart_str(os.path.join(settings.BASE_DIR, 'Recubrimiento.txt'))
+            full_path = smart_str(os.path.join(settings.BASE_DIR, 'Salida.txt'))
 
             with open(full_path, 'r') as f:
                 response['file'] = f.read()
 
             for dependencia in l1:
                 elem = {
-                    'implicado': dependencia.implicado,
-                    'implicante': dependencia.implicante
+                    'implicante': dependencia.implicante,
+                    'implicado': dependencia.implicado
                 }
                 response['l1'].append(elem)
 
             for dependencia in l2:
                 elem = {
-                    'implicado': dependencia.implicado,
-                    'implicante': dependencia.implicante
+                    'implicante': dependencia.implicante,
+                    'implicado': dependencia.implicado
                 }
                 response['l2'].append(elem)
 
             for dependencia in l3:
                 elem = {
-                    'implicado': dependencia.implicado,
-                    'implicante': dependencia.implicante
+                    'implicante': dependencia.implicante,
+                    'implicado': dependencia.implicado
                 }
                 response['l3'].append(elem)
 
             return JsonResponse(response)
 
-        return HttpResponseBadRequest('El atributo "' + atributo_invalido + '" no se encuentra definido')
+        return HttpResponseBadRequest('El atributo "' + atributos_validos + '" no se encuentra definido')
 
         # response_json = json.dumps([ob.__dict__ for ob in l1], sort_keys=True)
         # return JsonResponse(response_json, safe=False)

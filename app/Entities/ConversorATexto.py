@@ -1,5 +1,4 @@
 class ConversorATexto:
-
     @staticmethod
     def transformar_dependencias(dependencias):
         textoDependencias = []
@@ -13,4 +12,10 @@ class ConversorATexto:
     def transformar_dependencia(dependencia):
         separador = '.'
         texto = separador.join(dependencia.implicante) + ' -> ' + separador.join(dependencia.implicado)
+        return texto
+
+    @staticmethod
+    def transformar_atributos(atributos):
+        separador = ', '
+        texto = separador.join(atributos)
         return texto

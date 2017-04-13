@@ -101,6 +101,8 @@ ENV/
 .idea/
 
 # Custom files
+modelo.json
 salida.json
 Recubrimiento.txt
 salida.json
+Salida.txt
