@@ -1,6 +1,6 @@
 from app.Entities.Archivo import Archivo
-from app.Entities.ConversorATexto import ConversorATexto
 from app.Entities.Cierre import Cierre
+from app.Entities.ConversorATexto import ConversorATexto
 
 
 class AlgoritmoLlaves:
@@ -84,7 +84,6 @@ class AlgoritmoLlaves:
         print('m2:')
         print(m1)
         return m1
-
 
 
 def quitar_atributos(atributos_totales, atributos_a_quitar):

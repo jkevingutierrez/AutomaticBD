@@ -1,8 +1,8 @@
-from app.Entities.DependenciaFuncional import DependenciaFuncional
-from app.Entities.Cierre import Cierre
 from app.Entities.Archivo import Archivo
-from app.Entities.ConversorATexto import ConversorATexto
 from app.Entities.Buscador import Buscador
+from app.Entities.Cierre import Cierre
+from app.Entities.ConversorATexto import ConversorATexto
+from app.Entities.DependenciaFuncional import DependenciaFuncional
 
 
 class RecubrimientoMinimo:

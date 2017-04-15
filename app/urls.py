@@ -1,6 +1,7 @@
 from django.conf.urls import url
-from app.views import IndexView, ServiceView, FileView
 from django.views.decorators.csrf import csrf_exempt
+
+from app.views import IndexView, ServiceView, FileView
 
 urlpatterns = [
     url(r'^$', IndexView.as_view(), name='index'),
