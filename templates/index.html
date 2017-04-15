@@ -9,21 +9,21 @@
     <meta name="description" content="Calculo del recubrimiento mínimo">
     <meta name="author" content="co-authored by Kevin Gutierrez, Alfonso Fernandez">
     <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}">
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/angular-ui-select/0.20.0/select.min.css" integrity="sha256-ungueNM7AC3np67X7MdpZlRH6Oxl6KyX2IXyDTm2D3w=" crossorigin="anonymous">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/angular-ui-select/0.20.0/select.min.css">
     <link rel="stylesheet" href="//cdn.rawgit.com/alertifyjs/alertify.js/v1.0.10/dist/css/alertify.css">
-    <link rel="stylesheet" href="{% static 'styles/vendor/sweetalert.css' %}">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
     <link rel="stylesheet" href="{% static 'styles/style.css' %}">
     <title>AutomaticBD</title>
 </head>
 
 <body>
-    <header>
+    <header class="header">
         <div class="container">
             <h1>{{ projectName }}</h1>
         </div>
     </header>
-    <main ng-view>
+    <main class="main" ng-view>
         <div ng-if="::false" class="waiting-giff">
             <!-- <div class="loader" title="Cargando...">Cargando...</div> -->
             <div class="loading-title">
@@ -42,16 +42,21 @@
             </div>
         </div>
     </main>
-    <script src="//code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <footer class="footer">
+        <div class="copyright-container">
+            <p class="copyright">Copyright 2017 Kevin Gutierrez, Alfonso Fernandez. All Rights Reserved</p>
+        </div>
+    </footer>
+    <script src="//code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular-route.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular-sanitize.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-select/0.20.0/select.min.js"></script>
     <script src="//cdn.rawgit.com/alertifyjs/alertify.js/v1.0.10/dist/js/alertify.js"></script>
     <script src="//cdn.rawgit.com/alertifyjs/alertify.js/v1.0.10/dist/js/ngAlertify.js"></script>
-    <script src="{% static 'javascript/vendor/sweetalert.min.js' %}"></script>
-    <script src="{% static 'javascript/vendor/ngSweetAlert.min.js' %}"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-sweetalert/1.1.2/SweetAlert.min.js"></script>
     <script src="{% static 'javascript/app/app.js' %}"></script>
     <script src="{% static 'javascript/app/config.js' %}"></script>
     <script src="{% static 'javascript/app/run.js' %}"></script>

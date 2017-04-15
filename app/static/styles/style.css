@@ -1,4 +1,6 @@
 @import 'components/basic.css';
+@import 'components/footer.css';
+@import 'components/main.css';
 @import 'components/waiting.css';
 @import 'components/panel.css';
 @import 'components/input.css';
@@ -9,7 +11,7 @@
 @import 'components/grid.css';
 @import 'components/help.css';
 @import 'components/dialog.css';
-@import 'components/message.css';
+@import 'components/alertify.css';
 @import 'components/alert.css';
 @import 'components/atributo.css';
 @import 'components/dependency.css';

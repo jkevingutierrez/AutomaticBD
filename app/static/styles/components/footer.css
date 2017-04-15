@@ -1,0 +1,16 @@
+.footer {
+    background-color: #243141;
+    bottom: 0;
+    color: #bac4d0;
+    padding: 10px 10px 0;
+    position: fixed;
+    width: 100%;
+}
+
+.footer .copyright-container {
+    width: 100%;
+}
+
+.footer .copyright {
+    text-align: center;
+}
