@@ -26,7 +26,7 @@ class AlgoritmoLlaves:
         Archivo.escribir_sobre_archivo_existente('Salida.txt', 'Paso 1 Calcular Z:\n\n')
 
         atributos_implicado = extraer_atributos_implicado(relacion.dependencias)
-        z = quitar_atributos(relacion.atributos, atributos_implicado)
+        z = sorted(quitar_atributos(relacion.atributos, atributos_implicado))
 
         Archivo.escribir_sobre_archivo_existente('Salida.txt', '\tZ = [')
         Archivo.escribir_sobre_archivo_existente('Salida.txt', ConversorATexto.transformar_atributos(z))
