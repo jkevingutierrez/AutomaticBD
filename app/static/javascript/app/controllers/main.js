@@ -75,6 +75,8 @@
 
         vm.initTabs = initTabs;
 
+        vm.formatKeys = formatKeys;
+
         function addDependency() {
             if (!vm.initialJson.atributos || vm.initialJson.atributos.length === 0) {
                 var message = 'Error agregando la dependencia: Para agregar una dependencia debe existir al menos un atributo.';
@@ -362,6 +364,28 @@
                 messages.error(message);
             }
 
+        }
+
+        function formatKeys(keys) {
+            var text = '[ ';
+
+            for (var keyIndex = 0; keyIndex < keys.length; keyIndex++) {
+                var key = keys[keyIndex];
+
+                if (typeof key === 'string') {
+                    text += keys.join(', ');
+                    break;
+                } else if (key instanceof Array && key.length > 0) {
+                    for (var varIndex = 0; varIndex < key.length; varIndex++) {
+                        text += '[';
+                        text += key.join(', ');
+                        text += ']';
+                    }
+                }
+            }
+
+            text += ' ]';
+            return text;
         }
 
         function transformDependencies(dependencies) {

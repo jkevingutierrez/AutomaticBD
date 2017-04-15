@@ -165,7 +165,7 @@
                 <div id="keys" class="tab-pane fade in active">
                     <h4>Llaves Candidatas:</h4>
                     <div class="keys-container">
-                        <pre>[{$ vm.solution.keys.join(', ') $}]</pre>
+                        <pre>{$ vm.solution.keys | json $}</pre>
                     </div>
                 </div>
                 <div id="minimalCover" class="tab-pane fade">

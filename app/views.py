@@ -109,7 +109,6 @@ class ServiceView(View):
             archivo.escribir('\n\nCALCULO DE LLAVES\n')
             archivo.escribir('____________________\n\n')
 
-            llaves = []
             z = AlgoritmoLlaves.calcular_z(relacion_recubrimiento)
             cierre_z = Cierre.calcular_cierre(z, relacion.dependencias, 'Z')
 
@@ -118,13 +117,11 @@ class ServiceView(View):
             else:
                 w = AlgoritmoLlaves.calcular_w(relacion_recubrimiento)
                 v = AlgoritmoLlaves.calcular_v(relacion_recubrimiento, cierre_z, w)
-                m1 = []
-                m2 = []
+                llaves = AlgoritmoLlaves.iterar(v, z, relacion)
 
             archivo.escribir('\n\n')
-            archivo.escribir('Llaves candidatas = [')
-            archivo.escribir(ConversorATexto.transformar_atributos(llaves))
-            archivo.escribir(']')
+            archivo.escribir('Llaves candidatas = ')
+            archivo.escribir(ConversorATexto.transformar_llaves(llaves))
 
             print('Llaves:')
             print(llaves)

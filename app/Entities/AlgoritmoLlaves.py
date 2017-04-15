@@ -1,5 +1,6 @@
 from app.Entities.Archivo import Archivo
 from app.Entities.ConversorATexto import ConversorATexto
+from app.Entities.Cierre import Cierre
 
 
 class AlgoritmoLlaves:
@@ -60,6 +61,31 @@ class AlgoritmoLlaves:
 
         return w
 
+    @staticmethod
+    def iterar(v, z, relacion):
+        Archivo.escribir_sobre_archivo_existente('Salida.txt', '\nPaso 4 Iterar sobre ZuV:\n\n')
+        m1 = []
+        m2 = []
+
+        if (len(z) > 0):
+            for variable_z in z:
+                for variable_v in v:
+                    print('Iterando')
+                    variables = [variable_z, variable_v]
+                    Cierre.calcular_cierre(variables, relacion.dependencias)
+                    m1.append(variables)
+
+        else:
+            for variable_v in v:
+                variables = [variable_v]
+                Cierre.calcular_cierre(variables, relacion.dependencias)
+                m1.append(variables)
+
+        print('m2:')
+        print(m1)
+        return m1
+
+
 
 def quitar_atributos(atributos_totales, atributos_a_quitar):
     atributos_resultantes = [atributo for atributo in atributos_totales if atributo not in atributos_a_quitar]
@@ -82,6 +108,11 @@ def extraer_atributos_implicado(dependencias):
             if atributo not in atributos:
                 atributos.append(atributo)
     return atributos
+
+
+def diferencia(a, b):
+    b = set(b)
+    return [item for item in a if item not in b]
 
 
 def union(a, b):

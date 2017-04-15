@@ -19,3 +19,19 @@ class ConversorATexto:
         separador = ', '
         texto = separador.join(atributos)
         return texto
+
+    @staticmethod
+    def transformar_llaves(llaves):
+        texto = '[ '
+        separador = ', '
+        for llave in llaves:
+            if type(llave) is list and len(llave) > 0:
+                texto += '['
+                texto += separador.join(llave)
+                texto += ']'
+            elif type(llave) is str:
+                texto += separador.join(llaves)
+                break
+
+        texto += ' ]'
+        return texto
