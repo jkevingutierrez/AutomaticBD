@@ -1,4 +1,4 @@
-Django==1.10.4
-gunicorn==19.6.0
+Django==1.10.7
+gunicorn==19.7.1
 whitenoise==3.2
 django-htmlmin==0.10.0
