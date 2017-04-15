@@ -60,7 +60,7 @@
         $httpProvider.interceptors.push('httpInterceptor');
 
         $routeProvider.when('/', {
-            templateUrl: 'static/templates/main.html',
+            templateUrl: 'static/javascript/app/templates/main.html',
             controller: 'MainController',
             controllerAs: 'vm'
         }).otherwise({
