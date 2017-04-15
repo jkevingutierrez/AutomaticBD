@@ -19,7 +19,8 @@ class Archivo:
         self.file.write(texto)
         self.file.close()
 
-    def escribir_sobre_archivo_existente(self, nombre, texto):
-        self.file = open(os.path.join(settings.BASE_DIR, nombre), "a+")
-        self.file.write(texto)
-        self.file.close()
+    @staticmethod
+    def escribir_sobre_archivo_existente(nombre, texto):
+        file = open(os.path.join(settings.BASE_DIR, nombre), "a+")
+        file.write(texto)
+        file.close()

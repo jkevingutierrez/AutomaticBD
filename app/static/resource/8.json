@@ -1,0 +1,50 @@
+{
+    "atributos": [
+        "a",
+        "b",
+        "c",
+        "d",
+        "e",
+        "f",
+        "g"
+    ],
+    "dependencias": [
+        {
+            "implicante": [
+                "a",
+                "b"
+            ],
+            "implicado": [
+                "c"
+            ]
+        },
+        {
+            "implicante": [
+                "b",
+                "d"
+            ],
+            "implicado": [
+                "f",
+                "g"
+            ]
+        },
+        {
+            "implicante": [
+                "a",
+                "e"
+            ],
+            "implicado": [
+                "c"
+            ]
+        },
+        {
+            "implicante": [
+                "c"
+            ],
+            "implicado": [
+                "d",
+                "e"
+            ]
+        }
+    ]
+}

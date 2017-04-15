@@ -49,7 +49,7 @@
 
         vm.initPanel = initPanel;
 
-        vm.calculateMinimalCover = calculateMinimalCover;
+        vm.calculateKeys = calculateKeys;
 
         vm.exportFile = exportFile;
 
@@ -61,6 +61,8 @@
 
         vm.clearFile = clearFile;
 
+        vm.clearModel = clearModel;
+
         vm.addDependency = addDependency;
 
         vm.removeDependency = removeDependency;
@@ -68,6 +70,10 @@
         vm.transformDependencies = transformDependencies;
 
         vm.replaceNonAlphaNumeric = replaceNonAlphaNumeric;
+
+        vm.sortOnSelect = sortOnSelect;
+
+        vm.initTabs = initTabs;
 
         function addDependency() {
             if (!vm.initialJson.atributos || vm.initialJson.atributos.length === 0) {
@@ -133,12 +139,36 @@
                 },
                 function(isConfirm) {
                     if (isConfirm) {
-                        var message = 'El archivo y el modelo han sido eliminados.';
+                        var message = 'El archivo y el modelo han sido eliminados exitosamente.';
                         messages.success(message);
                         vm.hasErrors = false;
                         vm.currentFile = undefined;
                         vm.solution = undefined;
                         vm.initialJson = new Model();
+                        vm.atributos = vm.initialJson.atributos || [];
+                        $('input[type=file]').val('');
+                    }
+                });
+        }
+
+        function clearModel() {
+            SweetAlert.swal({
+                    title: '¿Desea continuar?',
+                    text: 'Esta a punto de borrar el modelo atual.',
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#DD6B55',
+                    confirmButtonText: 'Continuar',
+                    cancelButtonText: 'Cancelar'
+                },
+                function(isConfirm) {
+                    if (isConfirm) {
+                        var message = 'El modelo ha sido eliminado exitosamente.';
+                        messages.success(message);
+                        vm.hasErrors = false;
+                        vm.solution = undefined;
+                        vm.initialJson = new Model();
+                        vm.atributos = vm.initialJson.atributos || [];
                         $('input[type=file]').val('');
                     }
                 });
@@ -181,6 +211,7 @@
 
                 $scope.$apply(function() {
                     vm.initialJson = angular.copy(json);
+                    vm.initialJson.atributos.sort();
                     vm.currentFile = {
                         name: theFile.name,
                         size: theFile.size,
@@ -294,7 +325,7 @@
             window.URL.revokeObjectURL(url);
         }
 
-        function calculateMinimalCover(json) {
+        function calculateKeys(json) {
             if (json && json.atributos && json.atributos.length > 0 && json.dependencias && json.dependencias.length > 0) {
                 $http({
                     method: 'POST',
@@ -303,7 +334,7 @@
                     contentType: 'application/json; charset=utf-8',
                     dataType: 'json'
                 }).then(function(response) {
-                    console.log('calculateMinimalCover:');
+                    console.log('calculateKeys:');
                     console.log(response);
                     if (response.data) {
                         var message = 'El recubrimiento mínimo se ha calculado exitosamente y se ha generado el archivo <i>Salida.txt</i>, el cual contiene el registro de las operaciones.';
@@ -315,6 +346,7 @@
                         console.log('L1: ', transformDependencies(vm.solution.l1));
                         console.log('L2: ', transformDependencies(vm.solution.l2));
                         console.log('L3: ', transformDependencies(vm.solution.l3));
+                        console.log('Llaves: ', vm.solution.keys);
                     }
                 }).catch(function(error) {
                     var message = 'Error calculando el recubrimiento mínimo';
@@ -353,6 +385,20 @@
             } else {
                 vm.initialJson.atributos.splice(lastIndex, 1);
             }
+
+            vm.initialJson.atributos.sort();
+        }
+
+        function sortOnSelect(list) {
+            list.sort();
+        }
+
+        function initTabs() {
+            $('#tabs a').click(function(e) {
+                console.log('click');
+                e.preventDefault();
+                $(this).tab('show');
+            });
         }
 
         function main() {

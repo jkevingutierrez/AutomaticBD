@@ -1,4 +1,3 @@
-from app.Entities.Cierre import Cierre
 from app.Entities.Archivo import Archivo
 from app.Entities.ConversorATexto import ConversorATexto
 
@@ -9,37 +8,56 @@ class AlgoritmoLlaves:
         return dependencias
 
     @staticmethod
-    def validar_z(relacion, z):
-        archivo = Archivo()
-        archivo.escribir_sobre_archivo_existente('Salida.txt', 'Paso 2 Validar cierre de Z:\n\n')
+    def validar_cierre_z(relacion, cierre_z):
+        Archivo.escribir_sobre_archivo_existente('Salida.txt', 'Paso 2 Validar cierre de Z:\n\n')
 
-        cierre_z = Cierre.calcular_cierre(z, relacion.dependencias)
-        return set(cierre_z) == set(relacion.atributos)
+        es_igual = set(cierre_z) == set(relacion.atributos)
+
+        if es_igual:
+            Archivo.escribir_sobre_archivo_existente('Salida.txt', '\tCierre(Z) == atributos\n\n')
+        else:
+            Archivo.escribir_sobre_archivo_existente('Salida.txt', '\tCierre(Z) != atributos\n\n')
+
+        return es_igual
 
     @staticmethod
     def calcular_z(relacion):
-        archivo = Archivo()
-        archivo.escribir_sobre_archivo_existente('Salida.txt', 'Paso 1 Calcular Z:\n\n')
+        Archivo.escribir_sobre_archivo_existente('Salida.txt', 'Paso 1 Calcular Z:\n\n')
 
         atributos_implicado = extraer_atributos_implicado(relacion.dependencias)
         z = quitar_atributos(relacion.atributos, atributos_implicado)
 
-        archivo.escribir_sobre_archivo_existente('Salida.txt', '\tZ = [')
-        archivo.escribir_sobre_archivo_existente('Salida.txt', ConversorATexto.transformar_atributos(z))
-        archivo.escribir_sobre_archivo_existente('Salida.txt', ']\n\n')
+        Archivo.escribir_sobre_archivo_existente('Salida.txt', '\tZ = [')
+        Archivo.escribir_sobre_archivo_existente('Salida.txt', ConversorATexto.transformar_atributos(z))
+        Archivo.escribir_sobre_archivo_existente('Salida.txt', ']\n\n')
 
         return z
 
     @staticmethod
-    def calcular_v(relacion, z, w):
-        cierre_z = Cierre.calcular_cierre(z, relacion.dependencias)
+    def calcular_v(relacion, cierre_z, w):
+        Archivo.escribir_sobre_archivo_existente('Salida.txt', 'Paso 4 Calcular V:\n\n')
+
         cierre_z_union_w = union(cierre_z, w)
-        return quitar_atributos(relacion.atributos, cierre_z_union_w)
+
+        v = sorted(quitar_atributos(relacion.atributos, cierre_z_union_w))
+
+        Archivo.escribir_sobre_archivo_existente('Salida.txt', '\tV = [')
+        Archivo.escribir_sobre_archivo_existente('Salida.txt', ConversorATexto.transformar_atributos(v))
+        Archivo.escribir_sobre_archivo_existente('Salida.txt', ']\n\n')
+
+        return v
 
     @staticmethod
     def calcular_w(relacion):
+        Archivo.escribir_sobre_archivo_existente('Salida.txt', '\nPaso 3 Calcular W:\n\n')
+
         atributos_implicante = extraer_atributos_implicante(relacion.dependencias)
         w = quitar_atributos(relacion.atributos, atributos_implicante)
+
+        Archivo.escribir_sobre_archivo_existente('Salida.txt', '\tW = [')
+        Archivo.escribir_sobre_archivo_existente('Salida.txt', ConversorATexto.transformar_atributos(w))
+        Archivo.escribir_sobre_archivo_existente('Salida.txt', ']\n\n')
+
         return w
 
 

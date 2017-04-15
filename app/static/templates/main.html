@@ -47,7 +47,7 @@
                 </div>
             </div>
             <div class="form-group col-sm-2 text-right sm-center">
-                <button type="button" class="btn btn-danger" ng-click="vm.clearFile(vm.initialJson)" ng-disabled="!vm.currentFile">
+                <button type="button" class="btn btn-danger" ng-click="vm.clearFile()" ng-disabled="!vm.currentFile">
                     <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Borrar Archivo
                 </button>
             </div>
@@ -76,7 +76,7 @@
                 <div class="row">
                     <div class="form-group col-sm-6">
                         <label>Implicante</label>
-                        <ui-select multiple ng-model="dependencia.implicante" theme="bootstrap" sortable="true">
+                        <ui-select multiple ng-model="dependencia.implicante" theme="bootstrap" on-select="vm.sortOnSelect(dependencia.implicante)" sortable="true">
                             <ui-select-match placeholder="Seleccionar Atributos">{$ $item $}</ui-select-match>
                             <ui-select-choices repeat="atributo in vm.initialJson.atributos | filter:$select.search">
                                 {$ atributo $}
@@ -88,7 +88,7 @@
                     </div>
                     <div class="form-group col-sm-6">
                         <label>Implicado</label>
-                        <ui-select multiple ng-model="dependencia.implicado" theme="bootstrap" sortable="true">
+                        <ui-select multiple ng-model="dependencia.implicado" theme="bootstrap" on-select="vm.sortOnSelect(dependencia.implicado)" sortable="true">
                             <ui-select-match placeholder="Seleccionar Atributos">{$ $item $}</ui-select-match>
                             <ui-select-choices repeat="atributo in vm.initialJson.atributos | filter:$select.search">
                                 {$ atributo $}
@@ -112,21 +112,30 @@
             </div>
         </div>
     </div>
-    <div class="form-group" ng-if="!vm.solution.original">
-        <h4>Modelo:</h4>
-    </div>
-    <div class="panel-group" id="accordion-initial" data-ng-init="vm.initPanel()" ng-if="!vm.solution.original">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h5 class="panel-title">
-                    <a class="small" data-toggle="collapse" data-parent="#accordion-initial" href="#collapse-initial" role="button">JSON</a>
-                    <i class="indicator glyphicon glyphicon-menu-down pull-right" aria-hidden="true"></i>
-                </h5>
-            </div>
-            <div id="collapse-initial" class="panel-collapse collapse">
-                <div class="panel-body">
-                    <pre>{$ vm.initialJson | json $}</pre>
+    <div class="models">
+        <div class="form-group" ng-if="!vm.solution.original">
+            <h4>Modelo:</h4>
+        </div>
+        <div class="panel-group" id="accordion-initial" data-ng-init="vm.initPanel()" ng-if="!vm.solution.original">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h5 class="panel-title">
+                        <a class="small" data-toggle="collapse" data-parent="#accordion-initial" href="#collapse-initial" role="button">JSON</a>
+                        <i class="indicator glyphicon glyphicon-menu-down pull-right" aria-hidden="true"></i>
+                    </h5>
                 </div>
+                <div id="collapse-initial" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <pre>{$ vm.initialJson | json $}</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="actions">
+            <div class="form-group sm-center">
+                <button type="button" class="btn btn-danger" ng-click="vm.clearModel()" ng-disabled="!vm.initialJson || (!vm.initialJson.dependencias && !vm.initialJson.atributos) || (vm.initialJson.dependencias.length === 0 && vm.initialJson.atributos.length === 0)">
+                    <span class="glyphicon glyphicon-off" aria-hidden="true"></span> Limpiar modelo
+                </button>
             </div>
         </div>
     </div>
@@ -135,70 +144,89 @@
             <button type="button" class="btn btn-default" ng-click="vm.exportFile(vm.initialJson, 'modelo.json')" ng-disabled="!vm.initialJson || !vm.initialJson.dependencias || !vm.initialJson.atributos">
                 <span class="glyphicon glyphicon-save" aria-hidden="true"></span> Exportar relación actual a JSON
             </button>
-            <button type="button" class="btn btn-default" ng-click="vm.calculateMinimalCover(vm.initialJson)" ng-disabled="!vm.initialJson || !vm.initialJson.dependencias || !vm.initialJson.atributos || vm.initialJson.atributos.length === 0 || vm.initialJson.dependencias.length === 0">
-                <span class="glyphicon glyphicon-th" aria-hidden="true"></span> Calcular Recubrimiento Mínimo
+            <button type="button" class="btn btn-default" ng-click="vm.calculateKeys(vm.initialJson)" ng-disabled="!vm.initialJson || !vm.initialJson.dependencias || !vm.initialJson.atributos || vm.initialJson.atributos.length === 0 || vm.initialJson.dependencias.length === 0">
+                <span class="glyphicon glyphicon-th" aria-hidden="true"></span> Calcular Llaves
             </button>
             <button type="button" class="btn btn-default" ng-click="vm.exportMinimalCover(vm.solution, 'recubrimiento.json')" ng-disabled="!vm.solution || !vm.solution.l3">
                 <span class="glyphicon glyphicon-save" aria-hidden="true"></span> Exportar recubrimiento mínimo a JSON
             </button>
         </div>
     </div>
-    <div class="form-group" ng-if="vm.solution.original">
-        <h4>Resultado:</h4>
-    </div>
-    <div class="panel-group" id="accordion" data-ng-init="vm.initPanel()" ng-if="vm.solution.original">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h5 class="panel-title">
-                    <a class="small" data-toggle="collapse" data-parent="#accordion" href="#collapse1" role="button">Original JSON</a>
-                    <i class="indicator glyphicon glyphicon-menu-down pull-right" aria-hidden="true"></i>
-                </h5>
-            </div>
-            <div id="collapse1" class="panel-collapse collapse">
-                <div class="panel-body">
-                    <pre>{$ vm.solution.original | json $}</pre>
-                </div>
-            </div>
+    <div class="results" ng-if="vm.solution.original">
+        <div class="form-group">
+            <h3>Resultados:</h3>
         </div>
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h5 class="panel-title">
-                    <a class="small" data-toggle="collapse" data-parent="#accordion" href="#collapse2" role="button">L1</a>
-                    <i class="indicator glyphicon glyphicon-menu-down pull-right" aria-hidden="true"></i>
-                </h5>
-            </div>
-            <div id="collapse2" class="panel-collapse collapse">
-                <div class="panel-body">
-                    {$ vm.transform(vm.solution.l1) $}
-                    <pre>{$ vm.solution.l1 | json $}</pre>
+        <div class="tab-group">
+            <ul class="nav nav-tabs" id="tabs" ng-init="vm.initTabs()">
+                <li class="active" role="presentation"><a data-toggle="tab" href="#keys" aria-controls="keys" aria-expanded="true">Llaves candidatas</a></li>
+                <li role="presentation"><a data-toggle="tab" href="#minimalCover" aria-controls="minimalCover" aria-expanded="minimalCover">Recubrimiento Mínimo</a></li>
+            </ul>
+            <div class="tab-content">
+                <div id="keys" class="tab-pane fade in active">
+                    <h4>Llaves Candidatas:</h4>
+                    <div class="keys-container">
+                        <pre>[{$ vm.solution.keys.join(', ') $}]</pre>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h5 class="panel-title">
-                    <a class="small" data-toggle="collapse" data-parent="#accordion" href="#collapse3" role="button">L2</a>
-                    <i class="indicator glyphicon glyphicon-menu-down pull-right" aria-hidden="true"></i>
-                </h5>
-            </div>
-            <div id="collapse3" class="panel-collapse collapse">
-                <div class="panel-body">
-                    {$ vm.transform(vm.solution.l2) $}
-                    <pre>{$ vm.solution.l2 | json $}</pre>
-                </div>
-            </div>
-        </div>
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h5 class="panel-title">
-                    <a class="small" data-toggle="collapse" data-parent="#accordion" href="#collapse4" role="button">L3 - Recubrimiento mínimo</a>
-                    <i class="indicator glyphicon glyphicon-menu-down pull-right" aria-hidden="true"></i>
-                </h5>
-            </div>
-            <div id="collapse4" class="panel-collapse collapse">
-                <div class="panel-body">
-                    {$ vm.transform(vm.solution.l3) $}
-                    <pre>{$ vm.solution.l3 | json $}</pre>
+                <div id="minimalCover" class="tab-pane fade">
+                    <h4>Recubrimiento Mínimo:</h4>
+                    <div class="panel-group" id="accordion" data-ng-init="vm.initPanel()">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h5 class="panel-title">
+                                    <a class="small" data-toggle="collapse" data-parent="#accordion" href="#collapse1" role="button">Original JSON</a>
+                                    <i class="indicator glyphicon glyphicon-menu-down pull-right" aria-hidden="true"></i>
+                                </h5>
+                            </div>
+                            <div id="collapse1" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <pre>{$ vm.solution.original | json $}</pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h5 class="panel-title">
+                                    <a class="small" data-toggle="collapse" data-parent="#accordion" href="#collapse2" role="button">L1</a>
+                                    <i class="indicator glyphicon glyphicon-menu-down pull-right" aria-hidden="true"></i>
+                                </h5>
+                            </div>
+                            <div id="collapse2" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    {$ vm.transform(vm.solution.l1) $}
+                                    <pre>{$ vm.solution.l1 | json $}</pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h5 class="panel-title">
+                                    <a class="small" data-toggle="collapse" data-parent="#accordion" href="#collapse3" role="button">L2</a>
+                                    <i class="indicator glyphicon glyphicon-menu-down pull-right" aria-hidden="true"></i>
+                                </h5>
+                            </div>
+                            <div id="collapse3" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    {$ vm.transform(vm.solution.l2) $}
+                                    <pre>{$ vm.solution.l2 | json $}</pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h5 class="panel-title">
+                                    <a class="small" data-toggle="collapse" data-parent="#accordion" href="#collapse4" role="button">L3 - Recubrimiento mínimo</a>
+                                    <i class="indicator glyphicon glyphicon-menu-down pull-right" aria-hidden="true"></i>
+                                </h5>
+                            </div>
+                            <div id="collapse4" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    {$ vm.transform(vm.solution.l3) $}
+                                    <pre>{$ vm.solution.l3 | json $}</pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

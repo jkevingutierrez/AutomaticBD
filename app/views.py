@@ -11,6 +11,7 @@ from app.Entities.ConversorATexto import ConversorATexto
 from app.Entities.Archivo import Archivo
 from app.Entities.RecubrimientoMinimo import RecubrimientoMinimo
 from app.Entities.AlgoritmoLlaves import AlgoritmoLlaves
+from app.Entities.Cierre import Cierre
 
 
 class NotFoundView(ListView):
@@ -105,18 +106,18 @@ class ServiceView(View):
             relacion_recubrimiento = relacion
             relacion_recubrimiento.dependencias = l3
 
-            archivo.escribir('\n\n')
-            archivo.escribir('CALCULO DE LLAVES\n')
+            archivo.escribir('\n\nCALCULO DE LLAVES\n')
             archivo.escribir('____________________\n\n')
 
             llaves = []
             z = AlgoritmoLlaves.calcular_z(relacion_recubrimiento)
+            cierre_z = Cierre.calcular_cierre(z, relacion.dependencias, 'Z')
 
-            if AlgoritmoLlaves.validar_z(relacion_recubrimiento, z):
+            if AlgoritmoLlaves.validar_cierre_z(relacion_recubrimiento, cierre_z):
                 llaves = z
             else:
                 w = AlgoritmoLlaves.calcular_w(relacion_recubrimiento)
-                v = AlgoritmoLlaves.calcular_v(relacion_recubrimiento, z, w)
+                v = AlgoritmoLlaves.calcular_v(relacion_recubrimiento, cierre_z, w)
                 m1 = []
                 m2 = []
 
@@ -133,7 +134,8 @@ class ServiceView(View):
                 'l1': [],
                 'l2': [],
                 'l3': [],
-                'file': ''
+                'file': '',
+                'keys': llaves
             }
 
             full_path = smart_str(os.path.join(settings.BASE_DIR, 'Salida.txt'))
