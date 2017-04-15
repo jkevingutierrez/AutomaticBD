@@ -38,7 +38,7 @@
             <div class="form-group col-sm-10" ng-class="{ 'has-error' : (form.$invalid && form.file.$touched) || vm.hasErrors, 'has-success': form.$valid && !vm.hasErrors && vm.initialJson }">
                 <div class="input-group">
                     <label class="input-group-btn">
-                        <span class="btn btn-primary">
+                        <span title="Cargar un archivo .json o .txt al modelo" class="btn btn-primary">
                             <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span> Cargar Archivo
                         </span>
                         <input type="file" accept=".json,.txt" custom-on-change="vm.uploadFile" ng-model="vm.currentFile">
@@ -47,7 +47,7 @@
                 </div>
             </div>
             <div class="form-group col-sm-2 text-right sm-center">
-                <button type="button" class="btn btn-danger" ng-click="vm.clearFile()" ng-disabled="!vm.currentFile">
+                <button title="Borrar Archivo y limpiar el modelo actual" type="button" class="btn btn-danger" ng-click="vm.clearFile()" ng-disabled="!vm.currentFile">
                     <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Borrar Archivo
                 </button>
             </div>
@@ -100,13 +100,13 @@
                     </div>
                 </div>
                 <div class="form-group text-right sm-center">
-                    <button type="button" class="btn btn-danger" ng-click="vm.removeDependency($index)">
+                    <button type="button" title="Eliminar dependencia actual del modelo" class="btn btn-danger" ng-click="vm.removeDependency($index)">
                         <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Eliminar Dependencia
                     </button>
                 </div>
             </div>
             <div class="form-group dependency-button sm-center">
-                <button type="button" class="btn btn-success" ng-click="vm.addDependency()" ng-disabled="(!vm.initialJson.atributos || vm.initialJson.atributos.length === 0)">
+                <button type="button" title="Agregar una nueva dependencia al modelo" class="btn btn-success" ng-click="vm.addDependency()" ng-disabled="(!vm.initialJson.atributos || vm.initialJson.atributos.length === 0)">
                     <span class="glyphicon glyphicon-plus sm-center" aria-hidden="true"></span> Agregar Dependencia
                 </button>
             </div>
@@ -119,7 +119,7 @@
         <div class="panel-group" id="accordion-initial" data-ng-init="vm.initPanel()" ng-if="!vm.solution.original">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h5 class="panel-title">
+                    <h5 class="panel-title" title="Abrir/Ocultar modelo">
                         <a class="small" data-toggle="collapse" data-parent="#accordion-initial" href="#collapse-initial" role="button">JSON</a>
                         <i class="indicator glyphicon glyphicon-menu-down pull-right" aria-hidden="true"></i>
                     </h5>
@@ -133,7 +133,7 @@
         </div>
         <div class="actions">
             <div class="form-group sm-center">
-                <button type="button" class="btn btn-danger" ng-click="vm.clearModel()" ng-disabled="!vm.initialJson || (!vm.initialJson.dependencias && !vm.initialJson.atributos) || (vm.initialJson.dependencias.length === 0 && vm.initialJson.atributos.length === 0)">
+                <button type="button" title="Limpiar modelo actual" class="btn btn-danger" ng-click="vm.clearModel()" ng-disabled="!vm.initialJson || (!vm.initialJson.dependencias && !vm.initialJson.atributos) || (vm.initialJson.dependencias.length === 0 && vm.initialJson.atributos.length === 0)">
                     <span class="glyphicon glyphicon-off" aria-hidden="true"></span> Limpiar modelo
                 </button>
             </div>
@@ -141,13 +141,13 @@
     </div>
     <div class="actions">
         <div class="form-group sm-center">
-            <button type="button" class="btn btn-default" ng-click="vm.calculateKeys(vm.initialJson)" ng-disabled="!vm.initialJson || !vm.initialJson.dependencias || !vm.initialJson.atributos || vm.initialJson.atributos.length === 0 || vm.initialJson.dependencias.length === 0">
+            <button type="button" title="Calcular llaves candidatas para el modelo actual" class="btn btn-default" ng-click="vm.calculateKeys(vm.initialJson)" ng-disabled="!vm.initialJson || !vm.initialJson.dependencias || !vm.initialJson.atributos || vm.initialJson.atributos.length === 0 || vm.initialJson.dependencias.length === 0">
                 <span class="glyphicon glyphicon-th" aria-hidden="true"></span> Calcular Llaves
             </button>
-            <button type="button" class="btn btn-default" ng-click="vm.exportFile(vm.initialJson, 'modelo.json')" ng-disabled="!vm.initialJson || !vm.initialJson.dependencias || !vm.initialJson.atributos || vm.initialJson.dependencias.length === 0 || vm.initialJson.atributos.lengt === 0">
+            <button type="button" title="Exportar modelo actual a un archivo JSON" class="btn btn-default" ng-click="vm.exportFile(vm.initialJson, 'modelo.json')" ng-disabled="!vm.initialJson || !vm.initialJson.dependencias || !vm.initialJson.atributos || vm.initialJson.dependencias.length === 0 || vm.initialJson.atributos.lengt === 0">
                 <span class="glyphicon glyphicon-save" aria-hidden="true"></span> Exportar modelo actual
             </button>
-            <button type="button" class="btn btn-default" ng-click="vm.exportMinimalCover(vm.solution, 'recubrimiento.json')" ng-disabled="!vm.solution || !vm.solution.l3">
+            <button type="button" title="Exportar recubrimiento mínimo del modelo actual a un archivo JSON" class="btn btn-default" ng-click="vm.exportMinimalCover(vm.solution, 'recubrimiento.json')" ng-disabled="!vm.solution || !vm.solution.l3">
                 <span class="glyphicon glyphicon-save" aria-hidden="true"></span> Exportar recubrimiento mínimo
             </button>
         </div>
@@ -158,8 +158,8 @@
         </div>
         <div class="tab-group">
             <ul class="nav nav-tabs" id="tabs" ng-init="vm.initTabs()">
-                <li class="active" role="presentation"><a data-toggle="tab" href="#keys" aria-controls="keys" aria-expanded="true">Llaves candidatas</a></li>
-                <li role="presentation"><a data-toggle="tab" href="#minimalCover" aria-controls="minimalCover" aria-expanded="minimalCover">Recubrimiento Mínimo</a></li>
+                <li class="active" role="presentation" title="Mostrar Llaves Candidatas"><a data-toggle="tab" href="#keys" aria-controls="keys" aria-expanded="true">Llaves candidatas</a></li>
+                <li role="presentation" title="Mostrar Recubrimiento mínimo"><a data-toggle="tab" href="#minimalCover" aria-controls="minimalCover" aria-expanded="minimalCover">Recubrimiento Mínimo</a></li>
             </ul>
             <div class="tab-content">
                 <div id="keys" class="tab-pane fade in active">
@@ -173,7 +173,7 @@
                     <div class="panel-group" id="accordion" data-ng-init="vm.initPanel()">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <h5 class="panel-title">
+                                <h5 class="panel-title" title="Abrir/Ocultar modelo original">
                                     <a class="small" data-toggle="collapse" data-parent="#accordion" href="#collapse1" role="button">Original JSON</a>
                                     <i class="indicator glyphicon glyphicon-menu-down pull-right" aria-hidden="true"></i>
                                 </h5>
@@ -186,7 +186,7 @@
                         </div>
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <h5 class="panel-title">
+                                <h5 class="panel-title" title="Abrir/Ocultar L1">
                                     <a class="small" data-toggle="collapse" data-parent="#accordion" href="#collapse2" role="button">L1</a>
                                     <i class="indicator glyphicon glyphicon-menu-down pull-right" aria-hidden="true"></i>
                                 </h5>
@@ -200,7 +200,7 @@
                         </div>
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <h5 class="panel-title">
+                                <h5 class="panel-title" title="Abrir/Ocultar L2">
                                     <a class="small" data-toggle="collapse" data-parent="#accordion" href="#collapse3" role="button">L2</a>
                                     <i class="indicator glyphicon glyphicon-menu-down pull-right" aria-hidden="true"></i>
                                 </h5>
@@ -220,7 +220,7 @@
                                 </h5>
                             </div>
                             <div id="collapse4" class="panel-collapse collapse">
-                                <div class="panel-body">
+                                <div class="panel-body" title="Abrir/Ocultar Recubrimiento mínimo">
                                     {$ vm.transform(vm.solution.l3) $}
                                     <pre>{$ vm.solution.l3 | json $}</pre>
                                 </div>
