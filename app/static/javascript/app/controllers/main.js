@@ -45,7 +45,7 @@
 
         vm.hasErrors = false;
 
-        vm.uploadFile = uploadFile;
+        vm.loadModel = loadModel;
 
         vm.initPanel = initPanel;
 
@@ -94,7 +94,7 @@
         function removeDependency($index) {
             SweetAlert.swal({
                     title: '¿Desea continuar?',
-                    text: 'Esta a punto de eliminar una dependencia. Esta operación no se puede deshacer',
+                    text: 'Esta a punto de eliminar una dependencia. Esta operación no se puede deshacer.',
                     type: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#DD6B55',
@@ -108,6 +108,28 @@
                         vm.initialJson.dependencias.splice($index, 1);
                     }
                 });
+        }
+
+        function loadModel($event) {
+            if (vm.initialJson.atributos && vm.initialJson.atributos.length > 0 && vm.initialJson.dependencias && vm.initialJson.dependencias.length > 0) {
+                SweetAlert.swal({
+                        title: '¿Desea continuar?',
+                        text: 'Agregar un nuevo archivo borrara el modelo actual.',
+                        type: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#DD6B55',
+                        confirmButtonText: 'Continuar',
+                        cancelButtonText: 'Cancelar'
+                    },
+                    function(isConfirm) {
+                        if (isConfirm) {
+                            uploadFile($event);
+                        }
+
+                    });
+            } else {
+                uploadFile($event);
+            }
         }
 
         function uploadFile($event) {
@@ -132,7 +154,7 @@
         function clearFile() {
             SweetAlert.swal({
                     title: '¿Desea continuar?',
-                    text: 'Esta a punto de borrar el archivo seleccionado. Esta operación también eliminará los atributos y las dependencias existentes',
+                    text: 'Esta a punto de borrar el archivo seleccionado. Esta operación también eliminará los atributos y las dependencias existentes.',
                     type: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#DD6B55',
@@ -156,7 +178,7 @@
         function clearModel() {
             SweetAlert.swal({
                     title: '¿Desea continuar?',
-                    text: 'Esta a punto de borrar el modelo atual.',
+                    text: 'Esta a punto de borrar el modelo actual.',
                     type: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#DD6B55',
@@ -171,7 +193,6 @@
                         vm.solution = undefined;
                         vm.initialJson = new Model();
                         vm.atributos = vm.initialJson.atributos || [];
-                        $('input[type=file]').val('');
                     }
                 });
         }
@@ -184,18 +205,20 @@
                 var json = new Model();
                 var message = '';
 
+                vm.solution = undefined;
+
                 try {
                     vm.hasErrors = false;
                     var temporalJson = JSON.parse(result);
 
                     if (temporalJson.dependencias && temporalJson.atributos && temporalJson.dependencias.length > 0 && temporalJson.atributos.length > 0) {
                         json = JSON.parse(result);
-                        message = 'El archivo <i>' + theFile.name + '</i> se ha cargado exitosamente';
+                        message = 'El archivo <i>' + theFile.name + '</i> se ha cargado exitosamente.';
                         messages.success(message);
                     } else {
                         vm.hasErrors = true;
                         message = 'Error cargando el archivo <i>' + theFile.name + '</i>';
-                        message = message + ': El archivo no contiene dependencias o atributos';
+                        message = message + ': El archivo no contiene dependencias o atributos.';
 
                         console.error(message);
                         messages.error(message);
@@ -339,7 +362,7 @@
                     console.log('calculateKeys:');
                     console.log(response);
                     if (response.data) {
-                        var message = 'El recubrimiento mínimo se ha calculado exitosamente y se ha generado el archivo <i>Salida.txt</i>, el cual contiene el registro de las operaciones.';
+                        var message = 'Se han calculado las llaves candidatas exitosamente, y se ha generado el archivo <i>Salida.txt</i>, el cual contiene el registro de las operaciones.';
                         messages.success(message);
                         vm.solution = {};
                         vm.solution = response.data;

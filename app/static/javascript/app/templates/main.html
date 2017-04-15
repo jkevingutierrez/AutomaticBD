@@ -41,7 +41,7 @@
                         <span title="Cargar un archivo .json o .txt al modelo" class="btn btn-primary">
                             <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span> Cargar Archivo
                         </span>
-                        <input type="file" accept=".json,.txt" custom-on-change="vm.uploadFile" ng-model="vm.currentFile">
+                        <input type="file" accept=".json,.txt" custom-on-change="vm.loadModel" ng-model="vm.currentFile">
                     </label>
                     <input type="text" class="form-control" ng-model="vm.currentFile.name" readonly>
                 </div>
