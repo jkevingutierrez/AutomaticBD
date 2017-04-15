@@ -186,7 +186,7 @@
                     vm.hasErrors = false;
                     var temporalJson = JSON.parse(result);
 
-                    if (temporalJson.dependencias && temporalJson.atributos) {
+                    if (temporalJson.dependencias && temporalJson.atributos && temporalJson.dependencias.length > 0 && temporalJson.atributos.length > 0) {
                         json = JSON.parse(result);
                         message = 'El archivo <i>' + theFile.name + '</i> se ha cargado exitosamente';
                         messages.success(message);

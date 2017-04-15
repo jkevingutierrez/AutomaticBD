@@ -141,14 +141,14 @@
     </div>
     <div class="actions">
         <div class="form-group sm-center">
-            <button type="button" class="btn btn-default" ng-click="vm.exportFile(vm.initialJson, 'modelo.json')" ng-disabled="!vm.initialJson || !vm.initialJson.dependencias || !vm.initialJson.atributos">
-                <span class="glyphicon glyphicon-save" aria-hidden="true"></span> Exportar relación actual a JSON
-            </button>
             <button type="button" class="btn btn-default" ng-click="vm.calculateKeys(vm.initialJson)" ng-disabled="!vm.initialJson || !vm.initialJson.dependencias || !vm.initialJson.atributos || vm.initialJson.atributos.length === 0 || vm.initialJson.dependencias.length === 0">
                 <span class="glyphicon glyphicon-th" aria-hidden="true"></span> Calcular Llaves
             </button>
+            <button type="button" class="btn btn-default" ng-click="vm.exportFile(vm.initialJson, 'modelo.json')" ng-disabled="!vm.initialJson || !vm.initialJson.dependencias || !vm.initialJson.atributos || vm.initialJson.dependencias.length === 0 || vm.initialJson.atributos.lengt === 0">
+                <span class="glyphicon glyphicon-save" aria-hidden="true"></span> Exportar modelo actual
+            </button>
             <button type="button" class="btn btn-default" ng-click="vm.exportMinimalCover(vm.solution, 'recubrimiento.json')" ng-disabled="!vm.solution || !vm.solution.l3">
-                <span class="glyphicon glyphicon-save" aria-hidden="true"></span> Exportar recubrimiento mínimo a JSON
+                <span class="glyphicon glyphicon-save" aria-hidden="true"></span> Exportar recubrimiento mínimo
             </button>
         </div>
     </div>
