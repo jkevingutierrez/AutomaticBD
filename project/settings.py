@@ -128,6 +128,13 @@ COMPRESS_OFFLINE = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': '/var/tmp/django_cache',
+    }
+}
+
 STATIC_URL = '/static/'
 
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -145,4 +152,3 @@ STATICFILES_FINDERS = (
 WHITENOISE_ROOT = os.path.join(BASE_DIR, 'public')
 
 COMPRESS_STORAGE = 'compressor.storage.GzipCompressorFileStorage'
-
