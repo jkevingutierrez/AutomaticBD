@@ -373,7 +373,7 @@
                         console.log('Llaves: ', vm.solution.keys);
                     }
                 }).catch(function(error) {
-                    var message = 'Error calculando el recubrimiento mínimo';
+                    var message = 'Error calculando el recubrimiento mínimo ' + error;
                     if (error & error.statusText) {
                         message = message + ': ' + error.statusText();
                     }
