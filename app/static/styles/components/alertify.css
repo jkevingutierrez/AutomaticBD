@@ -48,3 +48,10 @@
 .alertify-logs .glyphicon {
     font-size: 18px;
 }
+
+@media screen and (max-width:453px) {
+    .alertify-logs,
+    .alertify-logs:not(.right) {
+        bottom: 60px;
+    }
+}
