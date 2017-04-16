@@ -373,7 +373,7 @@
                     console.log('calculateKeys:');
                     console.log(response);
                     if (response.data) {
-                        var message = 'Se han calculado las llaves candidatas exitosamente, y se ha generado el archivo <i>Salida.txt</i>, el cual contiene el registro de las operaciones.';
+                        var message = 'Se han calculado las llaves candidatas exitosamente y, se ha generado el archivo <i>Salida.txt</i>, el cual contiene el registro de las operaciones.';
                         messages.success(message);
                         vm.solution = {};
                         vm.solution = response.data;
