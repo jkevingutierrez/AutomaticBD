@@ -11,7 +11,7 @@ class AlgoritmoLlaves:
 
     @staticmethod
     def validar_cierre_z(relacion, cierre_z):
-        Archivo.escribir_sobre_archivo_existente('Salida.txt', 'Paso 2 Validar cierre de Z:\n\n')
+        Archivo.escribir_sobre_archivo_existente('Salida.txt', '\nPaso 2 Validar cierre de Z:\n\n')
 
         es_igual = set(cierre_z) == set(relacion.atributos)
 
