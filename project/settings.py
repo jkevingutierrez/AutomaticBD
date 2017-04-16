@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
+    'compressor',
     'app',
 
 ]
@@ -122,6 +123,8 @@ USE_TZ = True
 
 HTML_MINIFY = True
 
+COMPRESS_OFFLINE = True
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
@@ -136,6 +139,10 @@ STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder',
 )
 
 WHITENOISE_ROOT = os.path.join(BASE_DIR, 'public')
+
+COMPRESS_STORAGE = 'compressor.storage.GzipCompressorFileStorage'
+

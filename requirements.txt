@@ -2,3 +2,4 @@ Django==1.10.7
 gunicorn==19.7.1
 whitenoise==3.3.0
 django-htmlmin==0.10.0
+django_compressor==2.1.1
