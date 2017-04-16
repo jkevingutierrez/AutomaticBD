@@ -400,9 +400,15 @@
                     break;
                 } else if (key instanceof Array && key.length > 0) {
                     for (var varIndex = 0; varIndex < key.length; varIndex++) {
-                        text += '[';
+                        text += '(';
                         text += key.join(', ');
-                        text += ']';
+                        if (keyIndex === keys.length) {
+                            text += ')';
+                        } else {
+                            text += '), ';
+                        }
+
+
                     }
                 }
             }

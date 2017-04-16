@@ -24,11 +24,17 @@ class ConversorATexto:
     def transformar_llaves(llaves):
         texto = '[ '
         separador = ', '
+        first = True
         for llave in llaves:
-            if type(llave) is list and len(llave) > 0:
-                texto += '['
+            if isinstance(llave, (list, tuple, set)) and len(llave) > 0:
+                if first:
+                    first = False
+                    texto += '('
+                else:
+                    texto += ', ('
+
                 texto += separador.join(llave)
-                texto += ']'
+                texto += ')'
             elif type(llave) is str:
                 texto += separador.join(llaves)
                 break

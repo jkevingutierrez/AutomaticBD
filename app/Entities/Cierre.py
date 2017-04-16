@@ -16,7 +16,7 @@ class Cierre:
             Archivo.escribir_sobre_archivo_existente('Salida.txt', separador.join(atributos))
             Archivo.escribir_sobre_archivo_existente('Salida.txt', ') = [')
 
-            if type(atributos) is list and len(atributos) > 0:
+            if isinstance(atributos, (list, tuple, set)) and len(atributos) > 0:
                 cierre = sorted(atributos)[:]
             elif type(atributos) is str:
                 cierre.append(atributos)
