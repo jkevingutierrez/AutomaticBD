@@ -125,9 +125,6 @@ class ServiceView(View):
             archivo.escribir('Llaves candidatas = ')
             archivo.escribir(ConversorATexto.transformar_llaves(llaves))
 
-            print('Llaves:')
-            print(llaves)
-
             response = {
                 'original': to_json,
                 'l1': [],
@@ -162,6 +159,12 @@ class ServiceView(View):
                     'implicado': dependencia.implicado
                 }
                 response['l3'].append(elem)
+
+            print("Recubrimiento Minimo:")
+            print(response["l3"])
+
+            print("Llaves Candidatas:")
+            print(response["keys"])
 
             return JsonResponse(response)
 

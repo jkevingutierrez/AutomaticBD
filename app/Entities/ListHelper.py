@@ -17,3 +17,7 @@ class ListHelper:
     def remover_index(list, index):
         # [item for j, item in enumerate(list) if index != j]
         return list[:index] + list[index + 1:]
+
+    @staticmethod
+    def son_iguales(a, b):
+        return set(a) == set(b)

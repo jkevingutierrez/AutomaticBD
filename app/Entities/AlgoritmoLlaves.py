@@ -1,3 +1,5 @@
+import itertools
+
 from app.Entities.Archivo import Archivo
 from app.Entities.Cierre import Cierre
 from app.Entities.ConversorATexto import ConversorATexto
@@ -13,7 +15,7 @@ class AlgoritmoLlaves:
     def validar_cierre_z(relacion, cierre_z):
         Archivo.escribir_sobre_archivo_existente('Salida.txt', '\nPaso 2 Validar cierre de Z:\n\n')
 
-        es_igual = set(cierre_z) == set(relacion.atributos)
+        es_igual = ListHelper.son_iguales(cierre_z, relacion.atributos)
 
         if es_igual:
             Archivo.escribir_sobre_archivo_existente('Salida.txt', '\tCierre(Z) == atributos\n\n')
@@ -68,23 +70,21 @@ class AlgoritmoLlaves:
         m1 = []
         m2 = []
 
-        if (len(z) > 0):
-            for variable_z in z:
-                for variable_v in v:
-                    print('Iterando')
-                    variables = [variable_z, variable_v]
-                    Cierre.calcular_cierre(variables, relacion.dependencias)
-                    m1.append(variables)
+        for i in range(1, len(v) + 1):
+            for subset in itertools.permutations(v, i):
+                u_l = sorted(ListHelper.union(subset, z))
+                if u_l not in m1:
+                    m1.append(u_l)
 
-        else:
-            for variable_v in v:
-                variables = [variable_v]
-                Cierre.calcular_cierre(variables, relacion.dependencias)
-                m1.append(variables)
-
-        print('m2:')
-        print(m1)
-        return m1
+                    cierre_u_l = Cierre.calcular_cierre(u_l, relacion.dependencias)
+                    if ListHelper.son_iguales(cierre_u_l, relacion.atributos):
+                        es_superllave = False
+                        for element in m2:
+                            if ListHelper.contiene_todos(element, u_l):
+                                es_superllave = True
+                        if es_superllave is False:
+                            m2.append(u_l)
+        return m2
 
 
 def extraer_atributos_implicante(dependencias):
