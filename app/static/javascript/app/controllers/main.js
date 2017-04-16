@@ -268,11 +268,19 @@
 
         function showPopUp($event) {
             var el = $event.currentTarget;
+
             $('#helpPopup').css({
                 'left': el.offsetLeft - el.scrollLeft + 10,
                 'top': el.offsetTop - el.scrollTop + 10
             });
             $('#helpPopup').toggle('fast');
+
+            if ($('#helpPopup').offset().left + $('#helpPopup').width() > $(window).width()) {
+                $('#helpPopup').css({
+                    'left': el.offsetLeft - el.scrollLeft - $('#helpPopup').width() + 10,
+                    'top': el.offsetTop - el.scrollTop + 10
+                });
+            }
         }
 
         function closePopUp() {
