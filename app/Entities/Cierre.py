@@ -1,5 +1,6 @@
 from app.Entities.Archivo import Archivo
 from app.Entities.ConversorATexto import ConversorATexto
+from app.Entities.ListHelper import ListHelper
 
 
 class Cierre:
@@ -25,7 +26,7 @@ class Cierre:
                 cierreInicial = cierre[:]
 
                 for dependencia in dependencias:
-                    contieneAtributos = all(elem in cierre for elem in dependencia.implicante)
+                    contieneAtributos = ListHelper.contiene_todos(dependencia.implicante, cierre)
                     atributoImplicado = dependencia.implicado[0]
 
                     if len(dependencia.implicante) <= len(cierreInicial) and \

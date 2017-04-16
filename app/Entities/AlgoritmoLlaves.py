@@ -1,6 +1,7 @@
 from app.Entities.Archivo import Archivo
 from app.Entities.Cierre import Cierre
 from app.Entities.ConversorATexto import ConversorATexto
+from app.Entities.ListHelper import ListHelper
 
 
 class AlgoritmoLlaves:
@@ -26,7 +27,7 @@ class AlgoritmoLlaves:
         Archivo.escribir_sobre_archivo_existente('Salida.txt', 'Paso 1 Calcular Z:\n\n')
 
         atributos_implicado = extraer_atributos_implicado(relacion.dependencias)
-        z = sorted(quitar_atributos(relacion.atributos, atributos_implicado))
+        z = sorted(ListHelper.diferencia(relacion.atributos, atributos_implicado))
 
         Archivo.escribir_sobre_archivo_existente('Salida.txt', '\tZ = [')
         Archivo.escribir_sobre_archivo_existente('Salida.txt', ConversorATexto.transformar_atributos(z))
@@ -38,9 +39,9 @@ class AlgoritmoLlaves:
     def calcular_v(relacion, cierre_z, w):
         Archivo.escribir_sobre_archivo_existente('Salida.txt', 'Paso 4 Calcular V:\n\n')
 
-        cierre_z_union_w = union(cierre_z, w)
+        cierre_z_union_w = ListHelper.union(cierre_z, w)
 
-        v = sorted(quitar_atributos(relacion.atributos, cierre_z_union_w))
+        v = sorted(ListHelper.diferencia(relacion.atributos, cierre_z_union_w))
 
         Archivo.escribir_sobre_archivo_existente('Salida.txt', '\tV = [')
         Archivo.escribir_sobre_archivo_existente('Salida.txt', ConversorATexto.transformar_atributos(v))
@@ -53,7 +54,7 @@ class AlgoritmoLlaves:
         Archivo.escribir_sobre_archivo_existente('Salida.txt', '\nPaso 3 Calcular W:\n\n')
 
         atributos_implicante = extraer_atributos_implicante(relacion.dependencias)
-        w = quitar_atributos(relacion.atributos, atributos_implicante)
+        w = ListHelper.diferencia(relacion.atributos, atributos_implicante)
 
         Archivo.escribir_sobre_archivo_existente('Salida.txt', '\tW = [')
         Archivo.escribir_sobre_archivo_existente('Salida.txt', ConversorATexto.transformar_atributos(w))
@@ -86,11 +87,6 @@ class AlgoritmoLlaves:
         return m1
 
 
-def quitar_atributos(atributos_totales, atributos_a_quitar):
-    atributos_resultantes = [atributo for atributo in atributos_totales if atributo not in atributos_a_quitar]
-    return atributos_resultantes
-
-
 def extraer_atributos_implicante(dependencias):
     atributos = []
     for dependencia in dependencias:
@@ -107,12 +103,3 @@ def extraer_atributos_implicado(dependencias):
             if atributo not in atributos:
                 atributos.append(atributo)
     return atributos
-
-
-def diferencia(a, b):
-    b = set(b)
-    return [item for item in a if item not in b]
-
-
-def union(a, b):
-    return list(set(a) | set(b))

@@ -3,6 +3,7 @@ from app.Entities.Buscador import Buscador
 from app.Entities.Cierre import Cierre
 from app.Entities.ConversorATexto import ConversorATexto
 from app.Entities.DependenciaFuncional import DependenciaFuncional
+from app.Entities.ListHelper import ListHelper
 
 
 class RecubrimientoMinimo:
@@ -52,7 +53,7 @@ class RecubrimientoMinimo:
                 for i in reversed(range(len(atributos_auxiliares))):
                     cierre_array = []
                     atributo = atributos_auxiliares[i]
-                    atributos_temporales = [elem for j, elem in enumerate(atributos_auxiliares) if i != j]
+                    atributos_temporales = ListHelper.remover_index(atributos_auxiliares, i)
                     llave = '-'.join(atributos_temporales)
 
                     if len(atributos_temporales) > 0 and llave not in existe_cierre:
@@ -61,7 +62,7 @@ class RecubrimientoMinimo:
                     elif llave:
                         cierre_array = existe_cierre[llave]
 
-                    contiene_atributo = all(elem in cierre_array for elem in dependencia.implicado)
+                    contiene_atributo = ListHelper.contiene_todos(dependencia.implicado, cierre_array)
 
                     if contiene_atributo is True and len(cierre_array) > 0:
                         atributos_auxiliares.pop(i)
@@ -92,12 +93,12 @@ class RecubrimientoMinimo:
         for i in reversed(range(len(dependencias))):
             cierre_array = []
             dependencia = l2_auxiliar[i]
-            dependencias_temporales = [dependencia for j, dependencia in enumerate(l2_auxiliar) if i != j]
+            dependencias_temporales = ListHelper.remover_index(l2_auxiliar, i)
 
             if len(dependencia.implicante) > 0:
                 cierre_array = Cierre.calcular_cierre(dependencia.implicante, dependencias_temporales)
 
-            contiene_atributo = all(elem in cierre_array for elem in dependencia.implicado)
+            contiene_atributo = ListHelper.contiene_todos(dependencia.implicado, cierre_array)
             existe_dependencia = Buscador.buscar_dependencia(dependencia, recubrimiento_minimo)
             if contiene_atributo is True and len(cierre_array) > 0:
                 l2_auxiliar.pop(i)
