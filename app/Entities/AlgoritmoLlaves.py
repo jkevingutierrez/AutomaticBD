@@ -18,7 +18,7 @@ class AlgoritmoLlaves:
         es_igual = ListHelper.son_iguales(cierre_z, relacion.atributos)
 
         if es_igual:
-            Archivo.escribir_sobre_archivo_existente('Salida.txt', '\tCierre(Z) == atributos\n\n')
+            Archivo.escribir_sobre_archivo_existente('Salida.txt', '\tCierre(Z) == atributos\n')
         else:
             Archivo.escribir_sobre_archivo_existente('Salida.txt', '\tCierre(Z) != atributos\n\n')
 
@@ -74,6 +74,9 @@ class AlgoritmoLlaves:
             for subset in itertools.permutations(v, i):
                 u_l = sorted(ListHelper.union(subset, z))
                 if u_l not in m1:
+                    Archivo.escribir_sobre_archivo_existente('Salida.txt', '\tAgregar [')
+                    Archivo.escribir_sobre_archivo_existente('Salida.txt', ConversorATexto.transformar_atributos(u_l))
+                    Archivo.escribir_sobre_archivo_existente('Salida.txt', '] a M1\n')
                     m1.append(u_l)
 
                     cierre_u_l = Cierre.calcular_cierre(u_l, relacion.dependencias)
@@ -83,6 +86,10 @@ class AlgoritmoLlaves:
                             if ListHelper.contiene_todos(element, u_l):
                                 es_superllave = True
                         if es_superllave is False:
+                            Archivo.escribir_sobre_archivo_existente('Salida.txt', '\n\tAgregar [')
+                            Archivo.escribir_sobre_archivo_existente('Salida.txt',
+                                                                     ConversorATexto.transformar_atributos(u_l))
+                            Archivo.escribir_sobre_archivo_existente('Salida.txt', '] a M2\n\n')
                             m2.append(u_l)
         return m2
 
