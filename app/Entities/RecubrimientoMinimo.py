@@ -19,7 +19,7 @@ class RecubrimientoMinimo:
                 Archivo.escribir_sobre_archivo_existente('Salida.txt', '\tAgregar dependencia elemental: ')
                 Archivo.escribir_sobre_archivo_existente('Salida.txt',
                                                          ConversorATexto.transformar_dependencia(dependencia))
-                Archivo.escribir_sobre_archivo_existente('Salida.txt', '\n')
+                Archivo.escribir_sobre_archivo_existente('Salida.txt', '\n\n')
                 l1.append(dependencia)
             else:
                 for atributo in dependencia.implicado:
@@ -29,7 +29,7 @@ class RecubrimientoMinimo:
                         Archivo.escribir_sobre_archivo_existente('Salida.txt', '\tAgregar dependencia elemental: ')
                         Archivo.escribir_sobre_archivo_existente('Salida.txt', ConversorATexto.transformar_dependencia(
                             nueva_dependencia))
-                        Archivo.escribir_sobre_archivo_existente('Salida.txt', '\n')
+                        Archivo.escribir_sobre_archivo_existente('Salida.txt', '\n\n')
                         l1.append(nueva_dependencia)
 
         Archivo.escribir_sobre_archivo_existente('Salida.txt', '\n')
@@ -66,12 +66,12 @@ class RecubrimientoMinimo:
 
                     if contiene_atributo is True and len(cierre_array) > 0:
                         atributos_auxiliares.pop(i)
-                        Archivo.escribir_sobre_archivo_existente('Salida.txt', '\tEliminar atributo: ')
+                        Archivo.escribir_sobre_archivo_existente('Salida.txt', '\n\tEliminar atributo: ')
                         Archivo.escribir_sobre_archivo_existente('Salida.txt', atributo)
-                        Archivo.escribir_sobre_archivo_existente('Salida.txt', ' en ')
+                        Archivo.escribir_sobre_archivo_existente('Salida.txt', ' de ')
                         Archivo.escribir_sobre_archivo_existente('Salida.txt',
                                                                  ConversorATexto.transformar_dependencia(dependencia))
-                        Archivo.escribir_sobre_archivo_existente('Salida.txt', '\n')
+                        Archivo.escribir_sobre_archivo_existente('Salida.txt', '\n\n')
 
                     nueva_dependencia = DependenciaFuncional(atributos_auxiliares, dependencia.implicado)
                     existe_nueva_dependencia = Buscador.buscar_dependencia(nueva_dependencia, l2)
@@ -102,10 +102,10 @@ class RecubrimientoMinimo:
             existe_dependencia = Buscador.buscar_dependencia(dependencia, recubrimiento_minimo)
             if contiene_atributo is True and len(cierre_array) > 0:
                 l2_auxiliar.pop(i)
-                Archivo.escribir_sobre_archivo_existente('Salida.txt', '\tEliminar dependencia: ')
+                Archivo.escribir_sobre_archivo_existente('Salida.txt', '\n\tEliminar dependencia: ')
                 Archivo.escribir_sobre_archivo_existente('Salida.txt',
                                                          ConversorATexto.transformar_dependencia(dependencia))
-                Archivo.escribir_sobre_archivo_existente('Salida.txt', '\n')
+                Archivo.escribir_sobre_archivo_existente('Salida.txt', '\n\n')
             elif existe_dependencia is False:
                 recubrimiento_minimo.append(dependencia)
 
