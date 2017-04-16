@@ -139,6 +139,8 @@ CACHES = {
     }
 }
 
+WHITENOISE_MAX_AGE = 1440
+
 STATIC_URL = '/static/'
 
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
