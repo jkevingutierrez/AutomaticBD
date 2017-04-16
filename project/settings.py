@@ -126,6 +126,8 @@ HTML_MINIFY = True
 
 COMPRESS_OFFLINE = True
 
+SECURE_SSL_REDIRECT = True
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
