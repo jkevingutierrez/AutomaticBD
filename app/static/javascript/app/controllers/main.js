@@ -273,7 +273,6 @@
                 'top': el.offsetTop - el.scrollTop + 10
             });
             $('#helpPopup').toggle('fast');
-
         }
 
         function closePopUp() {
@@ -407,8 +406,6 @@
                         } else {
                             text += '), ';
                         }
-
-
                     }
                 }
             }

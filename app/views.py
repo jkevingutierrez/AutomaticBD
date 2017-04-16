@@ -121,8 +121,7 @@ class ServiceView(View):
                 v = AlgoritmoLlaves.calcular_v(relacion_recubrimiento, cierre_z, w)
                 llaves = AlgoritmoLlaves.iterar(v, z, relacion)
 
-            archivo.escribir('\n\n')
-            archivo.escribir('Llaves candidatas = ')
+            archivo.escribir('\nLlaves candidatas = ')
             archivo.escribir(ConversorATexto.transformar_llaves(llaves))
 
             response = {
