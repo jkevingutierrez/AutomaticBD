@@ -135,11 +135,11 @@ CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
         'LOCATION': '/var/tmp/django_cache',
-        'TIMEOUT': 86400,
+        'TIMEOUT': 31104000,
     }
 }
 
-WHITENOISE_MAX_AGE = 86400
+WHITENOISE_MAX_AGE = 31104000
 
 STATIC_URL = '/static/'
 
