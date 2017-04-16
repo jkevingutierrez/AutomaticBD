@@ -6,23 +6,35 @@
         "d",
         "e",
         "f",
-        "g",
-        "h",
-        "i",
-        "j",
-        "k",
-        "l",
-        "m"
+        "g"
     ],
     "dependencias": [
         {
             "implicante": [
-                "a"
+                "a",
+                "b"
             ],
             "implicado": [
+                "c"
+            ]
+        },
+        {
+            "implicante": [
                 "b",
-                "c",
                 "d"
+            ],
+            "implicado": [
+                "f",
+                "g"
+            ]
+        },
+        {
+            "implicante": [
+                "a",
+                "e"
+            ],
+            "implicado": [
+                "c"
             ]
         },
         {
@@ -30,39 +42,8 @@
                 "c"
             ],
             "implicado": [
-                "d"
-            ]
-        },
-        {
-            "implicante": [
+                "d",
                 "e"
-            ],
-            "implicado": [
-                "f",
-                "g",
-                "h",
-                "i",
-                "j"
-            ]
-        },
-        {
-            "implicante": [
-                "i",
-                "j"
-            ],
-            "implicado": [
-                "e"
-            ]
-        },
-        {
-            "implicante": [
-                "a",
-                "e",
-                "k",
-                "l"
-            ],
-            "implicado": [
-                "m"
             ]
         }
     ]
