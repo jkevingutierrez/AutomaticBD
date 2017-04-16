@@ -10,10 +10,10 @@ class ListHelper:
 
     @staticmethod
     def contiene_todos(one, two):
-        # all(x in two for x in one)
+        # all(item in two for item in one)
         return set(one).issubset(set(two))
 
     @staticmethod
     def remover_index(list, index):
-        # [dependencia for j, dependencia in enumerate(list) if index != j]
+        # [item for j, item in enumerate(list) if index != j]
         return list[:index] + list[index + 1:]
