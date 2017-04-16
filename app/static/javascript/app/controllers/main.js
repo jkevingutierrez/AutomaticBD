@@ -218,7 +218,7 @@
                     } else {
                         vm.hasErrors = true;
                         message = 'Error cargando el archivo <i>' + theFile.name + '</i>';
-                        message = message + ': El archivo no contiene dependencias o atributos.';
+                        message += ': El archivo no contiene dependencias o atributos.';
 
                         console.error(message);
                         messages.error(message);
@@ -227,7 +227,7 @@
                     vm.hasErrors = true;
                     message = 'Error cargando el archivo <i>' + theFile.name + '</i>';
                     if (error) {
-                        message = message + ': ' + error;
+                        message += ': ' + error;
                     }
 
                     console.error(error);
@@ -295,8 +295,10 @@
                 }
             }).catch(function(error) {
                 var message = 'Error leyendo el archivo JSON desde <i>' + url + '</i>';
-                if (error & error.statusText) {
-                    message = message + ': ' + error.statusText();
+                if (typeof error === 'string') {
+                    message += ': ' + error;
+                } else if (error & error.statusText) {
+                    message += ': ' + error.statusText();
                 }
                 console.error(error);
                 messages.error(message);
@@ -321,8 +323,10 @@
                 }
             }).catch(function(error) {
                 var message = 'Error exportando el archivo <i>' + fileName + '</i>';
-                if (error & error.statusText) {
-                    message = message + ': ' + error.statusText();
+                if (typeof error === 'string') {
+                    message += ': ' + error;
+                } else if (error & error.statusText) {
+                    message += ': ' + error.statusText();
                 }
                 console.error(error);
                 messages.error(message);
@@ -373,9 +377,11 @@
                         console.log('Llaves: ', vm.solution.keys);
                     }
                 }).catch(function(error) {
-                    var message = 'Error calculando el recubrimiento mínimo ' + error;
-                    if (error & error.statusText) {
-                        message = message + ': ' + error.statusText();
+                    var message = 'Error calculando el recubrimiento mínimo';
+                    if (typeof error === 'string') {
+                        message += ': ' + error;
+                    } else if (error & error.statusText) {
+                        message += ': ' + error.statusText();
                     }
                     console.error(error);
                     messages.error(message);
