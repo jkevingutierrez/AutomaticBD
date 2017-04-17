@@ -15,16 +15,20 @@ class RecubrimientoMinimo:
 
         for dependencia in dependencias:
             existe_dependencia = Buscador.buscar_dependencia(dependencia, l1)
-            if len(dependencia.implicado) == 1 and existe_dependencia is False:
+            if len(dependencia.implicado) == 1 and existe_dependencia is False and ListHelper.son_iguales(
+                    dependencia.implicante,
+                    dependencia.implicado) is False:
                 Archivo.escribir_sobre_archivo_existente('Salida.txt', '\tAgregar dependencia elemental: ')
                 Archivo.escribir_sobre_archivo_existente('Salida.txt',
                                                          ConversorATexto.transformar_dependencia(dependencia))
                 Archivo.escribir_sobre_archivo_existente('Salida.txt', '\n\n')
+
                 l1.append(dependencia)
             else:
                 for atributo in dependencia.implicado:
                     nueva_dependencia = DependenciaFuncional(dependencia.implicante, atributo)
                     existe_dependencia = Buscador.buscar_dependencia(nueva_dependencia, l1)
+
                     if existe_dependencia is False and ListHelper.son_iguales(nueva_dependencia.implicante,
                                                                               nueva_dependencia.implicado) is False:
                         Archivo.escribir_sobre_archivo_existente('Salida.txt', '\tAgregar dependencia elemental: ')
