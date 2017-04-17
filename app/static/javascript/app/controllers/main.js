@@ -429,10 +429,14 @@
         }
 
         function transformDependencies(dependencies) {
+            console.log('Transformar dependencias');
+            console.log(dependencies);
             var textArray = [];
 
             if (dependencies) {
                 dependencies.forEach(function(dependency) {
+                    dependency.implicante = Array.from(dependency.implicante);
+                    dependency.implicado = Array.from(dependency.implicado);
                     textArray.push(dependency.implicante.join('.') + ' -> ' + dependency.implicado.join('.'));
                 });
             }
