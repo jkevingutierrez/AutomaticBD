@@ -4,7 +4,7 @@ from django.conf import settings
 
 
 class Archivo:
-    def __init__(self, nombre='') -> object:
+    def __init__(self, nombre=''):
         if nombre is not None and nombre != '':
             self.nombre = nombre
             self.file = open(os.path.join(settings.BASE_DIR, self.nombre), "w+")
