@@ -72,7 +72,7 @@ class ServiceView(View):
 
         if atributos_validos is True:
             archivo = Archivo('Salida.txt')
-            archivo.escribir('RECUBRIMIENTO M\u00CDNIMO\n')
+            archivo.escribir('RECUBRIMIENTO MÍNIMO\n')
             archivo.escribir('____________________\n\n')
             archivo.escribir('Modelo Original:\n')
             archivo.escribir('RT(t, l)=\n')
