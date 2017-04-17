@@ -46,7 +46,7 @@ class RecubrimientoMinimo:
 
         existe_cierre = {}
 
-        Archivo.escribir_sobre_archivo_existente('Salida.txt', 'Paso 2 Eliminar Atributos Extraños:\n\n')
+        Archivo.escribir_sobre_archivo_existente('Salida.txt', 'Paso 2 Eliminar Atributos Extranos:\n\n')
 
         for dependencia in dependencias:
             existe_dependencia = Buscador.buscar_dependencia(dependencia, l2)
