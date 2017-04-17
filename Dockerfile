@@ -19,3 +19,4 @@ RUN pip install -Ur requirements.txt
 
 # Collect our static media.
 RUN /code/manage.py collectstatic --noinput
+RUN /code/manage.py compress
